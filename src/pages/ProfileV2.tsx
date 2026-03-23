@@ -163,7 +163,7 @@ export default function ProfileV2() {
               transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
               className="fixed top-0 left-0 right-0 z-30 border-b border-gray-stroke bg-white"
             >
-              <div className={`mx-auto flex items-stretch gap-4 px-6 py-2 transition-all duration-300 md:py-0 md:px-10 ${showSidebar ? "max-w-[1144px]" : "max-w-[900px]"}`}>
+              <div className={`mx-auto flex items-stretch gap-4 px-4 py-2 transition-all duration-300 md:py-0 md:px-10 ${showSidebar ? "max-w-[1144px]" : "max-w-[900px]"}`}>
                 {/* Left: photo + name + rate — click to scroll to top */}
                 <div
                   className="flex shrink-0 cursor-pointer items-center gap-2.5"
@@ -220,7 +220,7 @@ export default function ProfileV2() {
       {/* Full-bleed header background */}
       <div className="w-full bg-[#f5f5f5]">
         {/* Category bar placeholder */}
-        <div className={`mx-auto px-6 transition-all duration-300 ${showSidebar ? "max-w-[1144px]" : "max-w-[900px]"}`}>
+        <div className={`mx-auto px-4 transition-all duration-300 md:px-10 ${showSidebar ? "max-w-[1144px]" : "max-w-[900px]"}`}>
           <div className="h-[44px]" />
         </div>
 
@@ -229,7 +229,7 @@ export default function ProfileV2() {
       </div>
 
       {/* Main content area */}
-      <div className={`mx-auto flex gap-16 px-6 pb-[120px] transition-all duration-300 md:px-10 ${showSidebar ? "max-w-[1144px]" : "max-w-[900px]"}`}>
+      <div className={`mx-auto flex gap-16 px-4 pb-[120px] transition-all duration-300 md:px-10 ${showSidebar ? "max-w-[1144px]" : "max-w-[900px]"}`}>
         {/* Left column — fills available width */}
         <div className="min-w-0 flex-1">
           {/* Profile photo + CTA buttons */}
@@ -357,8 +357,13 @@ export default function ProfileV2() {
             )}
           </div>
 
+          {/* Mobile inline CTA */}
+          <button className="mt-3 w-full cursor-pointer rounded-lg bg-[#038561] px-4 py-2.5 text-[16px] font-medium text-white transition-colors hover:bg-[#038561]/90 md:hidden">
+            Free intro call
+          </button>
+
           {/* Availability row */}
-          <div className="flex flex-col text-[16px] md:flex-row md:items-center md:justify-between">
+          <div className="mt-2 flex flex-col text-[16px] md:mt-0 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-2">
               <span className="text-[#1A73E8]">Available tomorrow</span>
               <span className="text-[#707070]">·</span>
@@ -366,11 +371,6 @@ export default function ProfileV2() {
             </div>
             <span className="text-[#9b9b9b]">1,240 minutes coached</span>
           </div>
-
-          {/* Mobile inline CTA */}
-          <button className="mt-3 w-full cursor-pointer rounded-lg bg-[#038561] px-4 py-2.5 text-[16px] font-medium text-white transition-colors hover:bg-[#038561]/90 md:hidden">
-            Free intro call
-          </button>
 
           {/* Hero sentinel for sticky nav detection */}
           <div ref={heroSentinelRef} />

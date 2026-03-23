@@ -118,8 +118,8 @@ export default function Profile() {
     <>
       <div className="mx-auto max-w-3xl">
       {/* Cover Image */}
-      <div className="px-4 lg:px-0">
-        <div className="-mx-3">
+      <div>
+        <div className="-mx-3 lg:mx-0">
           <img
             src={coverImage}
             alt="Cover"
@@ -129,7 +129,7 @@ export default function Profile() {
       </div>
 
       {/* Header Section */}
-      <div className="px-4 lg:px-0">
+      <div>
         <div className="-mt-[88px] flex items-end justify-between">
           {/* Profile Picture */}
           <img
@@ -153,7 +153,7 @@ export default function Profile() {
       </div>
 
       {/* Profile Info */}
-      <div className="px-4 lg:px-0">
+      <div>
         {/* Name with verified badge */}
         <div className="flex items-center gap-2">
           <h1 className="text-[26px] font-bold text-gray-dark">Alex Ward</h1>
@@ -223,7 +223,7 @@ export default function Profile() {
 
         {/* Large Badges - horizontal scroll (only when large badges are on) */}
         {largeBadges && (
-          <div className="mt-4 -mx-4 px-4 overflow-x-auto scrollbar-hide">
+          <div className="mt-4 overflow-x-auto scrollbar-hide">
             <div className="flex h-[88px] gap-[8px]">
               {/* Customer Favorite badge */}
               {isVerifiedExpert && (
