@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Link } from "react-router-dom";
 import profilePhoto from "../assets/profile photos/profile photo.png";
@@ -712,14 +712,104 @@ function LiveCard({ live }: { live: LivePost["live"] }) {
 
 // ─── Coach hover card ─────────────────────────────────
 
-const coachProfiles: Record<string, { sessions: number; rating: number; reviews: number; tags: string[] }> = {
-  "Sarah Chen":     { sessions: 312, rating: 4.9, reviews: 187, tags: ["Stanford GSB", "MBA Admissions"] },
-  "David Kim":      { sessions: 428, rating: 5.0, reviews: 214, tags: ["MBA Admissions", "Case Prep", "Ex-Bain"] },
-  "Nina Kowalski":  { sessions: 196, rating: 4.9, reviews: 103, tags: ["Consulting", "McKinsey", "Recruiting"] },
-  "Marcus Williams":{ sessions: 88,  rating: 4.8, reviews: 52,  tags: ["MBA Essays", "Stanford GSB"] },
-  "Priya Patel":    { sessions: 143, rating: 4.9, reviews: 76,  tags: ["MBA Admissions", "Networking"] },
-  "Emma Rodriguez": { sessions: 201, rating: 4.8, reviews: 98,  tags: ["Career Change", "MBA Strategy"] },
+interface CoachProfile {
+  rating: number;
+  reviews: number;
+  customerFavorite?: boolean;
+  supercoach?: boolean;
+  minutesCoached: number;
+  followers: number;
+  affiliation?: string;        // e.g. "Admissions at Stanford GSB"
+  company?: string;            // e.g. "McKinsey & Company"
+  companyColor?: string;
+  companyInitial?: string;
+  successfulClients: { initial: string; color: string }[];
+  successfulClientsMore?: number;
+}
+
+const coachProfiles: Record<string, CoachProfile> = {
+  "Sarah Chen": {
+    rating: 4.9, reviews: 187, customerFavorite: true, supercoach: true,
+    minutesCoached: 156420, followers: 843,
+    affiliation: "Admissions at Stanford GSB",
+    company: "Stanford GSB", companyColor: "#8C1515", companyInitial: "S",
+    successfulClients: [
+      { initial: "H", color: "#A51C30" }, { initial: "W", color: "#002F6C" },
+      { initial: "S", color: "#8C1515" }, { initial: "B", color: "#003262" },
+    ],
+    successfulClientsMore: 19,
+  },
+  "David Kim": {
+    rating: 5.0, reviews: 214, customerFavorite: true, supercoach: true,
+    minutesCoached: 219990, followers: 596,
+    affiliation: "Adm. Committee at Chicago Booth",
+    company: "Bain & Company", companyColor: "#CC0000", companyInitial: "B",
+    successfulClients: [
+      { initial: "H", color: "#A51C30" }, { initial: "W", color: "#002F6C" },
+      { initial: "K", color: "#00356B" }, { initial: "M", color: "#00274C" },
+    ],
+    successfulClientsMore: 27,
+  },
+  "Nina Kowalski": {
+    rating: 4.9, reviews: 103,
+    minutesCoached: 98730, followers: 412,
+    company: "McKinsey & Company", companyColor: "#003580", companyInitial: "M",
+    successfulClients: [
+      { initial: "D", color: "#006400" }, { initial: "B", color: "#003580" },
+      { initial: "A", color: "#7B0000" },
+    ],
+    successfulClientsMore: 14,
+  },
+  "Marcus Williams": {
+    rating: 4.8, reviews: 52,
+    minutesCoached: 44200, followers: 198,
+    affiliation: "Admissions at Stanford GSB",
+    successfulClients: [
+      { initial: "S", color: "#8C1515" }, { initial: "H", color: "#A51C30" },
+    ],
+    successfulClientsMore: 8,
+  },
+  "Priya Patel": {
+    rating: 4.9, reviews: 76,
+    minutesCoached: 71580, followers: 305,
+    company: "Harvard Business School", companyColor: "#A51C30", companyInitial: "H",
+    successfulClients: [
+      { initial: "H", color: "#A51C30" }, { initial: "W", color: "#002F6C" },
+      { initial: "T", color: "#4B0082" },
+    ],
+    successfulClientsMore: 11,
+  },
+  "Emma Rodriguez": {
+    rating: 4.8, reviews: 98,
+    minutesCoached: 103440, followers: 467,
+    company: "BCG", companyColor: "#006600", companyInitial: "B",
+    successfulClients: [
+      { initial: "K", color: "#00356B" }, { initial: "B", color: "#003262" },
+      { initial: "M", color: "#00274C" }, { initial: "S", color: "#8C1515" },
+    ],
+    successfulClientsMore: 16,
+  },
 };
+
+function BadgeChip({ icon, label }: { icon: React.ReactNode; label: string }) {
+  return (
+    <div className="flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1.5">
+      <span className="shrink-0">{icon}</span>
+      <span className="text-[12px] font-medium text-gray-dark leading-none">{label}</span>
+    </div>
+  );
+}
+
+function SchoolDot({ initial, color }: { initial: string; color: string }) {
+  return (
+    <span
+      className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white ring-2 ring-white"
+      style={{ backgroundColor: color }}
+    >
+      {initial}
+    </span>
+  );
+}
 
 function CoachHoverCard({ author, avatar, verified, headline, isEvent }: {
   author: string;
@@ -729,64 +819,108 @@ function CoachHoverCard({ author, avatar, verified, headline, isEvent }: {
   isEvent?: boolean;
 }) {
   if (isEvent) return null;
-  const profile = coachProfiles[author];
+  const p = coachProfiles[author];
 
   return (
     <motion.div
-      className="absolute left-0 top-12 z-50 w-[280px] rounded-2xl border border-gray-stroke bg-white p-4 shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
+      className="absolute left-0 top-12 z-50 w-[310px] rounded-2xl border border-gray-stroke bg-white p-4 shadow-[0_8px_32px_rgba(0,0,0,0.13)]"
       initial={{ opacity: 0, y: 6, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 4, scale: 0.97 }}
       transition={{ duration: 0.15, ease: "easeOut" }}
-      // Keep card open when hovering over it
       onMouseEnter={(e) => e.stopPropagation()}
     >
-      {/* Top row: avatar + follow */}
-      <div className="flex items-start justify-between">
+      {/* Row 1: avatar + name/rating + follow */}
+      <div className="flex items-start gap-3">
         <img
           src={avatar}
           alt={author}
-          className="h-14 w-14 rounded-full object-cover shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]"
+          className="h-[52px] w-[52px] shrink-0 rounded-xl object-cover shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]"
         />
-        <button className="rounded-full border border-gray-stroke px-4 py-1.5 text-[14px] font-medium text-gray-dark transition-colors hover:bg-gray-hover">
+        <div className="min-w-0 flex-1">
+          {/* Name row */}
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            <span className="text-[15px] font-semibold text-gray-dark leading-tight">{author}</span>
+            {verified ? <img src={verifiedIcon} alt="" className="h-[14px] w-[14px] shrink-0" /> : null}
+            {p ? (
+              <span className="flex items-center gap-1 text-[13px] text-gray-dark">
+                <span className="text-yellow-400">★</span>
+                <span className="font-semibold">{p.rating.toFixed(1)}</span>
+                <span className="text-gray-light">({p.reviews})</span>
+              </span>
+            ) : null}
+          </div>
+          {/* Customer favorite badge */}
+          {p?.customerFavorite ? (
+            <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
+              <span>✦</span> Customer favorite
+            </span>
+          ) : null}
+        </div>
+        <button className="shrink-0 rounded-full border border-gray-stroke px-3.5 py-1 text-[13px] font-medium text-gray-dark transition-colors hover:bg-gray-hover">
           Follow
         </button>
       </div>
 
-      {/* Name + verified */}
-      <div className="mt-3 flex items-center gap-1.5">
-        <span className="text-[16px] font-semibold text-gray-dark">{author}</span>
-        {verified && <img src={verifiedIcon} alt="Verified" className="h-[15px] w-[15px] shrink-0" />}
-      </div>
-
       {/* Headline */}
       {headline ? (
-        <p className="mt-0.5 text-[13px] leading-snug text-gray-light">{headline}</p>
+        <p className="mt-2.5 text-[13px] font-semibold leading-snug text-gray-dark">{headline}</p>
       ) : null}
 
-      {/* Stats */}
-      {profile ? (
-        <>
-          <div className="mt-3 flex items-center gap-3 text-[13px]">
-            <span className="font-semibold text-gray-dark">{profile.sessions.toLocaleString()}</span>
-            <span className="text-gray-light">sessions</span>
-            <span className="text-gray-xlight">·</span>
-            <span className="font-semibold text-gray-dark">★ {profile.rating.toFixed(1)}</span>
-            <span className="text-gray-light">({profile.reviews})</span>
-          </div>
+      {/* Minutes coached + followers */}
+      {p ? (
+        <p className="mt-1.5 text-[12px] text-gray-light">
+          <span className="font-medium text-gray-dark">{p.minutesCoached.toLocaleString()}</span> min coached
+          <span className="mx-2 text-gray-stroke">|</span>
+          <span className="font-medium text-gray-dark">{p.followers.toLocaleString()}</span> followers
+        </p>
+      ) : null}
 
-          {/* Specialty tags */}
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {profile.tags.map(tag => (
-              <span
-                key={tag}
-                className="rounded-full bg-gray-100 px-2.5 py-0.5 text-[12px] font-medium text-gray-dark"
-              >
-                {tag}
+      {/* Badge chips */}
+      {p ? (
+        <div className="mt-3 flex flex-wrap gap-2">
+          {p.supercoach ? (
+            <BadgeChip icon={<span>🏆</span>} label="Supercoach" />
+          ) : null}
+          {p.affiliation ? (
+            <BadgeChip
+              icon={
+                <span
+                  className="flex h-4 w-4 items-center justify-center rounded-sm text-[9px] font-bold text-white"
+                  style={{ backgroundColor: p.companyColor ?? "#555" }}
+                >
+                  {(p.affiliation.match(/at (.+)$/) ?? [])[1]?.[0] ?? "·"}
+                </span>
+              }
+              label={p.affiliation}
+            />
+          ) : null}
+          {p.company ? (
+            <BadgeChip
+              icon={
+                <span
+                  className="flex h-4 w-4 items-center justify-center rounded-sm text-[9px] font-bold text-white"
+                  style={{ backgroundColor: p.companyColor ?? "#555" }}
+                >
+                  {p.companyInitial}
+                </span>
+              }
+              label={`Worked at ${p.company}`}
+            />
+          ) : null}
+          {p.successfulClients.length > 0 ? (
+            <div className="flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1.5">
+              <div className="flex -space-x-1.5">
+                {p.successfulClients.map((s, i) => (
+                  <SchoolDot key={i} initial={s.initial} color={s.color} />
+                ))}
+              </div>
+              <span className="text-[12px] font-medium text-gray-dark leading-none">
+                Successful clients{p.successfulClientsMore ? ` +${p.successfulClientsMore}` : ""}
               </span>
-            ))}
-          </div>
-        </>
+            </div>
+          ) : null}
+        </div>
       ) : null}
 
       {/* CTA */}
