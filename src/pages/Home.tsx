@@ -449,7 +449,7 @@ function EventCard({ event }: { event: EventPost["event"] }) {
     <div className="mt-3 overflow-hidden rounded-xl border border-gray-stroke">
       <img src={event.image} alt={event.title} className="h-[180px] w-full object-cover" />
       <div className="px-4 py-4">
-        <span className="inline-block rounded-full bg-primary/10 px-3 py-0.5 text-[13px] font-medium text-primary">{event.format}</span>
+        <span className="inline-block rounded-full bg-[#222222]/[0.06] px-3 py-0.5 text-[13px] font-medium text-gray-dark">{event.format}</span>
         <p className="mt-2 text-[17px] font-semibold leading-snug text-gray-dark">{event.title}</p>
         <div className="mt-2 space-y-1">
           <div className="flex items-center gap-2 text-[15px] text-gray-light">
