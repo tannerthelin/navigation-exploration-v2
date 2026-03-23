@@ -789,6 +789,47 @@ const coachProfiles: Record<string, CoachProfile> = {
     ],
     successfulClientsMore: 16,
   },
+  "Alex Thompson": {
+    rating: 4.8, reviews: 64,
+    minutesCoached: 58200, followers: 278,
+    company: "Google", companyColor: "#4285F4", companyInitial: "G",
+    successfulClients: [
+      { initial: "H", color: "#A51C30" }, { initial: "S", color: "#8C1515" }, { initial: "K", color: "#00356B" },
+    ],
+    successfulClientsMore: 9,
+  },
+  "Michael Chen": {
+    rating: 4.9, reviews: 118, supercoach: true,
+    minutesCoached: 134760, followers: 521,
+    company: "BCG", companyColor: "#006600", companyInitial: "B",
+    affiliation: "Admissions at Kellogg",
+    successfulClients: [
+      { initial: "K", color: "#4E2A84" }, { initial: "B", color: "#003262" },
+      { initial: "W", color: "#002F6C" }, { initial: "S", color: "#8C1515" },
+    ],
+    successfulClientsMore: 21,
+  },
+  "Lauren Hayes": {
+    rating: 5.0, reviews: 93, customerFavorite: true,
+    minutesCoached: 87300, followers: 389,
+    affiliation: "Admissions at Harvard Business School",
+    company: "Harvard Business School", companyColor: "#A51C30", companyInitial: "H",
+    successfulClients: [
+      { initial: "H", color: "#A51C30" }, { initial: "W", color: "#002F6C" },
+      { initial: "S", color: "#8C1515" },
+    ],
+    successfulClientsMore: 13,
+  },
+  "Jason Park": {
+    rating: 4.8, reviews: 71,
+    minutesCoached: 62490, followers: 243,
+    company: "Deloitte", companyColor: "#86BC25", companyInitial: "D",
+    successfulClients: [
+      { initial: "K", color: "#4E2A84" }, { initial: "M", color: "#00274C" },
+      { initial: "T", color: "#4B0082" },
+    ],
+    successfulClientsMore: 7,
+  },
 };
 
 function BadgeChip({ icon, label }: { icon: React.ReactNode; label: string }) {
@@ -1011,14 +1052,119 @@ function FeedPost({ post }: { post: Post }) {
 // ─── Suggested experts ────────────────────────────────
 
 const suggestedExperts = [
-  { name: "Sarah Chen", avatar: pic1, headline: "Stanford GSB Admissions" },
-  { name: "David Kim", avatar: pic4, headline: "MBA Coach | Ex-Bain" },
-  { name: "Nina Kowalski", avatar: pic7, headline: "McKinsey Partner" },
-  { name: "Alex Thompson", avatar: pic8, headline: "Career Coach" },
-  { name: "Michael Chen", avatar: pic10, headline: "Ex-BCG Consultant" },
-  { name: "Lauren Hayes", avatar: pic13, headline: "HBS Admissions Expert" },
-  { name: "Jason Park", avatar: pic14, headline: "Deloitte Strategy Lead" },
+  { name: "Sarah Chen",     avatar: pic1,  verified: true, headline: "Former Director of Admissions at Stanford GSB | 200+ M7 Admits" },
+  { name: "David Kim",      avatar: pic4,  verified: true, headline: "MBA Admissions Consultant | Ex-Bain, HBS '19 | Ranked Top 4 on P&Q" },
+  { name: "Nina Kowalski",  avatar: pic7,  verified: true, headline: "Partner at McKinsey & Company | Consulting Recruiting Lead" },
+  { name: "Alex Thompson",  avatar: pic8,  verified: false, headline: "Career Coach | Ex-Google PM | Tech & MBA Transitions" },
+  { name: "Michael Chen",   avatar: pic10, verified: true, headline: "Ex-BCG Consultant | Kellogg Adm. Insider | 130+ M7 Admits" },
+  { name: "Lauren Hayes",   avatar: pic13, verified: true, headline: "HBS Admissions Expert | Former Reader | 5.0 Rated Coach" },
+  { name: "Jason Park",     avatar: pic14, verified: false, headline: "Deloitte Strategy Lead | MBA Career Coach | Finance & Consulting" },
 ];
+
+function ExpertCard({ expert }: { expert: typeof suggestedExperts[number] }) {
+  const p = coachProfiles[expert.name];
+  return (
+    <div
+      className="flex shrink-0 flex-col rounded-2xl border border-gray-stroke p-4"
+      style={{ width: "calc((100% - 24px) / 2.5)", minWidth: "calc((100% - 24px) / 2.5)" }}
+    >
+      {/* Avatar + name row */}
+      <div className="flex items-start gap-3">
+        <img
+          src={expert.avatar}
+          alt={expert.name}
+          className="h-[56px] w-[56px] shrink-0 rounded-xl object-cover shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]"
+        />
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
+            <span className="text-[14px] font-semibold leading-tight text-gray-dark">{expert.name}</span>
+            {expert.verified ? <img src={verifiedIcon} alt="" className="h-[13px] w-[13px] shrink-0" /> : null}
+          </div>
+          {p ? (
+            <div className="mt-0.5 flex items-center gap-1 text-[12px]">
+              <span className="text-yellow-400">★</span>
+              <span className="font-semibold text-gray-dark">{p.rating.toFixed(1)}</span>
+              <span className="text-gray-light">({p.reviews})</span>
+            </div>
+          ) : null}
+          {p?.customerFavorite ? (
+            <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
+              ✦ Customer favorite
+            </span>
+          ) : null}
+        </div>
+      </div>
+
+      {/* Headline */}
+      <p className="mt-2.5 line-clamp-2 text-[12px] font-semibold leading-snug text-gray-dark">
+        {expert.headline}
+      </p>
+
+      {/* Stats */}
+      {p ? (
+        <p className="mt-1.5 text-[11px] text-gray-light">
+          <span className="font-medium text-gray-dark">{p.minutesCoached.toLocaleString()}</span> min coached
+          <span className="mx-1.5 text-gray-stroke">|</span>
+          <span className="font-medium text-gray-dark">{p.followers.toLocaleString()}</span> followers
+        </p>
+      ) : null}
+
+      {/* Badge chips */}
+      {p ? (
+        <div className="mt-3 flex flex-col gap-1.5">
+          {p.supercoach ? (
+            <BadgeChip icon={<span>🏆</span>} label="Supercoach" />
+          ) : null}
+          {p.affiliation ? (
+            <BadgeChip
+              icon={
+                <span
+                  className="flex h-4 w-4 shrink-0 items-center justify-center rounded-sm text-[9px] font-bold text-white"
+                  style={{ backgroundColor: p.companyColor ?? "#555" }}
+                >
+                  {(p.affiliation.match(/at (.+)$/) ?? [])[1]?.[0] ?? "·"}
+                </span>
+              }
+              label={p.affiliation}
+            />
+          ) : null}
+          {p.company && !p.affiliation ? (
+            <BadgeChip
+              icon={
+                <span
+                  className="flex h-4 w-4 shrink-0 items-center justify-center rounded-sm text-[9px] font-bold text-white"
+                  style={{ backgroundColor: p.companyColor ?? "#555" }}
+                >
+                  {p.companyInitial}
+                </span>
+              }
+              label={`Worked at ${p.company}`}
+            />
+          ) : null}
+          {p.successfulClients.length > 0 ? (
+            <div className="flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1.5">
+              <div className="flex -space-x-1.5">
+                {p.successfulClients.slice(0, 3).map((s, i) => (
+                  <SchoolDot key={i} initial={s.initial} color={s.color} />
+                ))}
+              </div>
+              <span className="text-[12px] font-medium leading-none text-gray-dark">
+                Clients{p.successfulClientsMore ? ` +${p.successfulClientsMore}` : ""}
+              </span>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+
+      {/* Spacer pushes button to bottom */}
+      <div className="flex-1" />
+
+      <button className="mt-4 w-full cursor-pointer rounded-lg bg-primary py-2 text-[13px] font-semibold text-white transition-colors hover:bg-primary-hover">
+        Book a session
+      </button>
+    </div>
+  );
+}
 
 function SuggestedExperts() {
   return (
@@ -1026,33 +1172,7 @@ function SuggestedExperts() {
       <p className="text-[17px] font-semibold text-gray-dark">Suggested experts</p>
       <div className="scrollbar-hide mt-4 flex gap-3 overflow-x-auto">
         {suggestedExperts.map((expert) => (
-          <div
-            key={expert.name}
-            className="flex w-[160px] shrink-0 flex-col items-center rounded-2xl border border-gray-stroke px-4 pb-5 pt-6"
-          >
-            <button className="absolute right-0 top-0 hidden" />
-            <div className="relative">
-              <img
-                src={expert.avatar}
-                alt={expert.name}
-                className="h-[72px] w-[72px] rounded-full object-cover shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)]"
-              />
-              <img
-                src={verifiedIcon}
-                alt="Verified"
-                className="absolute -bottom-0.5 -right-0.5 h-[20px] w-[20px] rounded-full bg-white"
-              />
-            </div>
-            <p className="mt-3 w-full truncate text-center text-[15px] font-semibold text-gray-dark">
-              {expert.name}
-            </p>
-            <p className="w-full truncate text-center text-[13px] text-gray-light">
-              {expert.headline}
-            </p>
-            <button className="mt-4 w-full cursor-pointer rounded-xl bg-gray-dark px-4 py-2.5 text-[15px] font-semibold text-white transition-colors hover:bg-[#222222]">
-              Free intro call
-            </button>
-          </div>
+          <ExpertCard key={expert.name} expert={expert} />
         ))}
       </div>
     </div>
