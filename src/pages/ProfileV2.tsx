@@ -10,7 +10,13 @@ import mailIcon from "../assets/icons/mail.svg";
 import checkIcon from "../assets/icons/check.svg";
 import shieldIcon from "../assets/icons/shield-light.svg";
 import chevronDownIcon from "../assets/icons/chevron-down.svg";
+import bookBookmarkIcon from "../assets/icons/book-bookmark.svg";
+import piggyBankIcon from "../assets/icons/Piggy bank, Coin.1.svg";
+import stopwatchIcon from "../assets/icons/stopwatch.svg";
+import supportivenessIcon from "../assets/icons/supportiveness.svg";
 import wreathImg from "../assets/img/Wreath.svg";
+import wreathSmallImg from "../assets/img/wreath-small.svg";
+import questionIcon from "../assets/icons/question-filled.svg";
 import starIcon from "../assets/icons/icon/star.svg";
 import atlassianLogo from "../assets/logos/atlassian.png";
 import yaleLogo from "../assets/logos/yale.png";
@@ -18,9 +24,20 @@ import clientLogo1 from "../assets/logos/Rectangle 3012.png";
 import clientLogo2 from "../assets/logos/Rectangle 3013.png";
 import clientLogo3 from "../assets/logos/Rectangle 3017.png";
 import clientLogo4 from "../assets/logos/Rectangle 3018.png";
+import facebookLogo from "../assets/logos/facebook.png";
+import googleLogo from "../assets/logos/google.png";
+import instagramLogo from "../assets/logos/instagram.png";
+import salesforceLogo from "../assets/logos/salesforce.png";
+import coinbaseLogo from "../assets/logos/coinbase.png";
+import mckinseyLogo from "../assets/logos/mckinsey.png";
+import bainLogo from "../assets/logos/bain.png";
+import lekLogo from "../assets/logos/lek.png";
+import nikeLogo from "../assets/logos/nike.png";
+import goldmanSachsLogo from "../assets/logos/goldman-sachs.png";
 
 const PROFILE_SECTIONS = [
   { id: "offerings", label: "Offerings" },
+  { id: "activity", label: "Activity" },
   { id: "about-samantha", label: "About" },
   { id: "work-experience", label: "Experience" },
   { id: "reviews", label: "Reviews" },
@@ -124,8 +141,8 @@ export default function ProfileV2() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Mobile top nav */}
-      <div className="md:hidden">
+      {/* Mobile top nav — non-fixed on this page */}
+      <div className="md:hidden [&_header]:static">
         <ExtraLinksProvider>
           <MobileTopNav />
         </ExtraLinksProvider>
@@ -145,9 +162,9 @@ export default function ProfileV2() {
               animate={{ y: 0 }}
               exit={{ y: "-100%" }}
               transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className="fixed top-0 left-0 right-0 z-30 hidden border-b border-gray-stroke bg-white md:block"
+              className="fixed top-0 left-0 right-0 z-30 border-b border-gray-stroke bg-white"
             >
-              <div className={`mx-auto flex items-stretch gap-4 px-6 transition-all duration-300 md:px-10 ${showSidebar ? "max-w-[1144px]" : "max-w-[900px]"}`}>
+              <div className={`mx-auto flex items-stretch gap-4 px-6 py-2 transition-all duration-300 md:py-0 md:px-10 ${showSidebar ? "max-w-[1144px]" : "max-w-[900px]"}`}>
                 {/* Left: photo + name + rate — click to scroll to top */}
                 <div
                   className="flex shrink-0 cursor-pointer items-center gap-2.5"
@@ -171,7 +188,7 @@ export default function ProfileV2() {
                 <div className="flex shrink-0 items-stretch">
                   <div
                     ref={navScrollRef}
-                    className="scrollbar-hide flex items-stretch gap-1 overflow-x-auto"
+                    className="hidden items-stretch gap-1 overflow-x-auto md:flex md:scrollbar-hide"
                   >
                     {PROFILE_SECTIONS.map((section) => (
                       <button
@@ -202,7 +219,7 @@ export default function ProfileV2() {
       )}
 
       {/* Full-bleed header background */}
-      <div className="mt-14 w-full bg-[#f5f5f5] md:mt-0">
+      <div className="w-full bg-[#f5f5f5]">
         {/* Category bar placeholder */}
         <div className={`mx-auto px-6 transition-all duration-300 ${showSidebar ? "max-w-[1144px]" : "max-w-[900px]"}`}>
           <div className="h-[44px]" />
@@ -213,7 +230,7 @@ export default function ProfileV2() {
       </div>
 
       {/* Main content area */}
-      <div className={`mx-auto flex gap-16 px-6 py-0 transition-all duration-300 md:px-10 ${showSidebar ? "max-w-[1144px]" : "max-w-[900px]"}`}>
+      <div className={`mx-auto flex gap-16 px-6 pb-[120px] transition-all duration-300 md:px-10 ${showSidebar ? "max-w-[1144px]" : "max-w-[900px]"}`}>
         {/* Left column — fills available width */}
         <div className="min-w-0 flex-1">
           {/* Profile photo + CTA buttons */}
@@ -240,7 +257,7 @@ export default function ProfileV2() {
                 {isFollowing && <img src={checkIcon} alt="" className="h-[18px] w-[18px]" />}
                 {isFollowing ? "Following" : "Follow"}
               </button>
-              <button className="cursor-pointer rounded-lg bg-[#038561] px-4 py-2.5 text-[16px] font-medium text-white transition-colors hover:bg-[#038561]/90">
+              <button className="hidden cursor-pointer rounded-lg bg-[#038561] px-4 py-2.5 text-[16px] font-medium text-white transition-colors hover:bg-[#038561]/90 md:block">
                 Free intro call
               </button>
             </div>
@@ -284,64 +301,59 @@ export default function ProfileV2() {
             </div>
           </div>
 
-          {/* Stats bar */}
+
+          {/* Alt stats bar + Customer Favorite */}
           <div className="mb-2 flex flex-col rounded-lg border border-gray-200">
-            {/* Top row: stats (always visible) + Customer Favorite (desktop only) */}
-            <div className="flex items-center">
-              {/* Customer Favorite — desktop only */}
-              {showCustomerFavorite && (
-                <>
-                  <div className="hidden flex-1 items-center justify-center gap-[6px] py-4 md:flex">
-                    <img src={wreathImg} alt="" className="h-auto w-[24px]" />
-                    <span className="text-center text-[18px] font-medium leading-tight text-gray-dark">Customer<br />Favorite</span>
-                    <img src={wreathImg} alt="" className="h-auto w-[24px] scale-x-[-1]" />
-                  </div>
-
-                  <div className="hidden h-[36px] w-px bg-gray-200 md:block" />
-                </>
-              )}
-
-              {/* Rating */}
+            <div className="flex">
+              {/* Reviews (combined) */}
               <div
-                className="flex flex-1 cursor-pointer flex-col items-center justify-center py-4 transition-opacity hover:opacity-70"
+                className="flex flex-1 cursor-pointer flex-col items-start py-3 pl-3 transition-opacity hover:opacity-70 md:items-center md:py-4 md:pl-0"
                 onClick={() => scrollToSection("reviews")}
               >
-                <span className="text-[22px] font-medium leading-none text-gray-dark">5.0</span>
-                <div className="mt-1 flex gap-px">
-                  <img src={starIcon} alt="" className="h-[14px] w-[14px]" />
-                  <img src={starIcon} alt="" className="h-[14px] w-[14px]" />
-                  <img src={starIcon} alt="" className="h-[14px] w-[14px]" />
-                  <img src={starIcon} alt="" className="h-[14px] w-[14px]" />
-                  <img src={starIcon} alt="" className="h-[14px] w-[14px]" />
+                <div className="flex items-center gap-1">
+                  <span className="text-[18px] font-medium leading-none text-gray-dark md:text-[22px]">5.0</span>
+                  <img src={starIcon} alt="" className="h-[14px] w-[14px] md:h-[16px] md:w-[16px]" />
                 </div>
+                <span className="text-[13px] leading-tight text-gray-dark md:text-[16px]">52 reviews</span>
               </div>
 
-              <div className="h-[36px] w-px bg-gray-200" />
-
-              {/* Reviews */}
-              <div
-                className="flex flex-1 cursor-pointer flex-col items-center justify-center py-4 transition-opacity hover:opacity-70"
-                onClick={() => scrollToSection("reviews")}
-              >
-                <span className="text-[22px] font-medium leading-none text-gray-dark">52</span>
-                <span className="text-[16px] leading-tight text-gray-dark underline decoration-[0.5px] decoration-gray-dark underline-offset-2">Reviews</span>
-              </div>
-
-              <div className="h-[36px] w-px bg-gray-200" />
+              <div className="h-[36px] w-px self-center bg-gray-200" />
 
               {/* Followers */}
-              <div className="flex flex-1 flex-col items-center justify-center py-4">
-                <span className="text-[22px] font-medium leading-none text-gray-dark">182</span>
-                <span className="text-[16px] leading-tight text-gray-dark">Followers</span>
+              <div className="flex flex-1 flex-col items-start py-3 pl-3 md:items-center md:py-4 md:pl-0">
+                <span className="text-[18px] font-medium leading-none text-gray-dark md:text-[22px]">182</span>
+                <span className="text-[13px] leading-tight text-gray-dark md:text-[16px]">Followers</span>
+              </div>
+
+              <div className="h-[36px] w-px self-center bg-gray-200" />
+
+              {/* Posts */}
+              <div
+                className="flex flex-1 cursor-pointer flex-col items-start py-3 pl-3 transition-opacity hover:opacity-70 md:items-center md:py-4 md:pl-0"
+                onClick={() => scrollToSection("activity")}
+              >
+                <span className="text-[18px] font-medium leading-none text-gray-dark md:text-[22px]">12</span>
+                <span className="text-[13px] leading-tight text-gray-dark md:text-[16px]">Posts</span>
+              </div>
+
+              <div className="h-[36px] w-px self-center bg-gray-200" />
+
+              {/* Impressions */}
+              <div className="flex flex-1 flex-col items-start py-3 pl-3 md:items-center md:py-4 md:pl-0">
+                <span className="text-[18px] font-medium leading-none text-gray-dark md:text-[22px]">8.2k</span>
+                <span className="text-[13px] leading-tight text-gray-dark md:text-[16px]">Impressions</span>
               </div>
             </div>
 
-            {/* Customer Favorite — mobile only, own row */}
+            {/* Customer Favorite */}
             {showCustomerFavorite && (
-              <div className="flex items-center justify-center gap-[6px] border-t border-gray-200 py-4 md:hidden">
-                <img src={wreathImg} alt="" className="h-auto w-[24px]" />
-                <span className="text-center text-[18px] font-medium leading-tight text-gray-dark">Customer<br />Favorite</span>
-                <img src={wreathImg} alt="" className="h-auto w-[24px] scale-x-[-1]" />
+              <div className="relative flex items-center justify-center border-t border-gray-200 py-2.5">
+                <div className="flex items-center gap-[6px]">
+                  <img src={wreathSmallImg} alt="" className="h-auto w-[10px]" />
+                  <span className="text-[16px] font-medium text-gray-dark">Customer favorite</span>
+                  <img src={wreathSmallImg} alt="" className="h-auto w-[10px] scale-x-[-1]" />
+                </div>
+                <img src={questionIcon} alt="Info" className="absolute right-2 top-1/2 h-[20px] w-[20px] -translate-y-1/2 cursor-pointer opacity-50 transition-opacity hover:opacity-100" />
               </div>
             )}
           </div>
@@ -355,6 +367,11 @@ export default function ProfileV2() {
             </div>
             <span className="text-[#9b9b9b]">1,240 minutes coached</span>
           </div>
+
+          {/* Mobile inline CTA */}
+          <button className="mt-3 w-full cursor-pointer rounded-lg bg-[#038561] px-4 py-2.5 text-[16px] font-medium text-white transition-colors hover:bg-[#038561]/90 md:hidden">
+            Free intro call
+          </button>
 
           {/* Hero sentinel for sticky nav detection */}
           <div ref={heroSentinelRef} />
@@ -420,6 +437,25 @@ export default function ProfileV2() {
             </button>
           </div>
 
+          {/* ── Activity group ── */}
+          <div ref={setGroupRef("activity")} data-group="activity">
+            <div className="my-[36px] border-t border-gray-200" />
+            <h2
+              ref={setSectionRef("activity")}
+              className="scroll-mt-[60px] mb-4 text-[24px] font-medium text-gray-dark"
+            >
+              Activity
+            </h2>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="h-[220px] rounded-xl bg-[#f5f5f5]" style={dashedBorderStyle} />
+              <div className="h-[220px] rounded-xl bg-[#f5f5f5]" style={dashedBorderStyle} />
+              <div className="h-[220px] rounded-xl bg-[#f5f5f5]" style={dashedBorderStyle} />
+            </div>
+            <button className="mt-4 cursor-pointer rounded-lg bg-[#222222]/5 px-4 py-2.5 text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#222222]/[0.08]">
+              See all
+            </button>
+          </div>
+
           {/* ── About group: MBA Qualifications + About Samantha + Why do I coach? ── */}
           <div ref={setGroupRef("about-samantha")} data-group="about-samantha">
             <div className="my-[36px] border-t border-gray-200" />
@@ -479,16 +515,16 @@ export default function ProfileV2() {
             <div ref={setSectionRef("reviews")} className="scroll-mt-[60px]" />
 
             {/* Stars + rating */}
-            <div className="mb-1 flex gap-px">
+            <div className="mb-1 flex">
               {[...Array(5)].map((_, i) => (
                 <svg key={i} width="24" height="24" viewBox="0 0 24 24" fill="#222222">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                 </svg>
               ))}
             </div>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-[28px] font-medium text-gray-dark">5.0</span>
-              <span className="text-[16px] font-medium text-[#9b9b9b]">52 reviews</span>
+            <div className="flex flex-col items-start justify-between gap-1 md:flex-row md:items-end">
+              <p className="text-[28px] font-medium text-gray-dark">5.0 average review</p>
+              <p className="text-[16px] font-normal text-[#9b9b9b]">52 reviews</p>
             </div>
 
             <div className="my-5 border-t border-gray-200" />
@@ -497,7 +533,7 @@ export default function ProfileV2() {
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-5">
               {/* Overall rating distribution */}
               <div className="col-span-2 sm:col-span-1">
-                <p className="mb-1 text-[16px] text-gray-dark">Overall rating</p>
+                <p className="mb-1 text-[16px] font-medium text-gray-dark">Overall rating</p>
                 <div className="flex flex-col gap-1">
                   {[
                     { star: 5, count: 48 },
@@ -523,47 +559,28 @@ export default function ProfileV2() {
                 {
                   label: "Knowledge",
                   score: 5.0,
-                  icon: (
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-                    </svg>
-                  ),
+                  icon: <img src={bookBookmarkIcon} alt="" className="h-[32px] w-[32px]" />,
                 },
                 {
                   label: "Value",
                   score: 4.9,
-                  icon: (
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
-                      <line x1="7" y1="7" x2="7.01" y2="7" />
-                    </svg>
-                  ),
+                  icon: <img src={piggyBankIcon} alt="" className="h-[32px] w-[32px]" />,
                 },
                 {
                   label: "Responsiveness",
                   score: 5.0,
-                  icon: (
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                    </svg>
-                  ),
+                  icon: <img src={stopwatchIcon} alt="" className="h-[32px] w-[32px]" />,
                 },
                 {
                   label: "Supportiveness",
                   score: 5.0,
-                  icon: (
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                      <polyline points="22 4 12 14.01 9 11.01" />
-                    </svg>
-                  ),
+                  icon: <img src={supportivenessIcon} alt="" className="h-[32px] w-[32px]" />,
                 },
               ].map((item) => (
                 <div key={item.label} className="flex flex-col justify-between border-l border-gray-200 pl-4">
                   <div>
-                    <p className="text-[16px] text-gray-dark">{item.label}</p>
-                    <p className="text-[22px] font-semibold text-gray-dark">{item.score.toFixed(1)}</p>
+                    <p className="text-[16px] font-medium text-gray-dark">{item.label}</p>
+                    <p className="text-[24px] font-medium text-gray-dark">{item.score.toFixed(1)}</p>
                   </div>
                   <div className="mt-3 text-gray-dark">{item.icon}</div>
                 </div>
@@ -572,74 +589,32 @@ export default function ProfileV2() {
 
             <div className="my-6 border-t border-gray-200" />
 
-            {/* Review cards */}
-            <div className="flex flex-col gap-6">
-              {[
-                {
-                  title: "Stop searching. Samantha is the real deal.",
-                  body: "I tried a few different coaches before finding Samantha. Save your time, start with Samantha. She is extremely efficient with your time, gives specific and tactical feedback, and is not shy if a part of your application does not meet the bar...",
-                  name: "Zack G.",
-                  date: "April 2025",
-                  detail: "Received coaching for MBA",
-                },
-                {
-                  title: "The best MBA coach!!",
-                  body: "The best decision I made in the MBA process was choosing to work with Samantha — she's the best coach out there! From the start, I was impressed by her ability to provide quick and actionable feedback, often turning around drafts in a day...",
-                  name: "Anonymous",
-                  date: "December 2024",
-                  detail: "Received coaching for MBA",
-                },
-                {
-                  title: "Highly recommend.",
-                  body: "Working with Samantha was one of the best decisions I made ahead of my deferred MBA application process. She's incredibly personable, and helped me take my story and relay it in the best possible way...",
-                  name: "Anonymous",
-                  date: "November 2024",
-                  detail: "Purchased package: MBA Applications",
-                },
-              ].map((review, i) => (
-                <div key={i}>
-                  {/* Stars + score */}
-                  <div className="mb-1.5 flex items-center gap-1.5">
-                    <div className="flex gap-px">
-                      {[...Array(5)].map((_, j) => (
-                        <img key={j} src={starIcon} alt="" className="h-[14px] w-[14px]" />
-                      ))}
+            {/* Successful clients at */}
+            <div className="mb-6">
+              <p className="mb-1.5 text-[16px] font-medium text-gray-dark">Successful clients at</p>
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="flex flex-wrap items-center gap-[4px]">
+                  {[clientLogo1, clientLogo2, clientLogo3, clientLogo4, facebookLogo, googleLogo, instagramLogo, salesforceLogo, coinbaseLogo, mckinseyLogo, bainLogo, lekLogo, nikeLogo, goldmanSachsLogo].map((logo, i) => (
+                    <div key={i} className="h-[32px] w-[32px] shrink-0 overflow-hidden rounded-[2px]">
+                      <img src={logo} alt="" className="h-full w-full object-cover" />
                     </div>
-                    <span className="text-[14px] text-[#707070]">5.0</span>
-                    <span className="text-[15px] font-medium text-gray-dark">{review.title}</span>
-                  </div>
-
-                  {/* Body */}
-                  <p className="mb-2 text-[15px] leading-relaxed text-[#555]">{review.body}</p>
-                  <button className="mb-3 cursor-pointer text-[14px] font-medium text-[#038561] hover:underline">View more</button>
-
-                  {/* Reviewer */}
-                  <div className="flex items-center gap-2.5">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#038561] text-[13px] font-medium text-white">
-                      {review.name[0]}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5 text-[14px]">
-                        <span className="font-medium text-gray-dark">{review.name}</span>
-                        <span className="text-[#9b9b9b]">{review.date}</span>
-                      </div>
-                      <p className="text-[13px] text-[#9b9b9b]">{review.detail}</p>
-                    </div>
-                  </div>
-
-                  {/* Accepted-to pills placeholder */}
-                  <div className="mt-3">
-                    <p className="mb-1.5 text-[13px] text-[#9b9b9b]">Client was accepted to:</p>
-                    <div className="flex flex-wrap gap-2">
-                      {[...Array(i === 1 ? 3 : 2)].map((_, k) => (
-                        <div key={k} className="h-[32px] w-[180px] rounded-lg bg-[#f5f5f5]" style={dashedBorderStyle} />
-                      ))}
-                    </div>
-                  </div>
-
-                  {i < 2 && <div className="mt-6 border-t border-gray-200" />}
+                  ))}
+                  <span className="flex h-[32px] items-center rounded-[2px] bg-[#f5f5f5] px-2 text-[14px] font-medium text-[#707070]">+12</span>
                 </div>
-              ))}
+                <div className="hidden flex-1 md:block" />
+                <button className="cursor-pointer rounded-lg bg-[#222222]/5 px-4 py-2.5 text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#222222]/[0.08]">
+                  See all
+                </button>
+              </div>
+            </div>
+
+            <div className="my-6 border-t border-gray-200" />
+
+            {/* Review card placeholders */}
+            <div className="flex flex-col gap-4">
+              <div className="h-[180px] rounded-xl bg-[#f5f5f5]" style={dashedBorderStyle} />
+              <div className="h-[180px] rounded-xl bg-[#f5f5f5]" style={dashedBorderStyle} />
+              <div className="h-[180px] rounded-xl bg-[#f5f5f5]" style={dashedBorderStyle} />
             </div>
 
             {/* See all reviews */}
@@ -710,7 +685,7 @@ export default function ProfileV2() {
                 Admin controls
               </div>
               <label className="flex cursor-pointer items-center justify-between rounded-lg px-2 py-2 transition-colors hover:bg-[#f5f5f5]">
-                <span className="text-[14px] text-gray-dark">Customer favorite</span>
+                <span className="text-[16px] font-medium text-gray-dark">Customer favorite</span>
                 <div className="relative">
                   <input
                     type="checkbox"
@@ -723,7 +698,7 @@ export default function ProfileV2() {
                 </div>
               </label>
               <label className="flex cursor-pointer items-center justify-between rounded-lg px-2 py-2 transition-colors hover:bg-[#f5f5f5]">
-                <span className="text-[14px] text-gray-dark">Show sidebar</span>
+                <span className="text-[16px] font-medium text-gray-dark">Show sidebar</span>
                 <div className="relative">
                   <input
                     type="checkbox"
@@ -740,12 +715,12 @@ export default function ProfileV2() {
         </AnimatePresence>
         <button
           onClick={() => setAdminOpen(!adminOpen)}
-          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-gray-200 bg-white shadow-md transition-colors hover:bg-[#f5f5f5]"
+          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg bg-[#222222]/5 transition-colors hover:bg-[#222222]/[0.08]"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <circle cx="8" cy="3" r="1.5" fill="#9b9b9b" />
-            <circle cx="8" cy="8" r="1.5" fill="#9b9b9b" />
-            <circle cx="8" cy="13" r="1.5" fill="#9b9b9b" />
+            <circle cx="3" cy="8" r="1.5" fill="#707070" />
+            <circle cx="8" cy="8" r="1.5" fill="#707070" />
+            <circle cx="13" cy="8" r="1.5" fill="#707070" />
           </svg>
         </button>
       </div>
