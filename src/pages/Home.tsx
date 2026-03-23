@@ -694,18 +694,17 @@ function LiveCard({ live }: { live: LivePost["live"] }) {
           <span className="text-[12px] font-medium drop-shadow">{live.viewers.toLocaleString()} watching</span>
         </div>
 
-        {/* Join live — grey, bottom right */}
-        <div className="absolute bottom-3 right-3">
-          <button className="cursor-pointer rounded-lg bg-white/20 px-[14px] py-1.5 text-[14px] font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/30">
-            Join live
-          </button>
-        </div>
       </div>
 
       {/* Info row */}
-      <div className="px-4 py-4">
-        <p className="text-[17px] font-semibold leading-snug text-gray-dark">{live.title}</p>
-        <p className="mt-1 text-[14px] text-gray-light">{live.topic}</p>
+      <div className="flex items-center justify-between gap-3 px-4 py-4">
+        <div className="min-w-0">
+          <p className="text-[17px] font-semibold leading-snug text-gray-dark">{live.title}</p>
+          <p className="mt-1 text-[14px] text-gray-light">{live.topic}</p>
+        </div>
+        <button className="shrink-0 cursor-pointer rounded-lg bg-gray-100 px-[14px] py-1.5 text-[14px] font-medium text-gray-dark transition-colors hover:bg-gray-200">
+          Join live
+        </button>
       </div>
     </div>
   );
