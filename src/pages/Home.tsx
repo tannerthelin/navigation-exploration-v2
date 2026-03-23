@@ -898,19 +898,28 @@ function CoachHoverCard({ author, avatar, verified, headline, isEvent }: {
             </span>
           ) : null}
         </div>
-        <button className="shrink-0 rounded-full border border-gray-stroke px-3.5 py-1 text-[13px] font-medium text-gray-dark transition-colors hover:bg-gray-hover">
-          Follow
+        {/* Follow icon button */}
+        <button
+          className="shrink-0 flex h-8 w-8 items-center justify-center rounded-full border border-gray-stroke text-gray-dark transition-colors hover:bg-gray-hover"
+          aria-label="Follow"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <line x1="19" y1="8" x2="19" y2="14" />
+            <line x1="22" y1="11" x2="16" y2="11" />
+          </svg>
         </button>
       </div>
 
       {/* Headline */}
       {headline ? (
-        <p className="mt-2.5 text-[13px] font-semibold leading-snug text-gray-dark">{headline}</p>
+        <p className="mt-3 text-[13px] font-semibold leading-snug text-gray-dark">{headline}</p>
       ) : null}
 
       {/* Minutes coached + followers */}
       {p ? (
-        <p className="mt-1.5 text-[12px] text-gray-light">
+        <p className="mt-1 text-[12px] text-gray-light">
           <span className="font-medium text-gray-dark">{p.minutesCoached.toLocaleString()}</span> min coached
           <span className="mx-2 text-gray-stroke">|</span>
           <span className="font-medium text-gray-dark">{p.followers.toLocaleString()}</span> followers
@@ -964,10 +973,18 @@ function CoachHoverCard({ author, avatar, verified, headline, isEvent }: {
         </div>
       ) : null}
 
-      {/* CTA */}
-      <button className="mt-4 w-full cursor-pointer rounded-lg bg-primary py-2 text-[14px] font-semibold text-white transition-colors hover:bg-primary-hover">
-        Book a session
-      </button>
+      {/* CTAs */}
+      <div className="mt-4 flex gap-2">
+        <button className="flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-gray-stroke py-2 text-[13px] font-semibold text-gray-dark transition-colors hover:bg-gray-hover">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          Message
+        </button>
+        <button className="flex flex-1 cursor-pointer items-center justify-center rounded-lg bg-primary py-2 text-[13px] font-semibold text-white transition-colors hover:bg-primary-hover">
+          Book a session
+        </button>
+      </div>
     </motion.div>
   );
 }
