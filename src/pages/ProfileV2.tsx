@@ -402,7 +402,7 @@ export default function ProfileV2() {
             </h2>
 
             {/* Offering cards grid */}
-            <div className="scrollbar-hide flex gap-4 overflow-x-auto md:grid md:grid-cols-3 md:overflow-visible">
+            <div className="-mx-4 scrollbar-hide flex gap-4 overflow-x-auto px-4 md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:px-0">
               <div className="h-[220px] w-[80vw] shrink-0 rounded-xl bg-[#f5f5f5] md:w-auto" style={dashedBorderStyle} />
               <div className="h-[220px] w-[80vw] shrink-0 rounded-xl bg-[#f5f5f5] md:w-auto" style={dashedBorderStyle} />
               <div className="h-[220px] w-[80vw] shrink-0 rounded-xl bg-[#f5f5f5] md:w-auto" style={dashedBorderStyle} />
@@ -460,7 +460,7 @@ export default function ProfileV2() {
             >
               Activity
             </h2>
-            <div className="scrollbar-hide flex gap-4 overflow-x-auto md:grid md:grid-cols-3 md:overflow-visible">
+            <div className="-mx-4 scrollbar-hide flex gap-4 overflow-x-auto px-4 md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:px-0">
               <div className="h-[220px] w-[80vw] shrink-0 rounded-xl bg-[#f5f5f5] md:w-auto" style={dashedBorderStyle} />
               <div className="h-[220px] w-[80vw] shrink-0 rounded-xl bg-[#f5f5f5] md:w-auto" style={dashedBorderStyle} />
               <div className="h-[220px] w-[80vw] shrink-0 rounded-xl bg-[#f5f5f5] md:w-auto" style={dashedBorderStyle} />
@@ -570,7 +570,7 @@ export default function ProfileV2() {
               </div>
 
               {/* Category scores — horizontal scroll on mobile, grid columns on desktop */}
-              <div className="scrollbar-hide col-span-4 flex gap-3 overflow-x-auto md:contents">
+              <div className="-mx-4 scrollbar-hide col-span-4 flex gap-3 overflow-x-auto px-4 md:mx-0 md:contents md:px-0">
                 {[
                   {
                     label: "Knowledge",
