@@ -233,7 +233,7 @@ export default function ProfileV2() {
         {/* Left column — fills available width */}
         <div className="min-w-0 flex-1">
           {/* Profile photo + CTA buttons */}
-          <div className="-mt-[80px] mb-4 flex items-end justify-between">
+          <div className="-mt-[80px] mb-4 flex flex-col items-center md:flex-row md:items-end md:justify-between">
             <div className="group relative z-20 cursor-pointer rounded-lg border-[4px] border-white bg-white" onClick={() => setLightboxOpen(true)}>
               <div className="relative overflow-hidden rounded-[4px]">
                 <motion.img
@@ -245,7 +245,7 @@ export default function ProfileV2() {
                 <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10" />
               </div>
             </div>
-            <div className="flex items-center gap-2 pb-[72px]">
+            <div className="hidden items-center gap-2 pb-[72px] md:flex">
               <button className="flex h-[44px] w-[44px] cursor-pointer items-center justify-center rounded-lg border border-[#222222]/10 bg-white transition-colors hover:border-[#222222]/20">
                 <img src={mailIcon} alt="Message" className="h-[20px] w-[20px]" />
               </button>
@@ -256,26 +256,26 @@ export default function ProfileV2() {
                 {isFollowing && <img src={checkIcon} alt="" className="h-[18px] w-[18px]" />}
                 {isFollowing ? "Following" : "Follow"}
               </button>
-              <button className="hidden cursor-pointer rounded-lg bg-[#038561] px-4 py-2.5 text-[16px] font-medium text-white transition-colors hover:bg-[#038561]/90 md:block">
+              <button className="cursor-pointer rounded-lg bg-[#038561] px-4 py-2.5 text-[16px] font-medium text-white transition-colors hover:bg-[#038561]/90">
                 Free intro call
               </button>
             </div>
           </div>
 
           {/* Name + Supercoach badge */}
-          <div className="mb-1 flex items-center gap-2">
+          <div className="mb-1 flex items-center justify-center gap-2 md:justify-start">
             <h1 className="text-[18px] font-medium text-gray-dark">Samantha Parker</h1>
             <span className="text-[18px] text-[#999999]">·</span>
             <span className="text-[18px] text-[#707070]"><span className="text-[16px]">🏆</span> Supercoach</span>
           </div>
 
           {/* Headline */}
-          <p className="mb-[6px] text-[24px] font-medium leading-[1.3] text-[#333333]">
+          <p className="mb-[6px] text-center text-[24px] font-medium leading-[1.3] text-[#333333] md:text-left">
             Experienced Product Leader at LinkedIn | Ex-Meta | Stanford GSB AdComm
           </p>
 
           {/* Credentials row */}
-          <div className="mb-4 flex flex-wrap items-center gap-x-[20px] gap-y-[2px] text-[16px] text-[#707070]">
+          <div className="mb-4 flex flex-wrap items-center justify-center gap-x-[20px] gap-y-[2px] text-[16px] text-[#707070] md:justify-start">
             {/* Atlassian */}
             <div className="flex items-center gap-[6px]">
               <img src={atlassianLogo} alt="Atlassian" className="h-[18px] w-[18px] rounded" />
@@ -306,7 +306,7 @@ export default function ProfileV2() {
             <div className="flex">
               {/* Reviews (combined) */}
               <div
-                className="flex flex-1 cursor-pointer flex-col items-center py-3 transition-opacity hover:opacity-70 md:py-4"
+                className="flex flex-1 cursor-pointer flex-col items-center py-1 transition-opacity hover:opacity-70 md:py-4"
                 onClick={() => scrollToSection("reviews")}
               >
                 <div className="flex items-center gap-1">
@@ -319,7 +319,7 @@ export default function ProfileV2() {
               <div className="h-[36px] w-px self-center bg-gray-200" />
 
               {/* Followers */}
-              <div className="flex flex-1 flex-col items-center py-3 md:py-4">
+              <div className="flex flex-1 flex-col items-center py-1 md:py-4">
                 <span className="text-[20px] font-medium leading-none text-gray-dark md:text-[22px]">182</span>
                 <span className="text-[14px] leading-tight text-gray-dark md:text-[16px]">Followers</span>
               </div>
@@ -328,7 +328,7 @@ export default function ProfileV2() {
 
               {/* Posts */}
               <div
-                className="flex flex-1 cursor-pointer flex-col items-center py-3 transition-opacity hover:opacity-70 md:py-4"
+                className="flex flex-1 cursor-pointer flex-col items-center py-1 transition-opacity hover:opacity-70 md:py-4"
                 onClick={() => scrollToSection("activity")}
               >
                 <span className="text-[20px] font-medium leading-none text-gray-dark md:text-[22px]">12</span>
@@ -338,7 +338,7 @@ export default function ProfileV2() {
               <div className="h-[36px] w-px self-center bg-gray-200" />
 
               {/* Impressions */}
-              <div className="flex flex-1 flex-col items-center py-3 md:py-4">
+              <div className="flex flex-1 flex-col items-center py-1 md:py-4">
                 <span className="text-[20px] font-medium leading-none text-gray-dark md:text-[22px]">8.2k</span>
                 <span className="text-[14px] leading-tight text-gray-dark md:text-[16px]">Impressions</span>
               </div>
@@ -357,10 +357,25 @@ export default function ProfileV2() {
             )}
           </div>
 
-          {/* Mobile inline CTA */}
-          <button className="mt-3 w-full cursor-pointer rounded-full bg-[#038561] px-4 py-3 text-[18px] font-medium text-white transition-colors hover:bg-[#038561]/90 md:hidden">
-            Free intro call
-          </button>
+          {/* Mobile inline CTA + secondary buttons */}
+          <div className="mt-3 flex flex-col gap-3 md:hidden">
+            <button className="w-full cursor-pointer rounded-full bg-[#038561] px-4 py-3 text-[18px] font-medium text-white transition-colors hover:bg-[#038561]/90">
+              Free intro call
+            </button>
+            <div className="flex gap-2">
+              <button className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-full bg-[#222222]/5 px-4 py-3 text-[18px] font-medium text-gray-dark transition-colors hover:bg-[#222222]/[0.08]">
+                <img src={mailIcon} alt="" className="h-[20px] w-[20px]" />
+                Message
+              </button>
+              <button
+                onClick={() => setIsFollowing(!isFollowing)}
+                className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-full bg-[#222222]/5 px-4 py-3 text-[18px] font-medium text-gray-dark transition-colors hover:bg-[#222222]/[0.08]"
+              >
+                {isFollowing && <img src={checkIcon} alt="" className="h-[18px] w-[18px]" />}
+                {isFollowing ? "Following" : "Follow"}
+              </button>
+            </div>
+          </div>
 
           {/* Availability row */}
           <div className="mt-2 flex flex-col items-center text-center text-[16px] md:items-start md:text-left md:mt-0 md:flex-row md:items-center md:justify-between">
