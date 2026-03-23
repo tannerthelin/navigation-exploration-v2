@@ -3,7 +3,7 @@
 
 @font-face {
   font-family: 'Calibre';
-  src: url('./assets/fonts/calibre-regular.woff2');
+  src: url('./assets/fonts/Calibre-OTF/Calibre-Regular.otf');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -11,7 +11,7 @@
 
 @font-face {
   font-family: 'Calibre';
-  src: url('./assets/fonts/calibre-regular-italic.woff2');
+  src: url('./assets/fonts/Calibre-OTF/Calibre-RegularItalic.otf');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -19,7 +19,7 @@
 
 @font-face {
   font-family: 'Calibre';
-  src: url('./assets/fonts/calibre-medium.woff2');
+  src: url('./assets/fonts/Calibre-OTF/Calibre-Medium.otf');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -27,7 +27,7 @@
 
 @font-face {
   font-family: 'Calibre';
-  src: url('./assets/fonts/calibre-medium-italic.woff2');
+  src: url('./assets/fonts/Calibre-OTF/Calibre-MediumItalic.otf');
   font-weight: 500;
   font-style: italic;
   font-display: swap;
@@ -35,7 +35,7 @@
 
 @font-face {
   font-family: 'Calibre';
-  src: url('./assets/fonts/calibre-semibold.woff2');
+  src: url('./assets/fonts/Calibre-OTF/Calibre-Semibold.otf');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -43,7 +43,7 @@
 
 @font-face {
   font-family: 'Calibre';
-  src: url('./assets/fonts/calibre-semibold-italic.woff2');
+  src: url('./assets/fonts/Calibre-OTF/Calibre-SemiboldItalic.otf');
   font-weight: 600;
   font-style: italic;
   font-display: swap;
