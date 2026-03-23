@@ -514,7 +514,7 @@ function FeedPost({ post }: { post: Post }) {
         {/* Left column: avatar */}
         <div className="group relative h-10 w-10 shrink-0 cursor-pointer">
           {post.type === "event" ? (
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black">
               <img src={post.avatar} alt={post.author} className="h-5 w-5 brightness-0 invert" />
             </div>
           ) : (
