@@ -871,7 +871,7 @@ function CoachHoverCard({ author, avatar, verified, headline, isEvent }: {
         <img
           src={avatar}
           alt={author}
-          className="h-[56px] w-[56px] shrink-0 rounded-xl object-cover shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]"
+          className="h-[112px] w-[112px] shrink-0 rounded-xl object-cover shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]"
           style={{ objectPosition: "50% 15%" }}
         />
         <div className="min-w-0 flex-1">
