@@ -6,6 +6,7 @@ import Search from "./pages/Search";
 import Notifications from "./pages/Notifications";
 import Messaging from "./pages/Messaging";
 import Profile from "./pages/Profile";
+import ProfileV2 from "./pages/ProfileV2";
 import Events from "./pages/Events";
 import Courses from "./pages/Courses";
 import LelandPlus from "./pages/LelandPlus";
@@ -13,6 +14,9 @@ import LelandPlus from "./pages/LelandPlus";
 export default function App() {
   return (
     <Routes>
+      {/* ProfileV2 gets its own layout - no max-width wrapper */}
+      <Route path="/profile-v2" element={<ProfileV2 />} />
+
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/browse" element={<Browse />} />

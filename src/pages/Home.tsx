@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import HomeSidebar from "../components/HomeSidebar";
 import { useSetRightSidebar } from "../components/RightSidebarContext";
 import profilePhoto from "../assets/profile photos/profile photo.png";
@@ -289,7 +290,7 @@ function ActionBar({ likes, comments, reposts, shares, verified }: { likes: numb
       {actions.map(({ icon, count, label }) => (
         <button key={label} className="flex cursor-pointer items-center gap-1 rounded-[100px] px-2 py-1.5 text-[#424242] transition-colors hover:bg-gray-hover">
           <img src={icon} alt={label} className="h-[22px] w-[22px]" />
-          {count > 0 && <span className="text-[15px] font-normal">{formatCount(count)}</span>}
+          {count > 0 && label !== "Share" && <span className="text-[15px] font-normal">{formatCount(count)}</span>}
         </button>
       ))}
       {verified && (
@@ -306,7 +307,7 @@ function PostHeaderRow({ author, time, verified, headline }: { author: string; t
     <div className="flex items-start justify-between gap-3">
       <div className="min-w-0">
         <div className="flex items-center gap-2">
-          <span className="cursor-pointer text-[17px] leading-tight font-medium text-gray-dark underline decoration-white decoration-[0.75px] underline-offset-2 transition-[text-decoration-color] duration-200 hover:decoration-gray-light/50">{author}</span>
+          <Link to="/profile" className="cursor-pointer text-[17px] leading-tight font-medium text-gray-dark underline decoration-white decoration-[0.75px] underline-offset-2 transition-[text-decoration-color] duration-200 hover:decoration-gray-light/50">{author}</Link>
           {verified && <img src={verifiedIcon} alt="Verified" className="h-[15px] w-[15px] shrink-0" />}
           <span className="shrink-0 text-[17px] leading-tight text-gray-xlight">{time}</span>
         </div>
@@ -459,7 +460,7 @@ function SuggestedExperts() {
 // ─── Page ─────────────────────────────────────────────
 
 export default function Home() {
-  useSetRightSidebar(<HomeSidebar />);
+  // useSetRightSidebar(<HomeSidebar />);
 
   return (
     <div>

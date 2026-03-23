@@ -8,15 +8,15 @@ import searchActive from "../assets/icons/nav-icons/search-active.svg";
 import searchInactive from "../assets/icons/nav-icons/search-inactive.svg";
 import notificationsActive from "../assets/icons/nav-icons/notifications-active.svg";
 import notificationsInactive from "../assets/icons/nav-icons/notifications-inactive.svg";
-import inboxActive from "../assets/icons/nav-icons/inbox-active.svg";
-import inboxInactive from "../assets/icons/nav-icons/inbox-inactive.svg";
+import chatActive from "../assets/icons/nav-icons/chat-active.svg";
+import chatInactive from "../assets/icons/nav-icons/chat-inactive.svg";
 
 const navItems = [
-  { to: "/", active: homeActive, inactive: homeInactive, label: "Home" },
+  { to: "/", active: homeActive, inactive: homeInactive, label: "Feed" },
   { to: "/browse", active: browseActive, inactive: browseInactive, label: "Browse" },
   { to: "/search", active: searchActive, inactive: searchInactive, label: "Search" },
   { to: "/notifications", active: notificationsActive, inactive: notificationsInactive, label: "Notifications" },
-  { to: "/messages", active: inboxActive, inactive: inboxInactive, label: "Inbox" },
+  { to: "/messages", active: chatActive, inactive: chatInactive, label: "Inbox" },
 ];
 
 export default function BottomNav() {
@@ -31,7 +31,7 @@ export default function BottomNav() {
               className={({ isActive }) =>
                 `flex flex-col items-center gap-1 rounded-lg px-3 py-3 transition-colors ${
                   isActive
-                    ? "text-primary"
+                    ? "text-gray-dark"
                     : "text-gray-light active:bg-gray-hover"
                 }`
               }
@@ -43,6 +43,7 @@ export default function BottomNav() {
                     alt={label}
                     className="h-[22px] w-[22px]"
                   />
+                  <span className="text-[12px] font-medium leading-tight">{label}</span>
                 </>
               )}
             </NavLink>

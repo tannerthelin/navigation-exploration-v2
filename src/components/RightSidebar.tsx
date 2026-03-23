@@ -6,7 +6,7 @@ export default function RightSidebar() {
   if (!content) return null;
 
   return (
-    <aside className="fixed right-0 top-0 hidden h-full w-[300px] overflow-y-auto bg-white xl:block">
+    <aside className="fixed right-0 top-[52px] hidden h-[calc(100%-52px)] w-[300px] overflow-y-auto bg-white xl:block">
       {content}
     </aside>
   );

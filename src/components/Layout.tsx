@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import Sidebar from "./Sidebar";
+import TopNav from "./TopNav";
 import BottomNav from "./BottomNav";
 import MobileTopNav from "./MobileTopNav";
 import RightSidebar from "./RightSidebar";
@@ -24,20 +24,20 @@ function LayoutInner() {
   const hasRightSidebar = rightSidebar != null;
 
   return (
-    <div className="flex h-full bg-white">
+    <div className="min-h-full bg-white">
       {/* Mobile top nav */}
       <div className="md:hidden">
         <MobileTopNav />
       </div>
 
-      {/* Desktop/Tablet sidebar */}
+      {/* Desktop/Tablet top nav */}
       <div className="hidden md:block">
-        <Sidebar />
+        <TopNav />
       </div>
 
       {/* Main content area */}
       <main
-        className={`scrollbar-hide relative z-0 flex-1 overflow-y-auto pt-14 pb-20 md:ml-[72px] md:pt-0 md:pb-0 lg:ml-[240px]${
+        className={`relative z-0 pt-14 pb-20 md:pt-0 md:pb-0${
           hasRightSidebar ? " xl:mr-[300px]" : ""
         }`}
       >
