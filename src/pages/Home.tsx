@@ -1,5 +1,5 @@
-import { useRef } from "react";
-import { motion } from "motion/react";
+import { useRef, useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { Link } from "react-router-dom";
 import profilePhoto from "../assets/profile photos/profile photo.png";
 import lelandCompass from "../assets/leland-compass.svg";
@@ -622,6 +622,45 @@ const LIVE_COMMENTS = [
   { user: "emma_t", text: "What about lateral hires from industry?", delay: 17 },
 ];
 
+function LiveCommentsFeed() {
+  const [visible, setVisible] = useState<{ id: number; text: string }[]>([]);
+  const counter = useRef(0);
+  const index = useRef(0);
+
+  useEffect(() => {
+    // Seed with first comment immediately
+    setVisible([{ id: counter.current++, text: LIVE_COMMENTS[index.current++ % LIVE_COMMENTS.length].text }]);
+
+    const interval = setInterval(() => {
+      const text = LIVE_COMMENTS[index.current++ % LIVE_COMMENTS.length].text;
+      setVisible(prev => [...prev, { id: counter.current++, text }].slice(-4));
+    }, 2800);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="pointer-events-none absolute bottom-10 left-3 flex w-[33%] flex-col gap-1.5 overflow-hidden">
+      <AnimatePresence initial={false}>
+        {visible.map(c => (
+          <motion.div
+            key={c.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, transition: { duration: 0.25 } }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+            className="flex"
+          >
+            <span className="rounded-lg bg-black/40 px-2 py-0.5 text-[10px] leading-snug text-white/90 backdrop-blur-sm">
+              {c.text}
+            </span>
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 function LiveCard({ live }: { live: LivePost["live"] }) {
   return (
     <div className="mt-3 overflow-hidden rounded-xl border border-gray-stroke">
@@ -636,21 +675,7 @@ function LiveCard({ live }: { live: LivePost["live"] }) {
         />
 
         {/* Live comments overlay — bottom-left third */}
-        <div className="pointer-events-none absolute bottom-10 left-3 flex w-[33%] flex-col justify-end gap-1.5 overflow-hidden" style={{ height: 200 }}>
-          {LIVE_COMMENTS.map((c, i) => (
-            <motion.div
-              key={i}
-              className="flex max-w-full"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: [0, 1, 1, 0], y: [16, 0, 0, -8] }}
-              transition={{ duration: 4, delay: c.delay, repeat: Infinity, repeatDelay: LIVE_COMMENTS.length * 2.5 - 4, ease: "easeOut" }}
-            >
-              <span className="rounded-lg bg-black/40 px-2 py-0.5 text-[10px] leading-snug text-white/90 backdrop-blur-sm">
-                {c.text}
-              </span>
-            </motion.div>
-          ))}
-        </div>
+        <LiveCommentsFeed />
 
         {/* LIVE badge — grey with red dot */}
         <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 backdrop-blur-sm">
