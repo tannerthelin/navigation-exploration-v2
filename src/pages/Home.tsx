@@ -93,7 +93,18 @@ interface MilestonePost extends PostBase {
   };
 }
 
-type Post = TextPost | ImagePost | LinkPost | EventPost | MilestonePost;
+interface LivePost extends PostBase {
+  type: "live";
+  body: string;
+  live: {
+    title: string;
+    image: string;
+    viewers: number;
+    topic: string;
+  };
+}
+
+type Post = TextPost | ImagePost | LinkPost | EventPost | MilestonePost | LivePost;
 
 // ─── Sample data ──────────────────────────────────────
 
@@ -200,6 +211,26 @@ const posts: Post[] = [
     comments: 47,
     reposts: 22,
     shares: 8,
+  },
+  {
+    id: 15,
+    type: "live",
+    author: "Nina Kowalski",
+    avatar: pic7,
+    time: "Now",
+    verified: true,
+    headline: "Partner at McKinsey & Company | Recruiting Lead",
+    body: "Going live to answer your consulting recruiting questions — case prep, fit interviews, offer negotiation. Drop your questions in the chat.",
+    live: {
+      title: "Consulting Recruiting Q&A",
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=900&h=400&fit=crop",
+      viewers: 214,
+      topic: "Case prep · Fit interviews · Offer negotiation",
+    },
+    likes: 87,
+    comments: 53,
+    reposts: 12,
+    shares: 6,
   },
   {
     id: 5,
@@ -580,6 +611,40 @@ function MilestoneCard({ milestone }: { milestone: MilestonePost["milestone"] })
   );
 }
 
+function LiveCard({ live }: { live: LivePost["live"] }) {
+  return (
+    <div className="mt-3 overflow-hidden rounded-xl border border-gray-stroke">
+      <div className="relative">
+        <img src={live.image} alt={live.title} className="h-[180px] w-full object-cover brightness-75" />
+        {/* LIVE badge */}
+        <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-red-500 px-3 py-1">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
+          </span>
+          <span className="text-[13px] font-semibold tracking-wide text-white">LIVE</span>
+        </div>
+        {/* Viewer count */}
+        <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1 backdrop-blur-sm">
+          <svg className="h-3.5 w-3.5 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+          </svg>
+          <span className="text-[13px] font-medium text-white">{live.viewers.toLocaleString()} watching</span>
+        </div>
+      </div>
+      <div className="px-4 py-4">
+        <p className="text-[17px] font-semibold leading-snug text-gray-dark">{live.title}</p>
+        <p className="mt-1 text-[14px] text-gray-light">{live.topic}</p>
+        <div className="mt-3">
+          <button className="cursor-pointer rounded-lg bg-primary px-[14px] py-1.5 text-[15px] font-medium text-white transition-colors hover:bg-primary-hover">
+            Join live
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Post component ───────────────────────────────────
 
 function FeedPost({ post }: { post: Post }) {
@@ -609,6 +674,7 @@ function FeedPost({ post }: { post: Post }) {
           {post.type === "link" && <LinkCard link={post.link} />}
           {post.type === "event" && <EventCard event={post.event} />}
           {post.type === "milestone" && <MilestoneCard milestone={post.milestone} />}
+          {post.type === "live" && <LiveCard live={post.live} />}
         </div>
       </div>
       <ActionBar likes={post.likes} comments={post.comments} reposts={post.reposts} shares={post.shares} verified={post.verified} />
