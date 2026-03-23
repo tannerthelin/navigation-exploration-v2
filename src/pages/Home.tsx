@@ -343,7 +343,7 @@ function formatCount(n: number): string {
   return n.toString();
 }
 
-function ActionBar({ likes, comments, reposts, shares, verified, isEvent }: { likes: number; comments: number; reposts: number; shares: number; verified?: boolean; isEvent?: boolean }) {
+function ActionBar({ likes, comments, reposts, shares, verified }: { likes: number; comments: number; reposts: number; shares: number; verified?: boolean }) {
   const actions = [
     { icon: likesIcon, count: likes, label: "Like" },
     { icon: commentsIcon, count: comments, label: "Comment" },
@@ -359,12 +359,7 @@ function ActionBar({ likes, comments, reposts, shares, verified, isEvent }: { li
           {count > 0 && label !== "Share" && <span className="text-[15px] font-normal">{formatCount(count)}</span>}
         </button>
       ))}
-      {isEvent && (
-        <button className="ml-auto cursor-pointer rounded-[100px] bg-[#222222]/5 px-[14px] py-1.5 text-[15px] font-medium text-[#424242] transition-colors hover:bg-[#222222]/[0.08]">
-          Register for free
-        </button>
-      )}
-      {verified && !isEvent && (
+      {verified && (
         <button className="ml-auto cursor-pointer rounded-[100px] bg-[#222222]/5 px-[14px] py-1.5 text-[15px] font-medium text-[#424242] transition-colors hover:bg-[#222222]/[0.08]">
           Free intro call
         </button>
@@ -533,7 +528,7 @@ function FeedPost({ post }: { post: Post }) {
           {post.type === "milestone" && <MilestoneCard milestone={post.milestone} />}
         </div>
       </div>
-      <ActionBar likes={post.likes} comments={post.comments} reposts={post.reposts} shares={post.shares} verified={post.verified} isEvent={post.type === "event"} />
+      <ActionBar likes={post.likes} comments={post.comments} reposts={post.reposts} shares={post.shares} verified={post.verified} />
     </div>
   );
 }
