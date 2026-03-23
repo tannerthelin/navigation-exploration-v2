@@ -31,7 +31,7 @@ function LayoutInner() {
       </div>
 
       {/* Desktop/Tablet top nav */}
-      <div className="hidden md:block">
+      <div className="sticky top-0 z-30 hidden md:block">
         <TopNav />
       </div>
 
