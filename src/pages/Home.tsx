@@ -977,7 +977,6 @@ interface CoachProfile {
   supercoach?: boolean;
   minutesCoached: number;
   followers: number;
-  price?: string;              // e.g. "$269/hr"
   affiliation?: string;        // e.g. "Admissions at Stanford GSB"
   company?: string;            // e.g. "McKinsey & Company"
   companyColor?: string;
@@ -989,7 +988,7 @@ interface CoachProfile {
 const coachProfiles: Record<string, CoachProfile> = {
   "Sarah Chen": {
     rating: 4.9, reviews: 187, customerFavorite: true, supercoach: true,
-    minutesCoached: 156420, followers: 843, price: "$349/hr",
+    minutesCoached: 156420, followers: 843,
     affiliation: "Admissions at Stanford GSB",
     company: "Stanford GSB", companyColor: "#8C1515", companyInitial: "S",
     successfulClients: [
@@ -1000,7 +999,7 @@ const coachProfiles: Record<string, CoachProfile> = {
   },
   "David Kim": {
     rating: 5.0, reviews: 214, customerFavorite: true, supercoach: true,
-    minutesCoached: 219990, followers: 596, price: "$449/hr",
+    minutesCoached: 219990, followers: 596,
     affiliation: "Adm. Committee at Chicago Booth",
     company: "Bain & Company", companyColor: "#CC0000", companyInitial: "B",
     successfulClients: [
@@ -1010,7 +1009,7 @@ const coachProfiles: Record<string, CoachProfile> = {
     successfulClientsMore: 27,
   },
   "Nina Kowalski": {
-    rating: 4.9, reviews: 103, price: "$269/hr",
+    rating: 4.9, reviews: 103,
     minutesCoached: 98730, followers: 412,
     company: "McKinsey & Company", companyColor: "#003580", companyInitial: "M",
     successfulClients: [
@@ -1335,7 +1334,7 @@ function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[numb
       className="flex shrink-0 flex-col rounded-2xl border border-gray-stroke p-4"
       style={{ width: "calc((100% - 24px) / 2.5)", minWidth: "calc((100% - 24px) / 2.5)" }}
     >
-      {/* Row 1: avatar + name/rating + price pill */}
+      {/* Avatar + name row */}
       <div className="flex items-start gap-3">
         <img
           src={expert.avatar}
@@ -1343,90 +1342,103 @@ function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[numb
           className="h-[56px] w-[56px] shrink-0 rounded-xl object-cover shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]"
         />
         <div className="min-w-0 flex-1">
-          <div className="flex items-start justify-between gap-2">
-            <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
-                <span className="text-[16px] font-medium leading-tight text-gray-dark">{expert.name}</span>
-                {expert.verified ? <img src={verifiedIcon} alt="" className="h-[14px] w-[14px] shrink-0" /> : null}
-              </div>
-              {p ? (
-                <div className="mt-0.5 flex items-center gap-1 text-[14px]">
-                  <span className="text-yellow-400">★</span>
-                  <span className="font-semibold text-gray-dark">{p.rating.toFixed(1)}</span>
-                  <span className="text-gray-light">({p.reviews})</span>
-                </div>
-              ) : null}
-              {isOnline ? (
-                <div className="mt-1 inline-flex items-center gap-1.5">
-                  <motion.span
-                    className="inline-flex h-2 w-2 rounded-full"
-                    animate={{
-                      backgroundColor: ["#111111", "#3b0000", "#7f0000", "#cc0000", "#ef4444", "#cc0000", "#7f0000", "#3b0000", "#111111"],
-                      boxShadow: [
-                        "0 0 0.2px 0.1px rgba(0,0,0,0.6)",
-                        "0 0 0.4px 0.2px rgba(127,0,0,0.7)",
-                        "0 0 0.8px 0.3px rgba(204,0,0,0.8)",
-                        "0 0 1.2px 0.4px rgba(239,68,68,1)",
-                        "0 0 1.6px 0.6px rgba(239,68,68,1), 0 0 2.8px 0.8px rgba(239,68,68,0.4)",
-                        "0 0 1.2px 0.4px rgba(239,68,68,1)",
-                        "0 0 0.8px 0.3px rgba(204,0,0,0.8)",
-                        "0 0 0.4px 0.2px rgba(127,0,0,0.7)",
-                        "0 0 0.2px 0.1px rgba(0,0,0,0.6)",
-                      ],
-                    }}
-                    transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                  />
-                  <span className="text-[12px] font-semibold text-gray-dark">Online now</span>
-                </div>
-              ) : null}
-            </div>
-            {p?.price ? (
-              <span className="shrink-0 rounded-lg bg-gray-100 px-2.5 py-1 text-[13px] font-semibold text-gray-dark">
-                {p.price}
-              </span>
-            ) : null}
+          <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
+            <span className="text-[17px] font-medium leading-tight text-gray-dark">{expert.name}</span>
+            {expert.verified ? <img src={verifiedIcon} alt="" className="h-[15px] w-[15px] shrink-0" /> : null}
           </div>
+          {p ? (
+            <div className="mt-0.5 flex items-center gap-1 text-[15px]">
+              <span className="text-yellow-400">★</span>
+              <span className="font-semibold text-gray-dark">{p.rating.toFixed(1)}</span>
+              <span className="text-gray-light">({p.reviews})</span>
+            </div>
+          ) : null}
+          {isOnline ? (
+            <div className="mt-1 inline-flex items-center gap-1.5">
+              <motion.span
+                className="inline-flex h-2 w-2 rounded-full"
+                animate={{
+                  backgroundColor: ["#111111", "#3b0000", "#7f0000", "#cc0000", "#ef4444", "#cc0000", "#7f0000", "#3b0000", "#111111"],
+                  boxShadow: [
+                    "0 0 0.2px 0.1px rgba(0,0,0,0.6)",
+                    "0 0 0.4px 0.2px rgba(127,0,0,0.7)",
+                    "0 0 0.8px 0.3px rgba(204,0,0,0.8)",
+                    "0 0 1.2px 0.4px rgba(239,68,68,1)",
+                    "0 0 1.6px 0.6px rgba(239,68,68,1), 0 0 2.8px 0.8px rgba(239,68,68,0.4)",
+                    "0 0 1.2px 0.4px rgba(239,68,68,1)",
+                    "0 0 0.8px 0.3px rgba(204,0,0,0.8)",
+                    "0 0 0.4px 0.2px rgba(127,0,0,0.7)",
+                    "0 0 0.2px 0.1px rgba(0,0,0,0.6)",
+                  ],
+                }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <span className="text-[13px] font-semibold text-gray-dark">Online now</span>
+            </div>
+          ) : null}
         </div>
       </div>
 
       {/* Headline */}
-      <p className="mt-3 line-clamp-2 text-[15px] font-medium leading-snug text-gray-dark">
+      <p className="mt-3 line-clamp-2 text-[15px] leading-snug text-gray-dark">
         {expert.headline}
       </p>
 
-      {/* Successful clients */}
-      {p && p.successfulClients.length > 0 ? (
-        <div className="mt-3">
-          <p className="text-[13px] text-gray-light">Successful clients at:</p>
-          <div className="mt-1.5 flex items-center gap-1">
-            {p.successfulClients.slice(0, 5).map((c, i) => (
+      {/* Stats */}
+      {p ? (
+        <p className="mt-1 text-[14px] text-gray-light">
+          <span className="font-medium text-gray-dark">{p.minutesCoached.toLocaleString()}</span> min coached
+        </p>
+      ) : null}
+
+      {/* Badges — company logo + role/affiliation rows */}
+      {p ? (
+        <div className="mt-3 flex flex-col gap-2">
+          {p.supercoach ? (
+            <div className="flex items-center gap-2">
+              <span className="text-[15px] leading-none">🏆</span>
+              <span className="text-[14px] text-gray-dark">Supercoach</span>
+            </div>
+          ) : null}
+          {p.affiliation ? (
+            <div className="flex items-center gap-2">
               <span
-                key={i}
-                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-bold text-white ring-2 ring-white"
-                style={{ backgroundColor: c.color }}
+                className="flex h-5 w-5 shrink-0 items-center justify-center rounded-sm text-[10px] font-bold text-white"
+                style={{ backgroundColor: p.companyColor ?? "#555" }}
               >
-                {c.initial}
+                {(p.affiliation.match(/at (.+)$/) ?? [])[1]?.[0] ?? "·"}
               </span>
-            ))}
-            {p.successfulClientsMore ? (
-              <span className="ml-0.5 text-[12px] text-gray-light">+{p.successfulClientsMore}</span>
-            ) : null}
-          </div>
+              <span className="truncate text-[14px] text-gray-dark">{p.affiliation}</span>
+            </div>
+          ) : null}
+          {p.company ? (
+            <div className="flex items-center gap-2">
+              <span
+                className="flex h-5 w-5 shrink-0 items-center justify-center rounded-sm text-[10px] font-bold text-white"
+                style={{ backgroundColor: p.companyColor ?? "#555" }}
+              >
+                {p.companyInitial}
+              </span>
+              <span className="truncate text-[14px] text-gray-dark">
+                {p.affiliation ? `Worked at ${p.company}` : `Director at ${p.company}`}
+              </span>
+            </div>
+          ) : null}
         </div>
       ) : null}
 
-      {/* Spacer pushes buttons to bottom */}
+      {/* Spacer pushes button to bottom */}
       <div className="flex-1" />
 
-      {/* Two-button footer */}
-      <div className="mt-4 flex gap-2">
-        <button className="flex-1 cursor-pointer rounded-xl bg-gray-dark py-2.5 text-[14px] font-semibold text-white transition-colors hover:bg-[#222]">
-          {isOnline ? "Chat now" : "Free intro call"}
+      {isOnline ? (
+        <button className="mt-4 w-full cursor-pointer rounded-lg bg-gray-dark py-2.5 text-[15px] font-semibold text-white transition-colors hover:bg-[#222]">
+          Chat now
         </button>
-        <button className="cursor-pointer rounded-xl border border-gray-stroke px-4 py-2.5 text-[14px] font-semibold text-gray-dark transition-colors hover:bg-gray-hover">
-          + Follow
+      ) : (
+        <button className="mt-4 w-full cursor-pointer rounded-lg bg-gray-100 py-2.5 text-[15px] font-semibold text-gray-dark transition-colors hover:bg-gray-200">
+          Book a session
         </button>
-      </div>
+      )}
     </div>
   );
 }
