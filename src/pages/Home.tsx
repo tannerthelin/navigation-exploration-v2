@@ -1093,67 +1093,31 @@ function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[numb
               <span className="text-gray-light">({p.reviews})</span>
             </div>
           ) : null}
-          {/* Online now — neon firefly glow */}
+          {/* Online now pill — static pill, glowing dot only */}
           {isOnline ? (
-            <motion.div
-              className="mt-1 inline-flex items-center gap-1.5 rounded-full px-2 py-0.5"
-              animate={{
-                backgroundColor: [
-                  "rgba(243,244,246,1)",
-                  "rgba(21,176,120,0.12)",
-                  "rgba(74,222,128,0.22)",
-                  "rgba(21,176,120,0.12)",
-                  "rgba(243,244,246,1)",
-                ],
-                boxShadow: [
-                  "0 0 0px rgba(21,176,120,0)",
-                  "0 0 8px 1px rgba(21,176,120,0.35)",
-                  "0 0 16px 3px rgba(74,222,128,0.55)",
-                  "0 0 8px 1px rgba(21,176,120,0.35)",
-                  "0 0 0px rgba(21,176,120,0)",
-                ],
-              }}
-              transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
-            >
-              {/* Dot */}
+            <div className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-2 py-0.5">
               <span className="relative flex h-2 w-2 shrink-0">
-                {/* Outer ripple */}
-                <motion.span
-                  className="absolute inline-flex h-full w-full rounded-full"
-                  animate={{
-                    opacity: [0, 0.7, 0],
-                    scale: [1, 2.2, 1],
-                    backgroundColor: ["#15b078", "#4ade80", "#15b078"],
-                  }}
-                  transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
-                />
-                {/* Core dot */}
                 <motion.span
                   className="relative inline-flex h-2 w-2 rounded-full"
                   animate={{
-                    backgroundColor: ["#0d9060", "#15b078", "#4ade80", "#15b078", "#0d9060"],
+                    backgroundColor: ["#064e3b", "#065f46", "#15b078", "#a3e635", "#facc15", "#a3e635", "#15b078", "#065f46", "#064e3b"],
                     boxShadow: [
-                      "0 0 3px 1px rgba(13,144,96,0.6)",
+                      "0 0 2px 1px rgba(6,78,59,0.6)",
+                      "0 0 4px 2px rgba(21,176,120,0.7)",
                       "0 0 8px 3px rgba(21,176,120,0.9)",
-                      "0 0 16px 5px rgba(74,222,128,1), 0 0 28px 8px rgba(21,176,120,0.5)",
+                      "0 0 12px 4px rgba(163,230,53,1)",
+                      "0 0 16px 6px rgba(250,204,21,1), 0 0 28px 8px rgba(250,204,21,0.4)",
+                      "0 0 12px 4px rgba(163,230,53,1)",
                       "0 0 8px 3px rgba(21,176,120,0.9)",
-                      "0 0 3px 1px rgba(13,144,96,0.6)",
+                      "0 0 4px 2px rgba(21,176,120,0.7)",
+                      "0 0 2px 1px rgba(6,78,59,0.6)",
                     ],
                   }}
-                  transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+                  transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
                 />
               </span>
-              {/* Text */}
-              <motion.span
-                className="text-[13px] font-semibold"
-                animate={{
-                  color: ["#333333", "#0d9060", "#15b078", "#0d9060", "#333333"],
-                }}
-                transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
-              >
-                Online now
-              </motion.span>
-            </motion.div>
+              <span className="text-[13px] font-semibold text-gray-dark">Online now</span>
+            </div>
           ) : null}
         </div>
       </div>
