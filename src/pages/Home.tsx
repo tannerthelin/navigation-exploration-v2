@@ -1373,14 +1373,15 @@ function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[numb
   return (
     <div
       className="flex shrink-0 flex-col rounded-2xl border border-gray-stroke p-4"
-      style={{ width: "calc((100% - 24px) / 2.5)", minWidth: "calc((100% - 24px) / 2.5)" }}
+      style={{ width: "310px", minWidth: "310px" }}
     >
       {/* Avatar + name row */}
       <div className="flex items-start gap-3">
         <img
           src={expert.avatar}
           alt={expert.name}
-          className="h-[56px] w-[56px] shrink-0 rounded-xl object-cover shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]"
+          className="h-[112px] w-[112px] shrink-0 rounded-xl object-cover shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]"
+          style={{ objectPosition: "50% 15%" }}
         />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
@@ -1424,39 +1425,6 @@ function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[numb
       <p className="mt-3 line-clamp-2 text-[15px] leading-snug text-gray-dark">
         {expert.headline}
       </p>
-
-      {/* Stats */}
-      {p ? (
-        <p className="mt-1 text-[14px] text-gray-light">
-          <span className="font-medium text-gray-dark">{p.minutesCoached.toLocaleString()}</span> min coached
-        </p>
-      ) : null}
-
-      {/* Badge rows — real logos */}
-      {p ? (
-        <div className="mt-3 flex flex-col gap-2">
-          {p.supercoach ? (
-            <div className="flex items-center gap-2">
-              <span className="text-[15px] leading-none">🏆</span>
-              <span className="text-[14px] text-gray-dark">Supercoach</span>
-            </div>
-          ) : null}
-          {p.affiliation && p.companyLogo ? (
-            <div className="flex items-center gap-2">
-              <OrgLogo logo={p.companyLogo} name={p.company ?? ""} size={20} />
-              <span className="truncate text-[14px] text-gray-dark">{p.affiliation}</span>
-            </div>
-          ) : null}
-          {p.company && p.companyLogo ? (
-            <div className="flex items-center gap-2">
-              <OrgLogo logo={p.companyLogo} name={p.company} size={20} />
-              <span className="truncate text-[14px] text-gray-dark">
-                {p.affiliation ? `Worked at ${p.company}` : `Director at ${p.company}`}
-              </span>
-            </div>
-          ) : null}
-        </div>
-      ) : null}
 
       {/* Successful clients */}
       {p && p.successfulClients.length > 0 ? (
