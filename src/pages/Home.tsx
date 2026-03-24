@@ -656,7 +656,252 @@ function LiveCommentsFeed() {
   );
 }
 
-function LiveCard({ live }: { live: LivePost["live"] }) {
+// ─── Office hours modals ──────────────────────────────
+
+function ModalBackdrop({ onClose }: { onClose: () => void }) {
+  return (
+    <motion.div
+      className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    />
+  );
+}
+
+function OfficeHoursInfoModal({ live, author, avatar, onBuy, onClose }: {
+  live: LivePost["live"];
+  author: string;
+  avatar: string;
+  onBuy: () => void;
+  onClose: () => void;
+}) {
+  return (
+    <>
+      <ModalBackdrop onClose={onClose} />
+      <motion.div
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
+        initial={{ opacity: 0, scale: 0.96, y: 8 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.96, y: 8 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+      >
+        <div className="pointer-events-auto w-full max-w-[420px] rounded-2xl bg-white shadow-[0_24px_64px_rgba(0,0,0,0.18)]">
+          {/* Header */}
+          <div className="relative overflow-hidden rounded-t-2xl bg-gray-dark px-6 pb-6 pt-8">
+            <button onClick={onClose} className="absolute right-4 top-4 flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <img src={avatar} alt={author} className="h-14 w-14 rounded-xl object-cover ring-2 ring-white/20" style={{ objectPosition: "50% 15%" }} />
+                <span className="absolute -bottom-1 -right-1 flex items-center gap-1 rounded-full bg-red-500 px-1.5 py-0.5">
+                  <span className="h-1.5 w-1.5 animate-ping rounded-full bg-white opacity-80" />
+                  <span className="text-[9px] font-bold text-white">LIVE</span>
+                </span>
+              </div>
+              <div>
+                <p className="text-[17px] font-semibold text-white">{author}</p>
+                <p className="text-[13px] text-white/70">{live.viewers.toLocaleString()} watching now</p>
+              </div>
+            </div>
+            <h2 className="mt-4 text-[22px] font-bold text-white">Join Office Hours</h2>
+            <p className="mt-1 text-[14px] leading-snug text-white/70">
+              {author} is holding a live session open to anyone. Ask your questions directly and get real-time answers.
+            </p>
+          </div>
+
+          {/* Body */}
+          <div className="px-6 py-5">
+            <div className="rounded-xl border border-gray-stroke bg-gray-50 px-4 py-3">
+              <p className="text-[13px] text-gray-light">Session</p>
+              <p className="mt-0.5 text-[15px] font-semibold text-gray-dark">{live.title}</p>
+              <p className="text-[13px] text-gray-light">{live.topic}</p>
+            </div>
+
+            <div className="mt-3 flex items-center justify-between rounded-xl border border-primary/30 bg-primary/5 px-4 py-3">
+              <div>
+                <p className="text-[13px] text-gray-light">Access fee</p>
+                <p className="text-[15px] font-semibold text-gray-dark">One-time ticket</p>
+              </div>
+              <p className="text-[24px] font-bold text-gray-dark">$5</p>
+            </div>
+
+            <ul className="mt-4 flex flex-col gap-2">
+              {["Live Q&A with the coach", "Ask questions in real time", "Access ends when session ends"].map(item => (
+                <li key={item} className="flex items-center gap-2 text-[14px] text-gray-dark">
+                  <svg className="h-4 w-4 shrink-0 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Footer */}
+          <div className="flex flex-col gap-2 px-6 pb-6">
+            <button
+              onClick={onBuy}
+              className="w-full cursor-pointer rounded-xl bg-primary py-3 text-[16px] font-bold text-white transition-colors hover:bg-primary-hover"
+            >
+              Buy ticket · $5
+            </button>
+            <button onClick={onClose} className="w-full cursor-pointer py-2 text-[14px] text-gray-light transition-colors hover:text-gray-dark">
+              Maybe later
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    </>
+  );
+}
+
+function CheckoutModal({ onClose }: { onClose: () => void }) {
+  const [paymentPlan, setPaymentPlan] = useState<"single" | "multi">("single");
+  const [discountOpen, setDiscountOpen] = useState(false);
+  const [discountCode, setDiscountCode] = useState("");
+  const total = paymentPlan === "multi" ? 5.15 : 5.00;
+
+  return (
+    <>
+      <ModalBackdrop onClose={onClose} />
+      <motion.div
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
+        initial={{ opacity: 0, scale: 0.97, y: 8 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.97, y: 8 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+      >
+        <div className="pointer-events-auto flex w-full max-w-[720px] overflow-hidden rounded-2xl bg-white shadow-[0_24px_64px_rgba(0,0,0,0.18)]">
+
+          {/* Left — checkout form */}
+          <div className="flex-1 overflow-y-auto px-8 py-8" style={{ maxHeight: "90vh" }}>
+            <div className="flex items-center justify-between">
+              <h2 className="text-[24px] font-bold text-gray-dark">Checkout</h2>
+              <button onClick={onClose} className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-dark hover:bg-gray-200">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+
+            {/* Service row */}
+            <div className="mt-6 flex items-center justify-between rounded-xl border border-gray-stroke px-4 py-3">
+              <div>
+                <p className="text-[15px] font-semibold text-gray-dark">Office Hours · Consulting Q&A</p>
+                <p className="text-[13px] text-gray-light">One time purchase</p>
+              </div>
+              <div className="text-right">
+                <p className="text-[17px] font-bold text-gray-dark">$5.00</p>
+                <button className="text-[13px] text-primary hover:underline">See payment plans</button>
+              </div>
+            </div>
+
+            {/* Payment structure */}
+            <p className="mt-6 text-[15px] font-semibold text-gray-dark">Payment Structure</p>
+            <div className="mt-3 flex flex-col gap-2">
+              {[
+                { id: "single", label: "Single payment", sub: "Pay the full amount today" },
+                { id: "multi",  label: "Multiple payments (+3% fee)", sub: "Split the cost into scheduled installments" },
+              ].map(opt => (
+                <label
+                  key={opt.id}
+                  className={`flex cursor-pointer items-start gap-3 rounded-xl border px-4 py-3 transition-colors ${paymentPlan === opt.id ? "border-primary bg-primary/5" : "border-gray-stroke"}`}
+                  onClick={() => setPaymentPlan(opt.id as "single" | "multi")}
+                >
+                  <span className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 ${paymentPlan === opt.id ? "border-primary" : "border-gray-300"}`}>
+                    {paymentPlan === opt.id ? <span className="h-2 w-2 rounded-full bg-primary" /> : null}
+                  </span>
+                  <div>
+                    <p className="text-[15px] font-medium text-gray-dark">{opt.label}</p>
+                    <p className="text-[13px] text-gray-light">{opt.sub}</p>
+                  </div>
+                </label>
+              ))}
+            </div>
+
+            {/* Payment information */}
+            <p className="mt-6 text-[15px] font-semibold text-gray-dark">Payment Information</p>
+            <div className="mt-3 rounded-xl border border-gray-stroke p-4">
+              <div className="flex flex-col gap-3">
+                <div>
+                  <label className="text-[12px] font-medium text-gray-light">Card number</label>
+                  <input className="mt-1 w-full rounded-lg border border-gray-stroke px-3 py-2 text-[15px] text-gray-dark outline-none focus:border-primary" placeholder="1234 5678 9012 3456" />
+                </div>
+                <div className="flex gap-3">
+                  <div className="flex-1">
+                    <label className="text-[12px] font-medium text-gray-light">Expiry</label>
+                    <input className="mt-1 w-full rounded-lg border border-gray-stroke px-3 py-2 text-[15px] text-gray-dark outline-none focus:border-primary" placeholder="MM / YY" />
+                  </div>
+                  <div className="flex-1">
+                    <label className="text-[12px] font-medium text-gray-light">CVC</label>
+                    <input className="mt-1 w-full rounded-lg border border-gray-stroke px-3 py-2 text-[15px] text-gray-dark outline-none focus:border-primary" placeholder="123" />
+                  </div>
+                </div>
+              </div>
+              <div className="mt-3 flex justify-end">
+                <span className="flex items-center gap-1.5 rounded-md border border-gray-stroke px-2 py-1 text-[11px] text-gray-light">
+                  Powered by <span className="font-bold text-gray-dark">stripe</span>
+                </span>
+              </div>
+            </div>
+
+            {/* Terms */}
+            <p className="mt-6 text-[15px] font-semibold text-gray-dark">Terms</p>
+            <ul className="mt-3 flex flex-col gap-2">
+              {[
+                "The Leland Experience Guarantee protects you with every booking.",
+                "Refund policy: Refunds are available within 14 days of purchase.",
+                "Expiration terms: access is valid for the duration of this session.",
+              ].map((t, i) => (
+                <li key={i} className="flex items-start gap-2 text-[13px] text-gray-light">
+                  <svg className="mt-0.5 h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
+                  {t} <button className="ml-1 text-primary hover:underline">Learn more.</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Right — summary */}
+          <div className="flex w-[260px] shrink-0 flex-col border-l border-gray-stroke bg-gray-50 px-6 py-8">
+            <div className="flex items-center justify-between text-[15px]">
+              <span className="text-gray-light">Subtotal</span>
+              <span className="font-medium text-gray-dark">$5.00</span>
+            </div>
+            <div className="mt-4 border-t border-gray-stroke pt-4 flex items-center justify-between text-[15px]">
+              <span className="text-gray-light">Discount</span>
+              {discountOpen ? (
+                <input
+                  autoFocus
+                  value={discountCode}
+                  onChange={e => setDiscountCode(e.target.value)}
+                  className="w-24 rounded-lg border border-gray-stroke px-2 py-1 text-[13px] outline-none focus:border-primary"
+                  placeholder="Code"
+                />
+              ) : (
+                <button onClick={() => setDiscountOpen(true)} className="font-semibold text-primary hover:underline">Use code</button>
+              )}
+            </div>
+            <div className="mt-4 border-t border-gray-stroke pt-4 flex items-center justify-between text-[17px]">
+              <span className="font-semibold text-gray-dark">Total</span>
+              <span className="font-bold text-gray-dark">${total.toFixed(2)}</span>
+            </div>
+
+            <button
+              onClick={onClose}
+              className="mt-6 w-full cursor-pointer rounded-xl bg-primary py-3 text-[15px] font-bold text-white transition-colors hover:bg-primary-hover"
+            >
+              Confirm payment
+            </button>
+            <p className="mt-3 text-center text-[12px] text-gray-light">Secured by Stripe</p>
+          </div>
+        </div>
+      </motion.div>
+    </>
+  );
+}
+
+function LiveCard({ live, author, avatar }: { live: LivePost["live"]; author: string; avatar: string }) {
+  const [modal, setModal] = useState<null | "info" | "checkout">(null);
+
   return (
     <div className="mt-3 overflow-hidden rounded-xl border border-gray-stroke">
       {/* Video + comments */}
@@ -697,10 +942,28 @@ function LiveCard({ live }: { live: LivePost["live"] }) {
           <p className="text-[17px] font-semibold leading-snug text-gray-dark">{live.title}</p>
           <p className="mt-1 text-[14px] text-gray-light">{live.topic}</p>
         </div>
-        <button className="shrink-0 cursor-pointer rounded-lg bg-gray-100 px-[14px] py-1.5 text-[14px] font-medium text-gray-dark transition-colors hover:bg-gray-200">
+        <button
+          onClick={() => setModal("info")}
+          className="shrink-0 cursor-pointer rounded-lg bg-gray-100 px-[14px] py-1.5 text-[14px] font-medium text-gray-dark transition-colors hover:bg-gray-200"
+        >
           Join live
         </button>
       </div>
+
+      <AnimatePresence>
+        {modal === "info" && (
+          <OfficeHoursInfoModal
+            live={live}
+            author={author}
+            avatar={avatar}
+            onBuy={() => setModal("checkout")}
+            onClose={() => setModal(null)}
+          />
+        )}
+        {modal === "checkout" && (
+          <CheckoutModal onClose={() => setModal(null)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -1044,7 +1307,7 @@ function FeedPost({ post }: { post: Post }) {
           {post.type === "link" && <LinkCard link={post.link} />}
           {post.type === "event" && <EventCard event={post.event} />}
           {post.type === "milestone" && <MilestoneCard milestone={post.milestone} />}
-          {post.type === "live" && <LiveCard live={post.live} />}
+          {post.type === "live" && <LiveCard live={post.live} author={post.author} avatar={post.avatar} />}
         </div>
       </div>
       <ActionBar likes={post.likes} comments={post.comments} reposts={post.reposts} shares={post.shares} verified={post.verified} />
