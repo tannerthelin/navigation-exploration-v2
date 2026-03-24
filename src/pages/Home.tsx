@@ -1391,8 +1391,6 @@ function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[numb
       {p ? (
         <p className="mt-1 text-[14px] text-gray-light">
           <span className="font-medium text-gray-dark">{p.minutesCoached.toLocaleString()}</span> min coached
-          <span className="mx-1.5 text-gray-stroke">|</span>
-          <span className="font-medium text-gray-dark">{p.followers.toLocaleString()}</span> followers
         </p>
       ) : null}
 
