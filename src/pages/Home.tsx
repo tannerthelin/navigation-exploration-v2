@@ -1353,6 +1353,29 @@ function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[numb
               <span className="text-gray-light">({p.reviews})</span>
             </div>
           ) : null}
+          {isOnline ? (
+            <div className="mt-1 inline-flex items-center gap-1.5">
+              <motion.span
+                className="inline-flex h-2 w-2 rounded-full"
+                animate={{
+                  backgroundColor: ["#111111", "#3b0000", "#7f0000", "#cc0000", "#ef4444", "#cc0000", "#7f0000", "#3b0000", "#111111"],
+                  boxShadow: [
+                    "0 0 0.2px 0.1px rgba(0,0,0,0.6)",
+                    "0 0 0.4px 0.2px rgba(127,0,0,0.7)",
+                    "0 0 0.8px 0.3px rgba(204,0,0,0.8)",
+                    "0 0 1.2px 0.4px rgba(239,68,68,1)",
+                    "0 0 1.6px 0.6px rgba(239,68,68,1), 0 0 2.8px 0.8px rgba(239,68,68,0.4)",
+                    "0 0 1.2px 0.4px rgba(239,68,68,1)",
+                    "0 0 0.8px 0.3px rgba(204,0,0,0.8)",
+                    "0 0 0.4px 0.2px rgba(127,0,0,0.7)",
+                    "0 0 0.2px 0.1px rgba(0,0,0,0.6)",
+                  ],
+                }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <span className="text-[13px] font-semibold text-gray-dark">Online now</span>
+            </div>
+          ) : null}
         </div>
       </div>
 
@@ -1401,33 +1424,6 @@ function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[numb
               </span>
             </div>
           ) : null}
-        </div>
-      ) : null}
-
-      {/* Online now pill */}
-      {isOnline ? (
-        <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-2 py-0.5">
-          <span className="relative flex h-2 w-2 shrink-0">
-            <motion.span
-              className="relative inline-flex h-2 w-2 rounded-full"
-              animate={{
-                backgroundColor: ["#111111", "#3b0000", "#7f0000", "#cc0000", "#ef4444", "#cc0000", "#7f0000", "#3b0000", "#111111"],
-                boxShadow: [
-                  "0 0 0.2px 0.1px rgba(0,0,0,0.6)",
-                  "0 0 0.4px 0.2px rgba(127,0,0,0.7)",
-                  "0 0 0.8px 0.3px rgba(204,0,0,0.8)",
-                  "0 0 1.2px 0.4px rgba(239,68,68,1)",
-                  "0 0 1.6px 0.6px rgba(239,68,68,1), 0 0 2.8px 0.8px rgba(239,68,68,0.4)",
-                  "0 0 1.2px 0.4px rgba(239,68,68,1)",
-                  "0 0 0.8px 0.3px rgba(204,0,0,0.8)",
-                  "0 0 0.4px 0.2px rgba(127,0,0,0.7)",
-                  "0 0 0.2px 0.1px rgba(0,0,0,0.6)",
-                ],
-              }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-            />
-          </span>
-          <span className="text-[13px] font-semibold text-gray-dark">Online now</span>
         </div>
       ) : null}
 
