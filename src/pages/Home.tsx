@@ -1377,36 +1377,12 @@ function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[numb
     >
       {/* Avatar + name row */}
       <div className="flex items-start gap-3">
-        {/* Avatar with optional Online now overlay at bottom */}
-        <div className="relative shrink-0">
-          <img
-            src={expert.avatar}
-            alt={expert.name}
-            className="h-[112px] w-[112px] rounded-xl object-cover shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]"
-            style={{ objectPosition: "50% 15%" }}
-          />
-          {isOnline ? (
-            <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center gap-1.5 rounded-b-xl bg-black/40 px-2 py-1 backdrop-blur-sm">
-              <motion.span
-                className="inline-flex h-2 w-2 rounded-full"
-                animate={{
-                  backgroundColor: ["#9ca3af", "#4ade80", "#22c55e", "#00ff88", "#22c55e", "#4ade80", "#9ca3af"],
-                  boxShadow: [
-                    "0 0 0px 0px rgba(74,222,128,0)",
-                    "0 0 4px 2px rgba(74,222,128,0.6)",
-                    "0 0 8px 3px rgba(34,197,94,0.9)",
-                    "0 0 12px 5px rgba(0,255,136,1), 0 0 20px 6px rgba(0,255,136,0.5)",
-                    "0 0 8px 3px rgba(34,197,94,0.9)",
-                    "0 0 4px 2px rgba(74,222,128,0.6)",
-                    "0 0 0px 0px rgba(74,222,128,0)",
-                  ],
-                }}
-                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-              />
-              <span className="text-[11px] font-semibold text-white">Online now</span>
-            </div>
-          ) : null}
-        </div>
+        <img
+          src={expert.avatar}
+          alt={expert.name}
+          className="h-[112px] w-[112px] shrink-0 rounded-xl object-cover shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]"
+          style={{ objectPosition: "50% 15%" }}
+        />
 
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-1">
@@ -1422,9 +1398,7 @@ function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[numb
                   <span className="text-gray-light">({p.reviews})</span>
                 </div>
               ) : null}
-              {p?.price ? (
-                <p className="mt-0.5 text-[14px] font-medium text-gray-dark">{p.price}</p>
-              ) : null}
+              <p className="mt-0.5 text-[14px] font-medium text-gray-dark">$150/hr</p>
             </div>
           </div>
         </div>
@@ -1454,8 +1428,28 @@ function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[numb
       <div className="flex-1" />
 
       <div className="mt-4 flex gap-2">
-        <button className="flex-1 cursor-pointer rounded-xl bg-gray-100 py-2.5 text-[14px] font-semibold text-gray-dark transition-colors hover:bg-gray-200">
-          {isOnline ? "Chat now" : "Free intro call"}
+        <button className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-xl bg-gray-100 py-2.5 text-[14px] font-semibold text-gray-dark transition-colors hover:bg-gray-200">
+          {isOnline ? (
+            <>
+              <motion.span
+                className="inline-flex h-2 w-2 rounded-full"
+                animate={{
+                  backgroundColor: ["#9ca3af", "#4ade80", "#22c55e", "#00ff88", "#22c55e", "#4ade80", "#9ca3af"],
+                  boxShadow: [
+                    "0 0 0px 0px rgba(74,222,128,0)",
+                    "0 0 4px 2px rgba(74,222,128,0.6)",
+                    "0 0 8px 3px rgba(34,197,94,0.9)",
+                    "0 0 12px 5px rgba(0,255,136,1), 0 0 20px 6px rgba(0,255,136,0.5)",
+                    "0 0 8px 3px rgba(34,197,94,0.9)",
+                    "0 0 4px 2px rgba(74,222,128,0.6)",
+                    "0 0 0px 0px rgba(74,222,128,0)",
+                  ],
+                }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+              />
+              Chat now
+            </>
+          ) : "Free intro call"}
         </button>
         <button className="flex h-[42px] w-[42px] shrink-0 cursor-pointer items-center justify-center rounded-xl border border-gray-stroke bg-white transition-colors hover:bg-gray-50" aria-label="Follow">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-dark">
