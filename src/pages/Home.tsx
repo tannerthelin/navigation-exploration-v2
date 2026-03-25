@@ -1390,17 +1390,15 @@ function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[numb
               <motion.span
                 className="inline-flex h-2 w-2 rounded-full"
                 animate={{
-                  backgroundColor: ["#111111", "#3b0000", "#7f0000", "#cc0000", "#ef4444", "#cc0000", "#7f0000", "#3b0000", "#111111"],
+                  backgroundColor: ["#9ca3af", "#4ade80", "#22c55e", "#00ff88", "#22c55e", "#4ade80", "#9ca3af"],
                   boxShadow: [
-                    "0 0 0.2px 0.1px rgba(0,0,0,0.6)",
-                    "0 0 0.4px 0.2px rgba(127,0,0,0.7)",
-                    "0 0 0.8px 0.3px rgba(204,0,0,0.8)",
-                    "0 0 1.2px 0.4px rgba(239,68,68,1)",
-                    "0 0 1.6px 0.6px rgba(239,68,68,1), 0 0 2.8px 0.8px rgba(239,68,68,0.4)",
-                    "0 0 1.2px 0.4px rgba(239,68,68,1)",
-                    "0 0 0.8px 0.3px rgba(204,0,0,0.8)",
-                    "0 0 0.4px 0.2px rgba(127,0,0,0.7)",
-                    "0 0 0.2px 0.1px rgba(0,0,0,0.6)",
+                    "0 0 0px 0px rgba(74,222,128,0)",
+                    "0 0 4px 2px rgba(74,222,128,0.6)",
+                    "0 0 8px 3px rgba(34,197,94,0.9)",
+                    "0 0 12px 5px rgba(0,255,136,1), 0 0 20px 6px rgba(0,255,136,0.5)",
+                    "0 0 8px 3px rgba(34,197,94,0.9)",
+                    "0 0 4px 2px rgba(74,222,128,0.6)",
+                    "0 0 0px 0px rgba(74,222,128,0)",
                   ],
                 }}
                 transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
