@@ -1424,12 +1424,10 @@ function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[numb
                   <span className="text-gray-light">({p.reviews})</span>
                 </div>
               ) : null}
+              {p?.price ? (
+                <p className="mt-0.5 text-[14px] font-medium text-gray-dark">{p.price}</p>
+              ) : null}
             </div>
-            {p?.price ? (
-              <span className="shrink-0 rounded-lg bg-gray-100 px-2 py-1 text-[12px] font-semibold text-gray-dark">
-                {p.price}
-              </span>
-            ) : null}
           </div>
         </div>
       </div>
@@ -1457,15 +1455,19 @@ function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[numb
       {/* Spacer pushes button to bottom */}
       <div className="flex-1" />
 
-      {isOnline ? (
-        <button className="mt-4 w-full cursor-pointer rounded-lg bg-gray-dark py-2.5 text-[15px] font-semibold text-white transition-colors hover:bg-[#222]">
-          Chat now
+      <div className="mt-4 flex gap-2">
+        <button className="flex-1 cursor-pointer rounded-xl bg-gray-100 py-2.5 text-[14px] font-semibold text-gray-dark transition-colors hover:bg-gray-200">
+          {isOnline ? "Chat now" : "Free intro call"}
         </button>
-      ) : (
-        <button className="mt-4 w-full cursor-pointer rounded-lg bg-gray-100 py-2.5 text-[15px] font-semibold text-gray-dark transition-colors hover:bg-gray-200">
-          Book a session
+        <button className="flex h-[42px] w-[42px] shrink-0 cursor-pointer items-center justify-center rounded-xl border border-gray-stroke bg-white transition-colors hover:bg-gray-50" aria-label="Follow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-dark">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <line x1="19" y1="8" x2="19" y2="14" />
+            <line x1="22" y1="11" x2="16" y2="11" />
+          </svg>
         </button>
-      )}
+      </div>
     </div>
   );
 }
