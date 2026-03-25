@@ -1437,7 +1437,7 @@ function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[numb
                 animate={{ backgroundColor: ["#166534", "#4ade80", "#166534"] }}
                 transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
               />
-              Chat now
+              Available now
             </>
           ) : "Free intro call"}
         </button>
