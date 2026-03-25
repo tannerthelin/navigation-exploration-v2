@@ -1055,7 +1055,7 @@ const coachProfiles: Record<string, CoachProfile> = {
     successfulClientsMore: 14,
   },
   "Marcus Williams": {
-    rating: 4.8, reviews: 52,
+    rating: 4.8, reviews: 52, price: "$199/hr",
     minutesCoached: 44200, followers: 198,
     affiliation: "Admissions at Stanford GSB",
     successfulClients: [
@@ -1065,7 +1065,7 @@ const coachProfiles: Record<string, CoachProfile> = {
     successfulClientsMore: 8,
   },
   "Priya Patel": {
-    rating: 4.9, reviews: 76,
+    rating: 4.9, reviews: 76, price: "$249/hr",
     minutesCoached: 71580, followers: 305,
     company: "Harvard Business School", companyLogo: orgHBS, companyColor: "#A51C30", companyInitial: "H",
     successfulClients: [
@@ -1076,7 +1076,7 @@ const coachProfiles: Record<string, CoachProfile> = {
     successfulClientsMore: 11,
   },
   "Emma Rodriguez": {
-    rating: 4.8, reviews: 98,
+    rating: 4.8, reviews: 98, price: "$279/hr",
     minutesCoached: 103440, followers: 467,
     company: "BCG", companyLogo: orgBCG, companyColor: "#006600", companyInitial: "B",
     successfulClients: [
@@ -1088,7 +1088,7 @@ const coachProfiles: Record<string, CoachProfile> = {
     successfulClientsMore: 16,
   },
   "Alex Thompson": {
-    rating: 4.8, reviews: 64,
+    rating: 4.8, reviews: 64, price: "$189/hr",
     minutesCoached: 58200, followers: 278,
     company: "Google", companyLogo: orgGoogle, companyColor: "#4285F4", companyInitial: "G",
     successfulClients: [
@@ -1099,7 +1099,7 @@ const coachProfiles: Record<string, CoachProfile> = {
     successfulClientsMore: 9,
   },
   "Michael Chen": {
-    rating: 4.9, reviews: 118, supercoach: true,
+    rating: 4.9, reviews: 118, supercoach: true, price: "$319/hr",
     minutesCoached: 134760, followers: 521,
     company: "BCG", companyLogo: orgBCG, companyColor: "#006600", companyInitial: "B",
     affiliation: "Admissions at Kellogg",
@@ -1112,7 +1112,7 @@ const coachProfiles: Record<string, CoachProfile> = {
     successfulClientsMore: 21,
   },
   "Lauren Hayes": {
-    rating: 5.0, reviews: 93, customerFavorite: true,
+    rating: 5.0, reviews: 93, customerFavorite: true, price: "$399/hr",
     minutesCoached: 87300, followers: 389,
     affiliation: "Admissions at Harvard Business School",
     company: "Harvard Business School", companyLogo: orgHBS, companyColor: "#A51C30", companyInitial: "H",
@@ -1124,7 +1124,7 @@ const coachProfiles: Record<string, CoachProfile> = {
     successfulClientsMore: 13,
   },
   "Jason Park": {
-    rating: 4.8, reviews: 71,
+    rating: 4.8, reviews: 71, price: "$229/hr",
     minutesCoached: 62490, followers: 243,
     company: "Deloitte", companyLogo: orgDeloitte, companyColor: "#86BC25", companyInitial: "D",
     successfulClients: [
@@ -1377,26 +1377,16 @@ function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[numb
     >
       {/* Avatar + name row */}
       <div className="flex items-start gap-3">
-        <img
-          src={expert.avatar}
-          alt={expert.name}
-          className="h-[112px] w-[112px] shrink-0 rounded-xl object-cover shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]"
-          style={{ objectPosition: "50% 15%" }}
-        />
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
-            <span className="text-[17px] font-medium leading-tight text-gray-dark">{expert.name}</span>
-            {expert.verified ? <img src={verifiedIcon} alt="" className="h-[15px] w-[15px] shrink-0" /> : null}
-          </div>
-          {p ? (
-            <div className="mt-0.5 flex items-center gap-1 text-[15px]">
-              <span className="text-yellow-400">★</span>
-              <span className="font-semibold text-gray-dark">{p.rating.toFixed(1)}</span>
-              <span className="text-gray-light">({p.reviews})</span>
-            </div>
-          ) : null}
+        {/* Avatar with optional Online now overlay at bottom */}
+        <div className="relative shrink-0">
+          <img
+            src={expert.avatar}
+            alt={expert.name}
+            className="h-[112px] w-[112px] rounded-xl object-cover shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]"
+            style={{ objectPosition: "50% 15%" }}
+          />
           {isOnline ? (
-            <div className="mt-1 inline-flex items-center gap-1.5">
+            <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center gap-1.5 rounded-b-xl bg-black/40 px-2 py-1 backdrop-blur-sm">
               <motion.span
                 className="inline-flex h-2 w-2 rounded-full"
                 animate={{
@@ -1415,9 +1405,32 @@ function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[numb
                 }}
                 transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
               />
-              <span className="text-[13px] font-semibold text-gray-dark">Online now</span>
+              <span className="text-[11px] font-semibold text-white">Online now</span>
             </div>
           ) : null}
+        </div>
+
+        <div className="min-w-0 flex-1">
+          <div className="flex items-start justify-between gap-1">
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
+                <span className="text-[17px] font-medium leading-tight text-gray-dark">{expert.name}</span>
+                {expert.verified ? <img src={verifiedIcon} alt="" className="h-[15px] w-[15px] shrink-0" /> : null}
+              </div>
+              {p ? (
+                <div className="mt-0.5 flex items-center gap-1 text-[15px]">
+                  <span className="text-yellow-400">★</span>
+                  <span className="text-gray-dark">{p.rating.toFixed(1)}</span>
+                  <span className="text-gray-light">({p.reviews})</span>
+                </div>
+              ) : null}
+            </div>
+            {p?.price ? (
+              <span className="shrink-0 rounded-lg bg-gray-100 px-2 py-1 text-[12px] font-semibold text-gray-dark">
+                {p.price}
+              </span>
+            ) : null}
+          </div>
         </div>
       </div>
 
