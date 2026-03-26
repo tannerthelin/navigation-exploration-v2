@@ -449,7 +449,7 @@ export default function PostDetail() {
       </button>
 
       {/* Post */}
-      <div className="mt-4 pb-4">
+      <div className="mt-3 pb-2">
         <AuthorRow post={post} />
         <p className="mt-3 text-[17px] leading-[1.5] text-gray-dark">{post.body}</p>
         <PostMedia post={post} />
@@ -457,7 +457,7 @@ export default function PostDetail() {
       </div>
 
       {/* Comment input */}
-      <div className="flex gap-3 py-4">
+      <div className="flex gap-3 py-2">
         <img
           src={profilePhoto}
           alt="You"
