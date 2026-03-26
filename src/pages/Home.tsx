@@ -1596,27 +1596,18 @@ function ComposeModal({ onClose }: { onClose: () => void }) {
   const nearLimit = remaining <= 20;
 
   return createPortal(
-    <AnimatePresence>
-      <motion.div
-        className="fixed inset-0 z-[9999] flex items-start justify-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.15 }}
-      >
-        {/* Backdrop */}
-        <div
-          className="absolute inset-0 bg-black/50"
-          onClick={onClose}
-        />
-
+    <div
+      className="fixed inset-0 z-[9999] flex items-start justify-center"
+      style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+      onClick={onClose}
+    >
         {/* Modal */}
         <motion.div
-          className="relative z-10 mt-[60px] w-full max-w-[600px] rounded-2xl bg-white shadow-2xl mx-4"
+          className="relative mt-[60px] w-full max-w-[600px] rounded-2xl bg-white shadow-2xl mx-4"
           initial={{ opacity: 0, scale: 0.95, y: -20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: -20 }}
           transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
           <div className="flex items-center justify-between px-4 pt-4 pb-2">
@@ -1719,8 +1710,7 @@ function ComposeModal({ onClose }: { onClose: () => void }) {
             </div>
           </div>
         </motion.div>
-      </motion.div>
-    </AnimatePresence>,
+    </div>,
     document.body
   );
 }
