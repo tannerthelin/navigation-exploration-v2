@@ -393,18 +393,19 @@ function formatCount(n: number): string {
   return n.toString();
 }
 
-function ActionBar({ likes, comments, reposts, shares }: { likes: number; comments: number; reposts: number; shares: number }) {
+function ActionBar({ likes, comments, reposts, shares, postId }: { likes: number; comments: number; reposts: number; shares: number; postId: number }) {
+  const navigate = useNavigate();
   const actions = [
-    { icon: likesIcon, count: likes, label: "Like" },
-    { icon: commentsIcon, count: comments, label: "Comment" },
-    { icon: repostsIcon, count: reposts, label: "Repost" },
-    { icon: sharesIcon, count: shares, label: "Share" },
+    { icon: likesIcon, count: likes, label: "Like", onClick: undefined },
+    { icon: commentsIcon, count: comments, label: "Comment", onClick: () => navigate(`/post/${postId}`) },
+    { icon: repostsIcon, count: reposts, label: "Repost", onClick: undefined },
+    { icon: sharesIcon, count: shares, label: "Share", onClick: undefined },
   ];
 
   return (
     <div className="mt-1 flex items-center gap-2 pl-[44px]">
-      {actions.map(({ icon, count, label }) => (
-        <button key={label} className="flex cursor-pointer items-center gap-1 rounded-[100px] px-2 py-1.5 text-gray-light transition-colors hover:bg-gray-hover">
+      {actions.map(({ icon, count, label, onClick }) => (
+        <button key={label} onClick={onClick} className="flex cursor-pointer items-center gap-1 rounded-[100px] px-2 py-1.5 text-gray-light transition-colors hover:bg-gray-hover">
           <img src={icon} alt={label} className="h-[22px] w-[22px] [filter:invert(46%)]" />
           {count > 0 && label !== "Share" && <span className="text-[15px] font-normal">{formatCount(count)}</span>}
         </button>
@@ -1351,7 +1352,7 @@ function FeedPost({ post }: { post: Post }) {
         </div>
       </div>
       <div onClick={e => e.stopPropagation()}>
-        <ActionBar likes={post.likes} comments={post.comments} reposts={post.reposts} shares={post.shares} />
+        <ActionBar likes={post.likes} comments={post.comments} reposts={post.reposts} shares={post.shares} postId={post.id} />
       </div>
     </div>
   );
