@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { Link, useNavigate } from "react-router-dom";
 import profilePhoto from "../assets/profile photos/profile photo.png";
@@ -1594,10 +1595,10 @@ function ComposeModal({ onClose }: { onClose: () => void }) {
   const overLimit = remaining < 0;
   const nearLimit = remaining <= 20;
 
-  return (
+  return createPortal(
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-50 flex items-start justify-center"
+        className="fixed inset-0 z-[9999] flex items-start justify-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -1719,7 +1720,8 @@ function ComposeModal({ onClose }: { onClose: () => void }) {
           </div>
         </motion.div>
       </motion.div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }
 
@@ -1741,7 +1743,7 @@ export default function Home() {
           onClick={() => setComposeOpen(true)}
           className="flex-1 rounded-full bg-gray-hover px-4 py-[10px] text-left text-[16px] text-gray-light transition-shadow hover:shadow-[0_0_0_2px_#dddddd]"
         >
-          Share an update...
+          Create a post...
         </button>
       </div>
 
