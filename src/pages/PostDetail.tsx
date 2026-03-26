@@ -333,7 +333,7 @@ function CommentItem({ comment, depth = 0 }: { comment: CommentData; depth?: num
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`flex gap-3 py-4 ${depth === 0 ? "border-b border-gray-stroke" : ""}`}
+      className="flex gap-3 py-4"
     >
       <img
         src={comment.avatar}
