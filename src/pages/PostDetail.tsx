@@ -259,7 +259,7 @@ function PostMedia({ post }: { post: Post }) {
 
 function StatsRow({ post }: { post: Post }) {
   return (
-    <div className="mt-4 flex items-center gap-5 border-y border-gray-stroke py-3">
+    <div className="mt-4 flex items-center gap-5 py-3">
       {[
         { icon: likesIcon, count: post.likes, label: "Likes" },
         { icon: commentsIcon, count: post.comments, label: "Comments" },
@@ -442,7 +442,7 @@ export default function PostDetail() {
       </button>
 
       {/* Post */}
-      <div className="mt-4 border-b border-gray-stroke pb-4">
+      <div className="mt-4 pb-4">
         <AuthorRow post={post} />
         <p className="mt-3 text-[17px] leading-[1.5] text-gray-dark">{post.body}</p>
         <PostMedia post={post} />
@@ -450,7 +450,7 @@ export default function PostDetail() {
       </div>
 
       {/* Comment input */}
-      <div className="flex gap-3 border-b border-gray-stroke py-4">
+      <div className="flex gap-3 py-4">
         <img
           src={profilePhoto}
           alt="You"
