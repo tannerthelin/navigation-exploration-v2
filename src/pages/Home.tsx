@@ -393,18 +393,90 @@ function formatCount(n: number): string {
   return n.toString();
 }
 
+const FEED_HEART_PARTICLES = [
+  { angle: -80,  r: 28, color: "#ff4757", size: 6 },
+  { angle: -40,  r: 32, color: "#fd79a8", size: 5 },
+  { angle: -10,  r: 25, color: "#ff6b81", size: 7 },
+  { angle: 20,   r: 30, color: "#ff4757", size: 5 },
+  { angle: 55,   r: 28, color: "#ff6348", size: 6 },
+  { angle: 90,   r: 32, color: "#ff4757", size: 5 },
+  { angle: 130,  r: 25, color: "#fd79a8", size: 7 },
+  { angle: 160,  r: 30, color: "#ff6b81", size: 5 },
+  { angle: 200,  r: 28, color: "#ff4757", size: 6 },
+  { angle: 240,  r: 25, color: "#ff6348", size: 5 },
+  { angle: 270,  r: 32, color: "#fd79a8", size: 6 },
+  { angle: 310,  r: 28, color: "#ff4757", size: 5 },
+];
+
+function FeedLikeButton({ initialCount }: { initialCount: number }) {
+  const [liked, setLiked] = useState(false);
+  const [burst, setBurst] = useState(false);
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLiked(l => !l);
+    if (!liked) { setBurst(true); setTimeout(() => setBurst(false), 700); }
+  };
+
+  return (
+    <div className="relative">
+      <div className="pointer-events-none absolute left-[13px] top-[13px]">
+        <AnimatePresence>
+          {burst ? FEED_HEART_PARTICLES.map((p, i) => (
+            <motion.span
+              key={i}
+              className="absolute rounded-full"
+              style={{ backgroundColor: p.color, width: p.size, height: p.size, marginLeft: -p.size / 2, marginTop: -p.size / 2 }}
+              initial={{ scale: 1, x: 0, y: 0, opacity: 1 }}
+              animate={{
+                scale: [1, 1, 0],
+                x: [0, Math.cos((p.angle * Math.PI) / 180) * p.r * 0.4, Math.cos((p.angle * Math.PI) / 180) * p.r],
+                y: [0, Math.sin((p.angle * Math.PI) / 180) * p.r * 0.4, Math.sin((p.angle * Math.PI) / 180) * p.r + 7],
+                opacity: [1, 1, 0],
+              }}
+              transition={{ duration: 0.55, ease: [0.2, 0, 0.8, 1], delay: i * 0.008 }}
+            />
+          )) : null}
+        </AnimatePresence>
+      </div>
+      <button
+        onClick={handleClick}
+        className={`flex cursor-pointer items-center gap-1 rounded-[100px] px-2 py-1.5 transition-colors hover:bg-gray-hover ${liked ? "text-red-500" : "text-gray-light"}`}
+      >
+        <motion.svg
+          className="h-[22px] w-[22px]"
+          viewBox="0 0 24 24"
+          fill={liked ? "currentColor" : "none"}
+          stroke="currentColor"
+          strokeWidth="2"
+          animate={liked ? { scale: [1, 0.6, 1.8, 0.9, 1.05, 1] } : { scale: 1 }}
+          transition={{ duration: 0.5, times: [0, 0.15, 0.35, 0.55, 0.75, 1], ease: "easeOut" }}
+        >
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </motion.svg>
+        <motion.span
+          className="text-[15px] font-normal"
+          animate={liked ? { scale: [1, 1.4, 1] } : { scale: 1 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+        >
+          {formatCount(initialCount + (liked ? 1 : 0))}
+        </motion.span>
+      </button>
+    </div>
+  );
+}
+
 function ActionBar({ likes, comments, reposts, shares, postId }: { likes: number; comments: number; reposts: number; shares: number; postId: number }) {
   const navigate = useNavigate();
-  const actions = [
-    { icon: likesIcon, count: likes, label: "Like", onClick: undefined },
-    { icon: commentsIcon, count: comments, label: "Comment", onClick: () => navigate(`/post/${postId}`) },
-    { icon: repostsIcon, count: reposts, label: "Repost", onClick: undefined },
-    { icon: sharesIcon, count: shares, label: "Share", onClick: undefined },
-  ];
 
   return (
     <div className="mt-1 flex items-center gap-2 pl-[44px]">
-      {actions.map(({ icon, count, label, onClick }) => (
+      <FeedLikeButton initialCount={likes} />
+      {[
+        { icon: commentsIcon, count: comments, label: "Comment", onClick: () => navigate(`/post/${postId}`) },
+        { icon: repostsIcon,  count: reposts,  label: "Repost",  onClick: undefined as (() => void) | undefined },
+        { icon: sharesIcon,   count: shares,   label: "Share",   onClick: undefined as (() => void) | undefined },
+      ].map(({ icon, count, label, onClick }) => (
         <button key={label} onClick={onClick} className="flex cursor-pointer items-center gap-1 rounded-[100px] px-2 py-1.5 text-gray-light transition-colors hover:bg-gray-hover">
           <img src={icon} alt={label} className="h-[22px] w-[22px] [filter:invert(46%)]" />
           {count > 0 && label !== "Share" && <span className="text-[15px] font-normal">{formatCount(count)}</span>}
