@@ -340,7 +340,7 @@ function CommentItem({ comment, depth = 0 }: { comment: CommentData; depth?: num
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex gap-3 py-4"
+      className="flex gap-3 py-2"
     >
       <img
         src={comment.avatar}
@@ -387,7 +387,7 @@ function CommentItem({ comment, depth = 0 }: { comment: CommentData; depth?: num
 
         {/* Nested replies */}
         {replies.length > 0 ? (
-          <div className="mt-3 pl-2">
+          <div className="mt-1 pl-2">
             {replies.map(r => (
               <CommentItem key={r.id} comment={r} depth={1} />
             ))}
@@ -496,13 +496,8 @@ export default function PostDetail() {
         </div>
       </div>
 
-      {/* Comment count */}
-      <p className="mt-4 text-[15px] font-semibold text-gray-dark">
-        {comments.length} {comments.length === 1 ? "comment" : "comments"}
-      </p>
-
       {/* Comments */}
-      <div className="mt-2">
+      <div className="mt-1">
         {comments.map(c => (
           <CommentItem key={c.id} comment={c} />
         ))}
