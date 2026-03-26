@@ -459,10 +459,14 @@ export default function PostDetail() {
         <div className="flex-1">
           <textarea
             value={commentText}
-            onChange={e => setCommentText(e.target.value)}
+            onChange={e => {
+              setCommentText(e.target.value);
+              e.target.style.height = "auto";
+              e.target.style.height = `${e.target.scrollHeight}px`;
+            }}
             placeholder="Add a comment…"
-            rows={commentText ? 3 : 1}
-            className="w-full resize-none rounded-xl border border-gray-stroke px-3 py-2.5 text-[15px] text-gray-dark outline-none transition-all focus:border-gray-dark"
+            rows={1}
+            className="w-full resize-none overflow-hidden rounded-xl border border-gray-stroke px-3 py-2.5 text-[15px] text-gray-dark outline-none transition-[border] focus:border-gray-dark"
             onKeyDown={e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) submitComment(); }}
           />
           <AnimatePresence>
