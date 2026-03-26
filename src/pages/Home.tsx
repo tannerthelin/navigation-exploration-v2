@@ -1610,17 +1610,14 @@ function ComposeModal({ onClose }: { onClose: () => void }) {
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 pt-4 pb-2">
+          <div className="flex items-center justify-end px-4 pt-4 pb-2">
             <button
               onClick={onClose}
-              className="flex h-8 w-8 items-center justify-center rounded-full text-gray-dark hover:bg-gray-hover transition-colors"
+              className="flex h-8 w-8 items-center justify-center rounded-full text-gray-light hover:bg-gray-hover transition-colors"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                 <path d="M18 6L6 18M6 6l12 12" />
               </svg>
-            </button>
-            <button className="text-[15px] font-semibold text-[#4F46E5] hover:text-[#3730A3] transition-colors">
-              Drafts
             </button>
           </div>
 
@@ -1646,7 +1643,7 @@ function ComposeModal({ onClose }: { onClose: () => void }) {
 
           {/* Everyone can reply */}
           <div className="px-4 pb-3">
-            <button className="flex items-center gap-1.5 text-[14px] font-semibold text-[#4F46E5] hover:text-[#3730A3] transition-colors">
+            <button className="flex items-center gap-1.5 text-[14px] font-medium text-gray-light hover:text-gray-dark transition-colors">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
               </svg>
@@ -1667,7 +1664,7 @@ function ComposeModal({ onClose }: { onClose: () => void }) {
                 <path key="emoji" d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 18a8 8 0 110-16 8 8 0 010 16zm-3-9a1 1 0 110-2 1 1 0 010 2zm6 0a1 1 0 110-2 1 1 0 010 2zm-5.27 4.5h4.54a.75.75 0 000-1.5H9.73a.75.75 0 000 1.5z"/>,
                 <path key="location" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>,
               ].map((d, i) => (
-                <button key={i} className="flex h-8 w-8 items-center justify-center rounded-full text-[#4F46E5] hover:bg-indigo-50 transition-colors">
+                <button key={i} className="flex h-8 w-8 items-center justify-center rounded-full text-gray-light hover:bg-gray-hover transition-colors">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill={i === 0 || i === 3 || i === 4 ? "currentColor" : "none"} stroke={i === 2 ? "currentColor" : "none"} strokeWidth="1.5">
                     {d}
                   </svg>
@@ -1684,7 +1681,7 @@ function ComposeModal({ onClose }: { onClose: () => void }) {
                     <circle
                       cx="13" cy="13" r={circleR}
                       fill="none"
-                      stroke={overLimit ? "#EF4444" : nearLimit ? "#F59E0B" : "#4F46E5"}
+                      stroke={overLimit ? "#EF4444" : nearLimit ? "#F59E0B" : "#222222"}
                       strokeWidth="2.5"
                       strokeDasharray={circumference}
                       strokeDashoffset={dashOffset}
