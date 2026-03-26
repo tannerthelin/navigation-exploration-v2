@@ -52,6 +52,7 @@ const dashedBorderStyle = {
 };
 
 export default function ProfileV2() {
+  useEffect(() => { document.title = "Leland Prototype | Profile"; }, []);
   const [isFollowing, setIsFollowing] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [stickyNavVisible, setStickyNavVisible] = useState(false);
@@ -65,11 +66,17 @@ export default function ProfileV2() {
   const [searchParams] = useSearchParams();
   const [isCustomerProfile, setIsCustomerProfile] = useState(searchParams.get("type") === "customer");
   const [customerTab, setCustomerTab] = useState<"activity" | "about">("activity");
+  const [sectionFilter, setSectionFilter] = useState("All");
+  const [offeringsType, setOfferingsType] = useState("All");
   const [viewingOwnProfile, setViewingOwnProfile] = useState(false);
+  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
+  const [eventsCategoryOpen, setEventsCategoryOpen] = useState(false);
 
   const profilePhoto = isCustomerProfile ? pic2 : pic6;
   const profileName = isCustomerProfile ? "James Allen" : "Samantha Parker";
 
+  const categoryRef = useRef<HTMLDivElement>(null);
+  const eventsCategoryRef = useRef<HTMLDivElement>(null);
   const adminRef = useRef<HTMLDivElement>(null);
   const heroSentinelRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<Record<string, HTMLHeadingElement | null>>({});
@@ -143,6 +150,28 @@ export default function ProfileV2() {
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, [adminOpen]);
+
+  useEffect(() => {
+    if (!categoryDropdownOpen) return;
+    const handleClick = (e: MouseEvent) => {
+      if (categoryRef.current && !categoryRef.current.contains(e.target as Node)) {
+        setCategoryDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [categoryDropdownOpen]);
+
+  useEffect(() => {
+    if (!eventsCategoryOpen) return;
+    const handleClick = (e: MouseEvent) => {
+      if (eventsCategoryRef.current && !eventsCategoryRef.current.contains(e.target as Node)) {
+        setEventsCategoryOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [eventsCategoryOpen]);
 
   const scrollToSection = (id: string) => {
     const el = sectionRefs.current[id];
@@ -304,7 +333,11 @@ export default function ProfileV2() {
           <p className={`mb-[6px] leading-[1.3] ${isCustomerProfile ? "text-[18px] font-normal text-[#707070]" : "text-[24px] font-medium text-[#333333]"}`}>
             {isCustomerProfile
               ? "Experienced Product Leader at LinkedIn | Ex-Meta | Stanford GSB"
-              : <>Experienced Product Leader at LinkedIn <span className="font-normal text-[#9B9B9B]">|</span> Ex-Meta <span className="font-normal text-[#9B9B9B]">|</span> Stanford GSB</>
+              : sectionFilter === "College"
+                ? <>College Admissions Expert <span className="font-normal text-[#9B9B9B]">|</span> Yale Grad <span className="font-normal text-[#9B9B9B]">|</span> 50+ Ivy League Admits</>
+                : sectionFilter === "MBA"
+                  ? <>MBA Coach <span className="font-normal text-[#9B9B9B]">|</span> Stanford GSB <span className="font-normal text-[#9B9B9B]">|</span> 100+ M7 Admits</>
+                  : <>Experienced Product Leader at LinkedIn <span className="font-normal text-[#9B9B9B]">|</span> Ex-Meta <span className="font-normal text-[#9B9B9B]">|</span> Stanford GSB</>
             }
           </p>
 
@@ -590,6 +623,53 @@ export default function ProfileV2() {
               Offerings
             </h2>
 
+            <div className="mb-4 flex items-center justify-between">
+              <div className="flex flex-wrap gap-[6px]">
+                {["All", "Packages", "Memberships", "Content"].map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setOfferingsType(tab)}
+                    className={`cursor-pointer rounded-full bg-[#f5f5f5] px-[14px] py-[6px] text-[14px] font-medium text-[#222222] ${
+                      offeringsType === tab ? "border-[1.5px] border-[#222222]" : "border-[1.5px] border-transparent transition-colors hover:bg-[#ebebeb]"
+                    }`}
+                  >
+                    {tab}
+                  </button>
+                ))}
+              </div>
+              <div ref={categoryRef} className="relative">
+                <button
+                  onClick={() => setCategoryDropdownOpen(!categoryDropdownOpen)}
+                  className="flex cursor-pointer items-center gap-1.5 rounded-full bg-[#f5f5f5] px-[14px] py-[6px] text-[14px] font-medium text-[#222222] transition-colors hover:bg-[#ebebeb]"
+                >
+                  {sectionFilter === "All" ? "All categories" : sectionFilter}
+                  <img src={chevronDownIcon} alt="" className={`h-[14px] w-[14px] transition-transform ${categoryDropdownOpen ? "rotate-180" : ""}`} />
+                </button>
+                <AnimatePresence>
+                  {categoryDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 6 }}
+                      transition={{ duration: 0.15, ease: "easeOut" }}
+                      className="absolute right-0 top-full z-50 mt-2 w-56 rounded-2xl border border-gray-stroke bg-white p-2 shadow-lg"
+                    >
+                      {[{ value: "All", label: "All categories" }, { value: "College", label: "College" }, { value: "MBA", label: "MBA" }, { value: "Product Management", label: "Product Management" }].map(({ value, label }) => (
+                        <button
+                          key={value}
+                          onClick={() => { setSectionFilter(value); setCategoryDropdownOpen(false); }}
+                          className={`flex w-full cursor-pointer items-center justify-between rounded-lg p-3 text-[14px] font-medium text-gray-dark transition-colors hover:bg-gray-hover ${sectionFilter === value ? "bg-gray-hover" : ""}`}
+                        >
+                          {label}
+                          {sectionFilter === value && <img src={checkIcon} alt="" className="h-[16px] w-[16px]" />}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+
             {/* Offering cards grid */}
             <div className="-mx-4 scrollbar-hide flex gap-4 overflow-x-auto px-4 md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:px-0">
               <div className="h-[220px] w-[80vw] shrink-0 rounded-xl bg-[#f5f5f5] md:w-auto" style={dashedBorderStyle} />
@@ -603,7 +683,7 @@ export default function ProfileV2() {
             {/* View more + guarantee */}
             <div className="mt-4 flex flex-col items-start gap-3 md:flex-row md:items-center md:justify-between">
               <button className="cursor-pointer rounded-lg bg-[#222222]/5 px-4 py-2.5 text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#222222]/[0.08]">
-                See 8 more packages
+                See all offerings
               </button>
               <div className="flex items-center gap-2 text-[15px] text-[#9b9b9b]">
                 <img src={shieldIcon} alt="" className="w-[12px]" />
@@ -611,10 +691,42 @@ export default function ProfileV2() {
               </div>
             </div>
 
-            {/* Free events */}
+            {/* Events */}
             <div className="my-[36px] border-t border-gray-200" />
-            <h2 className="mb-1 text-[24px] font-medium text-gray-dark">Free events</h2>
-            <p className="mb-4 text-[18px] text-[#707070]">Live, interactive sessions you can join for free</p>
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-[24px] font-medium text-gray-dark">Events</h2>
+              <div ref={eventsCategoryRef} className="relative">
+                <button
+                  onClick={() => setEventsCategoryOpen(!eventsCategoryOpen)}
+                  className="flex cursor-pointer items-center gap-1.5 rounded-full bg-[#f5f5f5] px-[14px] py-[6px] text-[14px] font-medium text-[#222222] transition-colors hover:bg-[#ebebeb]"
+                >
+                  {sectionFilter === "All" ? "All categories" : sectionFilter}
+                  <img src={chevronDownIcon} alt="" className={`h-[14px] w-[14px] transition-transform ${eventsCategoryOpen ? "rotate-180" : ""}`} />
+                </button>
+                <AnimatePresence>
+                  {eventsCategoryOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 6 }}
+                      transition={{ duration: 0.15, ease: "easeOut" }}
+                      className="absolute right-0 top-full z-50 mt-2 w-56 rounded-2xl border border-gray-stroke bg-white p-2 shadow-lg"
+                    >
+                      {[{ value: "All", label: "All categories" }, { value: "College", label: "College" }, { value: "MBA", label: "MBA" }, { value: "Product Management", label: "Product Management" }].map(({ value, label }) => (
+                        <button
+                          key={value}
+                          onClick={() => { setSectionFilter(value); setEventsCategoryOpen(false); }}
+                          className={`flex w-full cursor-pointer items-center justify-between rounded-lg p-3 text-[14px] font-medium text-gray-dark transition-colors hover:bg-gray-hover ${sectionFilter === value ? "bg-gray-hover" : ""}`}
+                        >
+                          {label}
+                          {sectionFilter === value && <img src={checkIcon} alt="" className="h-[16px] w-[16px]" />}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
             <div className="flex flex-col gap-4">
               <div className="h-[100px] rounded-xl bg-[#f5f5f5]" style={dashedBorderStyle} />
               <div className="h-[100px] rounded-xl bg-[#f5f5f5]" style={dashedBorderStyle} />
@@ -625,19 +737,6 @@ export default function ProfileV2() {
               <img src={chevronDownIcon} alt="" className="h-[16px] w-[16px]" />
             </button>
 
-            {/* Leland+ Resources */}
-            <div className="my-[36px] border-t border-gray-200" />
-            <h2 className="mb-1 text-[24px] font-medium text-gray-dark">Resources</h2>
-            <p className="mb-4 text-[18px] text-[#707070]">Access expert resources from Samantha and hundreds of other coaches on Leland+</p>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="h-[80px] rounded-xl bg-[#f5f5f5]" style={dashedBorderStyle} />
-              <div className="h-[80px] rounded-xl bg-[#f5f5f5]" style={dashedBorderStyle} />
-              <div className="h-[80px] rounded-xl bg-[#f5f5f5]" style={dashedBorderStyle} />
-              <div className="h-[80px] rounded-xl bg-[#f5f5f5]" style={dashedBorderStyle} />
-            </div>
-            <button className="mt-4 cursor-pointer rounded-lg bg-[#222222]/5 px-4 py-2.5 text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#222222]/[0.08]">
-              See more
-            </button>
           </div>
 
           {/* ── Activity group ── */}

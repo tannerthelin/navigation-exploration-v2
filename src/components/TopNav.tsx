@@ -19,7 +19,7 @@ import lelandLogo from "../assets/Logo.svg";
 /* ── Nav links ── */
 const navLinks = [
   { to: "/", label: "Home", end: true },
-  { to: "/events", label: "Free Events" },
+  { to: "/events", label: "Events" },
   { to: "/courses", label: "Courses" },
   { to: "/plus", label: "Leland+" },
 ];
@@ -104,13 +104,7 @@ export default function TopNav() {
             <NavLink
               to="/"
               end
-              className={({ isActive }) =>
-                `relative p-3 text-[18px] font-medium whitespace-nowrap rounded-lg transition-colors ${
-                  isActive
-                    ? "text-gray-dark"
-                    : "text-gray-light hover:bg-gray-hover"
-                }`
-              }
+              className="relative p-3 text-[18px] font-medium whitespace-nowrap rounded-lg text-[#222222] hover:bg-gray-hover"
             >
               Home
             </NavLink>
@@ -119,11 +113,7 @@ export default function TopNav() {
             <div ref={browseRef} className="relative">
               <button
                 onClick={() => setBrowseOpen(!browseOpen)}
-                className={`flex items-center gap-1 rounded-lg p-3 text-[18px] font-medium whitespace-nowrap transition-colors ${
-                  browseOpen
-                    ? "text-gray-dark"
-                    : "text-gray-light hover:bg-gray-hover"
-                }`}
+                className="flex items-center gap-1 rounded-lg p-3 text-[18px] font-medium whitespace-nowrap text-[#222222] hover:bg-gray-hover"
               >
                 Browse
                 <svg
@@ -190,13 +180,7 @@ export default function TopNav() {
                 key={to}
                 to={to}
                 end={end}
-                className={({ isActive }) =>
-                  `relative p-3 text-[18px] font-medium whitespace-nowrap rounded-lg transition-colors ${
-                    isActive
-                      ? "text-gray-dark"
-                      : "text-gray-light hover:bg-gray-hover"
-                  }`
-                }
+                className="relative p-3 text-[18px] font-medium whitespace-nowrap rounded-lg text-[#222222] hover:bg-gray-hover"
               >
                 {label}
               </NavLink>
@@ -209,11 +193,7 @@ export default function TopNav() {
           {/* Search */}
           <NavLink
             to="/search"
-            className={({ isActive }) =>
-              `flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
-                isActive ? "bg-gray-hover" : "hover:bg-gray-hover"
-              }`
-            }
+            className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-hover"
           >
             {({ isActive }) => (
               <img
@@ -227,11 +207,7 @@ export default function TopNav() {
           {/* Inbox */}
           <NavLink
             to="/messages"
-            className={({ isActive }) =>
-              `flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
-                isActive ? "bg-gray-hover" : "hover:bg-gray-hover"
-              }`
-            }
+            className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-hover"
           >
             {({ isActive }) => (
               <img
@@ -245,11 +221,7 @@ export default function TopNav() {
           {/* Notifications */}
           <NavLink
             to="/notifications"
-            className={({ isActive }) =>
-              `flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
-                isActive ? "bg-gray-hover" : "hover:bg-gray-hover"
-              }`
-            }
+            className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-hover"
           >
             {({ isActive }) => (
               <img
@@ -381,13 +353,7 @@ export default function TopNav() {
                 <NavLink
                   to="/"
                   end
-                  className={({ isActive }) =>
-                    `relative p-3 text-[18px] font-medium whitespace-nowrap rounded-lg transition-colors ${
-                      isActive
-                        ? "text-gray-dark"
-                        : "text-gray-light hover:bg-gray-hover"
-                    }`
-                  }
+                  className="relative p-3 text-[18px] font-medium whitespace-nowrap rounded-lg text-[#222222] hover:bg-gray-hover"
                 >
                   Home
                 </NavLink>
@@ -396,11 +362,7 @@ export default function TopNav() {
                 <div ref={browseRef} className="relative">
                   <button
                     onClick={() => setBrowseOpen(!browseOpen)}
-                    className={`flex items-center gap-1 rounded-lg p-3 text-[18px] font-medium whitespace-nowrap transition-colors ${
-                      browseOpen
-                        ? "text-gray-dark"
-                        : "text-gray-light hover:bg-gray-hover"
-                    }`}
+                    className="flex items-center gap-1 rounded-lg p-3 text-[18px] font-medium whitespace-nowrap text-[#222222] hover:bg-gray-hover"
                   >
                     Browse
                     <svg
@@ -467,13 +429,7 @@ export default function TopNav() {
                     key={to}
                     to={to}
                     end={end}
-                    className={({ isActive }) =>
-                      `relative p-3 text-[18px] font-medium whitespace-nowrap rounded-lg transition-colors ${
-                        isActive
-                          ? "text-gray-dark"
-                          : "text-gray-light hover:bg-gray-hover"
-                      }`
-                    }
+                    className="relative p-3 text-[18px] font-medium whitespace-nowrap rounded-lg text-[#222222] hover:bg-gray-hover"
                   >
                     {label}
                   </NavLink>
@@ -483,13 +439,9 @@ export default function TopNav() {
               {/* Inbox */}
               <NavLink
                 to="/messages"
-                className={({ isActive }) =>
-                  `flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
-                    isActive ? "bg-gray-hover" : "hover:bg-gray-hover"
-                  }`
-                }
+                className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-hover"
               >
-                {({ isActive }) => (
+                {({ isActive }: { isActive: boolean }) => (
                   <img
                     src={isActive ? chatActive : chatInactive}
                     alt="Inbox"
@@ -501,13 +453,9 @@ export default function TopNav() {
               {/* Notifications */}
               <NavLink
                 to="/notifications"
-                className={({ isActive }) =>
-                  `flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
-                    isActive ? "bg-gray-hover" : "hover:bg-gray-hover"
-                  }`
-                }
+                className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-hover"
               >
-                {({ isActive }) => (
+                {({ isActive }: { isActive: boolean }) => (
                   <img
                     src={isActive ? notificationsActive : notificationsInactive}
                     alt="Notifications"
