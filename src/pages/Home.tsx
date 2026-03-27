@@ -194,7 +194,7 @@ export const posts: Post[] = [
     avatar: lelandCompass,
     time: "1h",
     headline: "Official Leland Events",
-    body: "Join us for a live panel with admissions officers from HBS, Wharton, and GSB. Get your questions answered directly — no fluff, no scripts.",
+    body: "Curious about public policy grad school? Join Sarah Esquivel — Former Associate Director of Admissions at a Top 3 Public Policy School — for a live Ask Me Anything. Bring your questions about applications, programs, and career paths.",
     event: {
       title: "Public Policy Graduate Programs: Ask Me Anything",
       image: eventImageSrc,
