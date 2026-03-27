@@ -1840,7 +1840,7 @@ export default function Home() {
         />
         <button
           onClick={() => setComposeOpen(true)}
-          className="flex-1 rounded-full bg-gray-hover px-4 py-[10px] text-left text-[16px] text-gray-light transition-shadow hover:shadow-[0_0_0_2px_#dddddd]"
+          className="flex-1 rounded-full bg-gray-hover px-4 py-[10px] text-left text-[16px] text-gray-light transition-shadow hover:shadow-[0_0_0_1.5px_#111111]"
         >
           Create a post...
         </button>
