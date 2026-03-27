@@ -1506,7 +1506,7 @@ const suggestedExperts = [
   { name: "Jason Park",     avatar: pic14, verified: false, headline: "Deloitte Strategy Lead | MBA Career Coach | Finance & Consulting" },
 ];
 
-function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[number]; isOnline?: boolean }) {
+function ExpertCard({ expert }: { expert: typeof suggestedExperts[number]; isOnline?: boolean }) {
   const p = coachProfiles[expert.name];
   return (
     <div
