@@ -496,7 +496,7 @@ export default function PostDetail() {
   const { postId } = useParams<{ postId: string }>();
   const navigate = useNavigate();
   const location = useLocation();
-  const { focusInput = false } = (location.state as { sourceY?: number; focusInput?: boolean }) ?? {};
+  const { focusInput = false, prefillComment = "" } = (location.state as { sourceY?: number; focusInput?: boolean; prefillComment?: string }) ?? {};
   const post = posts.find(p => p.id === Number(postId));
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -508,7 +508,7 @@ export default function PostDetail() {
     }
   }, [focusInput]);
 
-  const [commentText, setCommentText] = useState("");
+  const [commentText, setCommentText] = useState(prefillComment);
   const [comments, setComments] = useState<CommentData[]>(() =>
     post ? getCommentsForPost(post.id) : []
   );

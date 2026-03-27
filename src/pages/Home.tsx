@@ -793,7 +793,8 @@ const CONFETTI: { color: string; x: number; delay: number; dur: number; drift: n
   { color: GREENS[2], x: 97, delay: 0.42, dur: 1.6, drift: -7,  w: 5,  h: 9,  shape: "rect",     spin: 360  },
 ];
 
-function MilestoneCard({ milestone }: { milestone: MilestonePost["milestone"] }) {
+function MilestoneCard({ milestone, postId, authorName }: { milestone: MilestonePost["milestone"]; postId: number; authorName: string }) {
+  const navigate = useNavigate();
   return (
     <div className="relative mt-3 overflow-hidden rounded-xl border border-gray-stroke">
       {/* Confetti */}
@@ -867,7 +868,13 @@ function MilestoneCard({ milestone }: { milestone: MilestonePost["milestone"] })
           </div>
 
           {/* CTA bottom-aligned */}
-          <button className="shrink-0 cursor-pointer rounded-lg bg-gray-100 px-4 py-2.5 text-[14px] font-semibold text-gray-dark transition-colors hover:bg-gray-200">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/post/${postId}`, { state: { focusInput: true, prefillComment: `@${authorName} Congratulations! 🎉` } });
+            }}
+            className="shrink-0 cursor-pointer rounded-lg bg-gray-100 px-4 py-2.5 text-[14px] font-semibold text-gray-dark transition-colors hover:bg-gray-200"
+          >
             Say congratulations
           </button>
         </div>
@@ -1420,39 +1427,25 @@ function CoachHoverCard({ author, avatar, verified, headline, isEvent }: {
       transition={{ duration: 0.15, ease: "easeOut" }}
       onMouseEnter={(e) => e.stopPropagation()}
     >
-      {/* Avatar + name row — matches expert card layout */}
-      <div className="flex items-start gap-3">
-        <img
-          src={avatar}
-          alt={author}
-          className="h-[112px] w-[112px] shrink-0 rounded-xl object-cover shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]"
-          style={{ objectPosition: "50% 15%" }}
-        />
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-1.5">
-            <span className="text-[17px] font-medium leading-tight text-gray-dark">{author}</span>
-            {verified ? <img src={verifiedIcon} alt="" className="h-[15px] w-[15px] shrink-0" /> : null}
+      {/* Avatar — full width */}
+      <img
+        src={avatar}
+        alt={author}
+        className="h-[140px] w-full rounded-xl object-cover shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]"
+        style={{ objectPosition: "50% 15%" }}
+      />
+
+      {/* Name + rating on same line below avatar */}
+      <div className="mt-2.5 flex items-center gap-2">
+        <span className="text-[17px] font-medium leading-tight text-gray-dark">{author}</span>
+        {verified ? <img src={verifiedIcon} alt="" className="h-[15px] w-[15px] shrink-0" /> : null}
+        {p ? (
+          <div className="flex items-center gap-1 text-[15px]">
+            <span className="text-yellow-400">★</span>
+            <span className="font-semibold text-gray-dark">{p.rating.toFixed(1)}</span>
+            <span className="text-gray-light">({p.reviews})</span>
           </div>
-          {p ? (
-            <div className="mt-0.5 flex items-center gap-1 text-[15px]">
-              <span className="text-yellow-400">★</span>
-              <span className="font-semibold text-gray-dark">{p.rating.toFixed(1)}</span>
-              <span className="text-gray-light">({p.reviews})</span>
-            </div>
-          ) : null}
-        </div>
-        {/* Follow button — grey fill, no outline */}
-        <button
-          className="shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-dark transition-colors hover:bg-gray-200"
-          aria-label="Follow"
-        >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-            <circle cx="9" cy="7" r="4" />
-            <line x1="19" y1="8" x2="19" y2="14" />
-            <line x1="22" y1="11" x2="16" y2="11" />
-          </svg>
-        </button>
+        ) : null}
       </div>
 
       {/* Headline */}
@@ -1512,11 +1505,24 @@ function CoachHoverCard({ author, avatar, verified, headline, isEvent }: {
 
       {/* CTAs */}
       <div className="mt-4 flex gap-2">
-        <button className="flex flex-1 cursor-pointer items-center justify-center rounded-lg bg-gray-100 py-2.5 text-[15px] font-semibold text-gray-dark transition-colors hover:bg-gray-200">
-          Message
+        {/* Message — icon only */}
+        <button aria-label="Message" className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-gray-100 text-gray-dark transition-colors hover:bg-gray-200">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
         </button>
+        {/* Book — full width */}
         <button className="flex flex-1 cursor-pointer items-center justify-center rounded-lg bg-gray-dark py-2.5 text-[15px] font-semibold text-white transition-colors hover:bg-[#222]">
           Book a session
+        </button>
+        {/* Follow — icon only */}
+        <button aria-label="Follow" className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-gray-100 text-gray-dark transition-colors hover:bg-gray-200">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <line x1="19" y1="8" x2="19" y2="14"/>
+            <line x1="22" y1="11" x2="16" y2="11"/>
+          </svg>
         </button>
       </div>
     </motion.div>
@@ -1606,7 +1612,7 @@ function FeedPost({ post }: { post: Post }) {
             {post.type === "image" && <ImageGallery images={post.images} />}
             {post.type === "link" && <LinkCard link={post.link} />}
             {post.type === "event" && <EventCard event={post.event} />}
-            {post.type === "milestone" && <MilestoneCard milestone={post.milestone} />}
+            {post.type === "milestone" && <MilestoneCard milestone={post.milestone} postId={post.id} authorName={post.milestone.clientName} />}
             {post.type === "live" && <LiveCard live={post.live} author={post.author} avatar={post.avatar} />}
           </div>
         </div>
