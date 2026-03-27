@@ -538,8 +538,6 @@ function FeedRepostButton({ initialCount }: { initialCount: number }) {
   const [reposted, setReposted] = useState(false);
   const [burst, setBurst] = useState(false);
   const [open, setOpen] = useState(false);
-  const [menuPos, setMenuPos] = useState({ x: 0, y: 0 });
-  const btnRef = useRef<HTMLButtonElement>(null);
 
   const triggerRepost = () => {
     if (!reposted) {
@@ -548,13 +546,6 @@ function FeedRepostButton({ initialCount }: { initialCount: number }) {
       setTimeout(() => setBurst(false), 700);
     }
     setOpen(false);
-  };
-
-  const handleOpen = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const rect = btnRef.current?.getBoundingClientRect();
-    if (rect) setMenuPos({ x: rect.left, y: rect.top });
-    setOpen(o => !o);
   };
 
   return (
@@ -581,8 +572,7 @@ function FeedRepostButton({ initialCount }: { initialCount: number }) {
       </div>
 
       <button
-        ref={btnRef}
-        onClick={handleOpen}
+        onClick={(e) => { e.stopPropagation(); setOpen(o => !o); }}
         className={`flex cursor-pointer items-center gap-1 rounded-[100px] px-2 py-1.5 transition-colors hover:bg-gray-hover ${reposted ? "text-[#00b894]" : "text-gray-light"}`}
       >
         <motion.img
@@ -602,18 +592,16 @@ function FeedRepostButton({ initialCount }: { initialCount: number }) {
         </motion.span>
       </button>
 
-      {/* Dropdown via portal — fixed positioning to avoid overflow clipping */}
       <AnimatePresence>
-        {open ? createPortal(
+        {open ? (
           <>
             <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 4 }}
+              initial={{ opacity: 0, scale: 0.95, y: -4 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 4 }}
+              exit={{ opacity: 0, scale: 0.95, y: -4 }}
               transition={{ duration: 0.12 }}
-              style={{ position: "fixed", left: menuPos.x, top: menuPos.y - 130, zIndex: 50 }}
-              className="w-72 overflow-hidden rounded-lg border border-[#f0f0f0] bg-white shadow-md"
+              className="absolute bottom-full left-0 z-50 mb-2 w-64 overflow-hidden rounded-lg border border-[#f0f0f0] bg-white shadow-md"
             >
               <button onClick={triggerRepost} className="flex w-full items-center gap-3 px-4 py-3 text-left text-[15px] text-gray-dark hover:bg-gray-hover">
                 <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
@@ -625,8 +613,7 @@ function FeedRepostButton({ initialCount }: { initialCount: number }) {
                 Repost
               </button>
             </motion.div>
-          </>,
-          document.body
+          </>
         ) : null}
       </AnimatePresence>
     </div>

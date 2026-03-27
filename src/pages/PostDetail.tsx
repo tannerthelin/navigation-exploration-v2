@@ -258,21 +258,21 @@ function PostMedia({ post }: { post: Post }) {
 
 function StatsRow({ post }: { post: Post }) {
   return (
-    <div className="mt-2 flex items-center gap-5 py-1.5">
-      <button className="flex items-center gap-1.5 text-gray-light transition-colors hover:text-gray-dark">
-        <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <div className="mt-2 flex items-center gap-2 py-1.5">
+      <button className="flex cursor-pointer items-center gap-1 rounded-[100px] px-2 py-1.5 text-gray-light transition-colors hover:bg-gray-hover">
+        <svg className="h-[22px] w-[22px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
         </svg>
-        <span className="text-[14px]"><span className="text-gray-dark">{post.likes.toLocaleString()}</span> Likes</span>
+        {post.likes > 0 && <span className="text-[15px] font-normal">{post.likes.toLocaleString()}</span>}
       </button>
       {[
         { icon: commentsIcon, count: post.comments, label: "Comments" },
         { icon: repostsIcon, count: post.reposts, label: "Reposts" },
         { icon: sharesIcon, count: post.shares, label: "Shares" },
       ].map(({ icon, count, label }) => (
-        <button key={label} className="flex items-center gap-1.5 text-gray-light transition-colors hover:text-gray-dark">
-          <img src={icon} alt={label} className="h-[18px] w-[18px] [filter:invert(44%)]" />
-          <span className="text-[14px]"><span className="text-gray-dark">{count.toLocaleString()}</span> {label}</span>
+        <button key={label} className="flex cursor-pointer items-center gap-1 rounded-[100px] px-2 py-1.5 text-gray-light transition-colors hover:bg-gray-hover">
+          <img src={icon} alt={label} className="h-[22px] w-[22px] [filter:invert(44%)]" />
+          {count > 0 && <span className="text-[15px] font-normal">{count.toLocaleString()}</span>}
         </button>
       ))}
     </div>
