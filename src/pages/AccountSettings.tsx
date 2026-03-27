@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import TopNav from "../components/TopNav";
+import MobileTopNav from "../components/MobileTopNav";
+import BottomNav from "../components/BottomNav";
+import { ExtraLinksProvider } from "../components/ExtraLinksContext";
 import settingsIcon from "../assets/icons/settings.svg";
 import giftIcon from "../assets/icons/gift.svg";
 import orderHistoryIcon from "../assets/icons/order-history.svg";
@@ -139,12 +142,17 @@ export default function AccountSettings() {
 
   return (
     <div className="min-h-full bg-white">
+      <div className="md:hidden">
+        <ExtraLinksProvider>
+          <MobileTopNav />
+        </ExtraLinksProvider>
+      </div>
       <div className="sticky top-0 z-30 hidden md:block">
         <TopNav />
       </div>
     <div className="flex min-h-[calc(100vh-73px)]">
       {/* Sidebar */}
-      <div className="w-[220px] shrink-0 border-r border-gray-stroke p-2">
+      <div className="hidden w-[220px] shrink-0 border-r border-gray-stroke p-2 md:block">
         <nav className="flex flex-col gap-1">
           {tabs.map((tab) => (
             <button
@@ -164,9 +172,9 @@ export default function AccountSettings() {
       </div>
 
       {/* Content area */}
-      <div className="flex flex-1 justify-center px-10 pt-6">
+      <div className="flex flex-1 justify-center px-5 pt-20 pb-20 md:px-10 md:pt-6 md:pb-0">
         <div className="w-full max-w-[680px]">
-          <h1 className="text-[40px] font-medium text-gray-dark">
+          <h1 className="text-[32px] font-medium text-gray-dark md:text-[40px]">
             {(() => { const t = tabs.find((t) => t.key === activeTab); return t?.title ?? t?.label; })()}
           </h1>
           {(() => { const t = tabs.find((t) => t.key === activeTab); return t?.subtitle ? <p className="mt-2 text-[18px] text-gray-light">{t.subtitle}</p> : null; })()}
@@ -356,6 +364,9 @@ export default function AccountSettings() {
         </div>
       </div>
     </div>
+      <div className="md:hidden">
+        <BottomNav />
+      </div>
     </div>
   );
 }

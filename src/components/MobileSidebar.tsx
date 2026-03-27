@@ -71,7 +71,7 @@ export default function MobileSidebar({ open, onClose }: MobileSidebarProps) {
               <p className="mt-3 text-[16px] font-semibold text-gray-dark">Jane Doe</p>
               <p className="text-sm text-gray-light">jane@example.com</p>
               <NavLink
-                to="/profile"
+                to="/profile-v2"
                 onClick={onClose}
                 className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-[#222222]/5 py-2.5 text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#222222]/[0.08]"
               >

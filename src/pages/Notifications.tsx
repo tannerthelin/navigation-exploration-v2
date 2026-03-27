@@ -26,7 +26,7 @@ export default function Notifications() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="text-[40px] font-medium text-gray-dark">
+        <h1 className="text-[32px] font-medium text-gray-dark md:text-[40px]">
           Notifications
         </h1>
         <div className="relative" ref={menuRef}>
