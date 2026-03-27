@@ -770,11 +770,9 @@ function MilestoneCard({ milestone }: { milestone: MilestonePost["milestone"] })
             <p className="mt-0.5 text-[17px] font-semibold leading-tight text-gray-dark">{milestone.school}</p>
             <p className="text-[14px] text-gray-light">{milestone.program}</p>
           </div>
-        </div>
 
-        {/* CTA bottom-right */}
-        <div className="mt-4 flex justify-end">
-          <button className="cursor-pointer rounded-xl bg-gray-100 px-4 py-2.5 text-[14px] font-semibold text-gray-dark transition-colors hover:bg-gray-200">
+          {/* CTA bottom-aligned */}
+          <button className="shrink-0 cursor-pointer rounded-xl bg-gray-100 px-4 py-2.5 text-[14px] font-semibold text-gray-dark transition-colors hover:bg-gray-200">
             Say congratulations
           </button>
         </div>
