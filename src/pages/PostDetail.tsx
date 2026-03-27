@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { posts, type Post } from "./Home";
 
@@ -487,7 +487,11 @@ function CommentItem({ comment, depth = 0 }: { comment: CommentData; depth?: num
 export default function PostDetail() {
   const { postId } = useParams<{ postId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
+  const sourceY = (location.state as { sourceY?: number })?.sourceY ?? 80;
   const post = posts.find(p => p.id === Number(postId));
+
+  useEffect(() => { window.scrollTo(0, 0); }, []);
 
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState<CommentData[]>(() =>
@@ -520,7 +524,11 @@ export default function PostDetail() {
   };
 
   return (
-    <div className="mx-auto max-w-[600px] px-4">
+    <motion.div
+      initial={{ y: Math.min(sourceY, window.innerHeight * 0.55), opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ type: "spring", stiffness: 380, damping: 36, mass: 0.8 }}
+    >
       {/* Back button */}
       <button
         onClick={() => navigate(-1)}
@@ -586,6 +594,6 @@ export default function PostDetail() {
           <CommentItem key={c.id} comment={c} />
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }

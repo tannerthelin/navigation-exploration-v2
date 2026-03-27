@@ -473,7 +473,7 @@ function ActionBar({ likes, comments, reposts, shares, postId }: { likes: number
     <div className="mt-1 flex items-center gap-2 pl-[44px]">
       <FeedLikeButton initialCount={likes} />
       {[
-        { icon: commentsIcon, count: comments, label: "Comment", onClick: () => navigate(`/post/${postId}`) },
+        { icon: commentsIcon, count: comments, label: "Comment", onClick: (e: React.MouseEvent) => { const rect = (e.currentTarget as HTMLElement).closest('[class*="pt-5"]')?.getBoundingClientRect(); navigate(`/post/${postId}`, { state: { sourceY: rect?.top ?? 80 } }); } },
         { icon: repostsIcon,  count: reposts,  label: "Repost",  onClick: undefined as (() => void) | undefined },
         { icon: sharesIcon,   count: shares,   label: "Share",   onClick: undefined as (() => void) | undefined },
       ].map(({ icon, count, label, onClick }) => (
@@ -1404,7 +1404,10 @@ function FeedPost({ post }: { post: Post }) {
     <div className="pt-5 pb-[14px]">
       <div
         className="flex gap-3 cursor-pointer"
-        onClick={() => navigate(`/post/${post.id}`)}
+        onClick={(e) => {
+          const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+          navigate(`/post/${post.id}`, { state: { sourceY: rect.top } });
+        }}
       >
         {/* Left column: avatar with hover card */}
         <div onClick={e => e.stopPropagation()}>
