@@ -743,24 +743,24 @@ function MilestoneCard({ milestone }: { milestone: MilestonePost["milestone"] })
             <img
               src={milestone.schoolLogo}
               alt={milestone.school}
-              className="relative z-0 h-14 w-14 shrink-0 rounded-full object-cover ring-2 ring-white"
+              className="relative z-0 h-28 w-28 shrink-0 rounded-full object-cover ring-2 ring-white"
             />
           ) : (
             <div
-              className="relative z-0 flex h-14 w-14 shrink-0 items-center justify-center rounded-full text-[22px] font-bold text-white ring-2 ring-white"
+              className="relative z-0 flex h-28 w-28 shrink-0 items-center justify-center rounded-full text-[32px] font-bold text-white ring-2 ring-white"
               style={{ backgroundColor: milestone.schoolColor }}
             >
               {milestone.schoolInitial}
             </div>
           )}
           {/* Client avatar — overlaps on top */}
-          <div className="relative z-10 -ml-4 shrink-0">
+          <div className="relative z-10 -ml-8 shrink-0">
             <img
               src={milestone.clientAvatar}
               alt={milestone.clientName}
-              className="h-14 w-14 rounded-full object-cover ring-2 ring-white shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)]"
+              className="h-28 w-28 rounded-full object-cover ring-2 ring-white shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)]"
             />
-            <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-white text-[14px] shadow-sm">
+            <span className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full bg-white text-[18px] shadow-sm">
               🎉
             </span>
           </div>
@@ -772,6 +772,11 @@ function MilestoneCard({ milestone }: { milestone: MilestonePost["milestone"] })
           <p className="mt-0.5 text-[17px] font-semibold leading-tight text-gray-dark">{milestone.school}</p>
           <p className="text-[14px] text-gray-light">{milestone.program}</p>
         </div>
+
+        {/* CTA */}
+        <button className="shrink-0 cursor-pointer rounded-xl bg-gray-100 px-4 py-2.5 text-[14px] font-semibold text-gray-dark transition-colors hover:bg-gray-200">
+          Say congratulations
+        </button>
       </div>
     </div>
   );
