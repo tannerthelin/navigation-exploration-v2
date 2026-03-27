@@ -1654,11 +1654,41 @@ function SuggestedExperts() {
 
 // ─── Compose Modal ────────────────────────────────────
 
-const COMPOSE_EVENT = (posts.find(p => p.type === "event") as EventPost | undefined)?.event;
+const UPCOMING_EVENTS: EventPost["event"][] = [
+  {
+    title: "Public Policy Graduate Programs: Ask Me Anything",
+    image: eventImageSrc,
+    date: "Thursday, April 3, 2026",
+    time: "6:00 PM – 7:30 PM PT",
+    format: "Online",
+    spotsLeft: 38,
+    registered: 142,
+  },
+  {
+    title: "MBA Admissions Office Hours with Ex-Wharton Advisor",
+    image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1200&h=628&fit=crop",
+    date: "Tuesday, April 8, 2026",
+    time: "5:00 PM – 6:00 PM PT",
+    format: "Online",
+    spotsLeft: 12,
+    registered: 88,
+  },
+  {
+    title: "Law School Application Strategy: Live Q&A",
+    image: "https://images.unsplash.com/photo-1589391886645-d51941baf7fb?w=1200&h=628&fit=crop",
+    date: "Saturday, April 12, 2026",
+    time: "11:00 AM – 12:00 PM PT",
+    format: "Online",
+    spotsLeft: 55,
+    registered: 210,
+  },
+];
 
 function ComposeModal({ onClose, onPost }: { onClose: () => void; onPost: (text: string) => void }) {
   const [text, setText] = useState("");
   const [eventAttached, setEventAttached] = useState(false);
+  const [selectingEvent, setSelectingEvent] = useState(false);
+  const [eventIndex, setEventIndex] = useState(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -1725,33 +1755,74 @@ function ComposeModal({ onClose, onPost }: { onClose: () => void; onPost: (text:
           </div>
         </div>
 
-        {/* Attached event preview */}
+        {/* Event picker / attached preview */}
         <AnimatePresence>
-          {eventAttached && COMPOSE_EVENT ? (
+          {(selectingEvent || eventAttached) ? (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               className="overflow-hidden px-4 pb-3"
             >
-              <div className="relative overflow-hidden rounded-xl border border-gray-stroke">
-                <button
-                  onClick={() => setEventAttached(false)}
-                  className="absolute top-2 right-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60"
-                >
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-                </button>
-                <img src={COMPOSE_EVENT.image} alt={COMPOSE_EVENT.title} className="aspect-[1200/628] w-full object-cover" />
-                <div className="px-4 py-3">
-                  <p className="text-[15px] font-semibold text-gray-dark">{COMPOSE_EVENT.title}</p>
-                  <div className="mt-1 flex items-center gap-2 text-[13px] text-gray-light">
-                    <svg className="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    <span>{COMPOSE_EVENT.date}</span>
-                    <span>·</span>
-                    <span>{COMPOSE_EVENT.time}</span>
+              {selectingEvent ? (
+                /* Carousel picker */
+                <div>
+                  <p className="mb-2 text-[13px] font-medium text-gray-light">Select an event to attach</p>
+                  <div className="relative">
+                    <div className="overflow-hidden rounded-xl border border-gray-stroke">
+                      <img src={UPCOMING_EVENTS[eventIndex].image} alt={UPCOMING_EVENTS[eventIndex].title} className="aspect-[1200/628] w-full object-cover" />
+                      <div className="px-4 py-3">
+                        <p className="text-[15px] font-semibold text-gray-dark">{UPCOMING_EVENTS[eventIndex].title}</p>
+                        <div className="mt-1 flex items-center gap-2 text-[13px] text-gray-light">
+                          <svg className="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                          <span>{UPCOMING_EVENTS[eventIndex].date}</span>
+                          <span>·</span>
+                          <span>{UPCOMING_EVENTS[eventIndex].time}</span>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Prev arrow */}
+                    {eventIndex > 0 ? (
+                      <button onClick={() => setEventIndex(i => i - 1)} className="absolute left-2 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md border border-gray-stroke text-gray-dark hover:bg-gray-hover transition-colors">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+                      </button>
+                    ) : null}
+                    {/* Next arrow */}
+                    {eventIndex < UPCOMING_EVENTS.length - 1 ? (
+                      <button onClick={() => setEventIndex(i => i + 1)} className="absolute right-2 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md border border-gray-stroke text-gray-dark hover:bg-gray-hover transition-colors">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+                      </button>
+                    ) : null}
+                  </div>
+                  {/* Dot indicators */}
+                  <div className="mt-2 flex justify-center gap-1.5">
+                    {UPCOMING_EVENTS.map((_, i) => (
+                      <button key={i} onClick={() => setEventIndex(i)} className={`h-1.5 w-1.5 rounded-full transition-colors ${i === eventIndex ? "bg-gray-dark" : "bg-gray-stroke"}`} />
+                    ))}
+                  </div>
+                  <div className="mt-3 flex justify-end gap-2">
+                    <button onClick={() => { setSelectingEvent(false); }} className="rounded-lg px-4 py-2 text-[14px] font-medium text-gray-light hover:text-gray-dark transition-colors">Cancel</button>
+                    <button onClick={() => { setEventAttached(true); setSelectingEvent(false); }} className="rounded-lg bg-gray-dark px-4 py-2 text-[14px] font-semibold text-white hover:opacity-90 transition-opacity">Attach</button>
                   </div>
                 </div>
-              </div>
+              ) : (
+                /* Attached preview */
+                <div className="relative overflow-hidden rounded-xl border border-gray-stroke">
+                  <button onClick={() => setEventAttached(false)} className="absolute top-2 right-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                  </button>
+                  <img src={UPCOMING_EVENTS[eventIndex].image} alt={UPCOMING_EVENTS[eventIndex].title} className="aspect-[1200/628] w-full object-cover" />
+                  <div className="px-4 py-3">
+                    <p className="text-[15px] font-semibold text-gray-dark">{UPCOMING_EVENTS[eventIndex].title}</p>
+                    <div className="mt-1 flex items-center gap-2 text-[13px] text-gray-light">
+                      <svg className="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                      <span>{UPCOMING_EVENTS[eventIndex].date}</span>
+                      <span>·</span>
+                      <span>{UPCOMING_EVENTS[eventIndex].time}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </motion.div>
           ) : null}
         </AnimatePresence>
@@ -1759,7 +1830,7 @@ function ComposeModal({ onClose, onPost }: { onClose: () => void; onPost: (text:
         {/* Suggestion chips */}
         <div className="flex flex-wrap gap-2 px-4 pb-4">
           {[
-            { label: "Attach your upcoming event", icon: <path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z" />, onClick: () => setEventAttached(true) },
+            { label: "Attach your upcoming event", icon: <path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z" />, onClick: () => { setSelectingEvent(true); setEventAttached(false); setEventIndex(0); } },
             { label: "Attach Bootcamp", icon: <><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></>, onClick: undefined as (() => void) | undefined },
             { label: "Go Live", icon: <><circle cx="12" cy="12" r="3"/><path d="M8.5 8.5a5 5 0 000 7M15.5 8.5a5 5 0 010 7"/><path d="M5.5 5.5a9 9 0 000 13M18.5 5.5a9 9 0 010 13"/></>, onClick: undefined as (() => void) | undefined },
           ].map(({ label, icon, onClick }) => (
