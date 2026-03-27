@@ -1104,7 +1104,7 @@ function LiveCard({ live, author, avatar }: { live: LivePost["live"]; author: st
         </div>
         <button
           onClick={() => setModal("info")}
-          className="shrink-0 cursor-pointer rounded-lg bg-gray-100 px-[14px] py-1.5 text-[14px] font-medium text-gray-dark transition-colors hover:bg-gray-200"
+          className="shrink-0 cursor-pointer rounded-xl bg-gray-100 px-4 py-2.5 text-[14px] font-semibold text-gray-dark transition-colors hover:bg-gray-200"
         >
           Join live
         </button>
