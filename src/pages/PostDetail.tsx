@@ -271,7 +271,7 @@ function StatsRow({ post }: { post: Post }) {
         { icon: sharesIcon, count: post.shares, label: "Shares" },
       ].map(({ icon, count, label }) => (
         <button key={label} className="flex items-center gap-1.5 text-gray-light transition-colors hover:text-gray-dark">
-          <img src={icon} alt={label} className="h-[18px] w-[18px] [filter:invert(46%)]" />
+          <img src={icon} alt={label} className="h-[18px] w-[18px] [filter:invert(44%)]" />
           <span className="text-[14px]"><span className="text-gray-dark">{count.toLocaleString()}</span> {label}</span>
         </button>
       ))}
