@@ -1650,8 +1650,11 @@ function SuggestedExperts() {
 
 // ─── Compose Modal ────────────────────────────────────
 
+const COMPOSE_EVENT = (posts.find(p => p.type === "event") as EventPost | undefined)?.event;
+
 function ComposeModal({ onClose, onPost }: { onClose: () => void; onPost: (text: string) => void }) {
   const [text, setText] = useState("");
+  const [eventAttached, setEventAttached] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -1718,15 +1721,47 @@ function ComposeModal({ onClose, onPost }: { onClose: () => void; onPost: (text:
           </div>
         </div>
 
+        {/* Attached event preview */}
+        <AnimatePresence>
+          {eventAttached && COMPOSE_EVENT ? (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="overflow-hidden px-4 pb-3"
+            >
+              <div className="relative overflow-hidden rounded-xl border border-gray-stroke">
+                <button
+                  onClick={() => setEventAttached(false)}
+                  className="absolute top-2 right-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60"
+                >
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+                <img src={COMPOSE_EVENT.image} alt={COMPOSE_EVENT.title} className="aspect-[1200/628] w-full object-cover" />
+                <div className="px-4 py-3">
+                  <p className="text-[15px] font-semibold text-gray-dark">{COMPOSE_EVENT.title}</p>
+                  <div className="mt-1 flex items-center gap-2 text-[13px] text-gray-light">
+                    <svg className="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    <span>{COMPOSE_EVENT.date}</span>
+                    <span>·</span>
+                    <span>{COMPOSE_EVENT.time}</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
+
         {/* Suggestion chips */}
         <div className="flex flex-wrap gap-2 px-4 pb-4">
           {[
-            { label: "Attach your upcoming event", icon: <path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z" /> },
-            { label: "Attach Bootcamp", icon: <><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></> },
-            { label: "Go Live", icon: <><circle cx="12" cy="12" r="3"/><path d="M8.5 8.5a5 5 0 000 7M15.5 8.5a5 5 0 010 7"/><path d="M5.5 5.5a9 9 0 000 13M18.5 5.5a9 9 0 010 13"/></> },
-          ].map(({ label, icon }) => (
+            { label: "Attach your upcoming event", icon: <path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z" />, onClick: () => setEventAttached(true) },
+            { label: "Attach Bootcamp", icon: <><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></>, onClick: undefined as (() => void) | undefined },
+            { label: "Go Live", icon: <><circle cx="12" cy="12" r="3"/><path d="M8.5 8.5a5 5 0 000 7M15.5 8.5a5 5 0 010 7"/><path d="M5.5 5.5a9 9 0 000 13M18.5 5.5a9 9 0 010 13"/></>, onClick: undefined as (() => void) | undefined },
+          ].map(({ label, icon, onClick }) => (
             <button
               key={label}
+              onClick={onClick}
               className="flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-[13px] font-medium text-gray-dark transition-colors hover:bg-gray-200"
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
