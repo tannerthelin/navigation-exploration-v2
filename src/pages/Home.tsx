@@ -735,48 +735,50 @@ function MilestoneCard({ milestone }: { milestone: MilestonePost["milestone"] })
       </div>
 
       {/* Card content */}
-      <div className="flex items-center gap-4 px-4 py-4">
-        {/* Overlapping avatars */}
-        <div className="relative flex shrink-0 items-center">
-          {/* School logo/avatar — behind */}
-          {milestone.schoolLogo ? (
-            <img
-              src={milestone.schoolLogo}
-              alt={milestone.school}
-              className="relative z-0 h-28 w-28 shrink-0 rounded-full object-cover ring-2 ring-white"
-            />
-          ) : (
-            <div
-              className="relative z-0 flex h-28 w-28 shrink-0 items-center justify-center rounded-full text-[32px] font-bold text-white ring-2 ring-white"
-              style={{ backgroundColor: milestone.schoolColor }}
-            >
-              {milestone.schoolInitial}
+      <div className="px-5 py-5">
+        <div className="flex items-center gap-4">
+          {/* Overlapping avatars */}
+          <div className="relative flex shrink-0 items-center">
+            {milestone.schoolLogo ? (
+              <img
+                src={milestone.schoolLogo}
+                alt={milestone.school}
+                className="relative z-0 h-20 w-20 shrink-0 rounded-full object-cover ring-2 ring-white"
+              />
+            ) : (
+              <div
+                className="relative z-0 flex h-20 w-20 shrink-0 items-center justify-center rounded-full text-[26px] font-bold text-white ring-2 ring-white"
+                style={{ backgroundColor: milestone.schoolColor }}
+              >
+                {milestone.schoolInitial}
+              </div>
+            )}
+            <div className="relative z-10 -ml-6 shrink-0">
+              <img
+                src={milestone.clientAvatar}
+                alt={milestone.clientName}
+                className="h-20 w-20 rounded-full object-cover ring-2 ring-white shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)]"
+              />
+              <span className="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full bg-white text-[16px] shadow-sm">
+                🎉
+              </span>
             </div>
-          )}
-          {/* Client avatar — overlaps on top */}
-          <div className="relative z-10 -ml-8 shrink-0">
-            <img
-              src={milestone.clientAvatar}
-              alt={milestone.clientName}
-              className="h-28 w-28 rounded-full object-cover ring-2 ring-white shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)]"
-            />
-            <span className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full bg-white text-[18px] shadow-sm">
-              🎉
-            </span>
+          </div>
+
+          {/* Text */}
+          <div className="min-w-0 flex-1">
+            <p className="text-[13px] font-medium uppercase tracking-wide text-gray-light">Admitted</p>
+            <p className="mt-0.5 text-[17px] font-semibold leading-tight text-gray-dark">{milestone.school}</p>
+            <p className="text-[14px] text-gray-light">{milestone.program}</p>
           </div>
         </div>
 
-        {/* Text */}
-        <div className="min-w-0 flex-1">
-          <p className="text-[13px] font-medium uppercase tracking-wide text-gray-light">Admitted</p>
-          <p className="mt-0.5 text-[17px] font-semibold leading-tight text-gray-dark">{milestone.school}</p>
-          <p className="text-[14px] text-gray-light">{milestone.program}</p>
+        {/* CTA bottom-right */}
+        <div className="mt-4 flex justify-end">
+          <button className="cursor-pointer rounded-xl bg-gray-100 px-4 py-2.5 text-[14px] font-semibold text-gray-dark transition-colors hover:bg-gray-200">
+            Say congratulations
+          </button>
         </div>
-
-        {/* CTA */}
-        <button className="shrink-0 cursor-pointer rounded-xl bg-gray-100 px-4 py-2.5 text-[14px] font-semibold text-gray-dark transition-colors hover:bg-gray-200">
-          Say congratulations
-        </button>
       </div>
     </div>
   );
