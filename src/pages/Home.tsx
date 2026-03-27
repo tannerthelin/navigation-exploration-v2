@@ -527,7 +527,7 @@ function ActionBar({ likes, comments, reposts, postId }: { likes: number; commen
     <div className="mt-1 flex items-center gap-2 pl-[44px]">
       <FeedLikeButton initialCount={likes} />
       {[
-        { icon: commentsIcon, count: comments, label: "Comment", onClick: (e: React.MouseEvent) => { const rect = (e.currentTarget as HTMLElement).closest('[class*="pt-5"]')?.getBoundingClientRect(); navigate(`/post/${postId}`, { state: { sourceY: rect?.top ?? 80 } }); } },
+        { icon: commentsIcon, count: comments, label: "Comment", onClick: (e: React.MouseEvent) => { const rect = (e.currentTarget as HTMLElement).closest('[class*="pt-5"]')?.getBoundingClientRect(); navigate(`/post/${postId}`, { state: { sourceY: rect?.top ?? 80, focusInput: true } }); } },
         { icon: repostsIcon,  count: reposts,  label: "Repost",  onClick: undefined as ((e: React.MouseEvent) => void) | undefined },
       ].map(({ icon, count, label, onClick }) => (
         <button key={label} onClick={onClick} className="flex cursor-pointer items-center gap-1 rounded-[100px] px-2 py-1.5 text-gray-light transition-colors hover:bg-gray-hover">

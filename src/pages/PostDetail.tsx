@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { posts, type Post } from "./Home";
@@ -488,10 +488,17 @@ export default function PostDetail() {
   const { postId } = useParams<{ postId: string }>();
   const navigate = useNavigate();
   const location = useLocation();
-  const sourceY = (location.state as { sourceY?: number })?.sourceY ?? 80;
+  const { sourceY = 80, focusInput = false } = (location.state as { sourceY?: number; focusInput?: boolean }) ?? {};
   const post = posts.find(p => p.id === Number(postId));
+  const commentInputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
+  useEffect(() => {
+    if (focusInput) {
+      const t = setTimeout(() => commentInputRef.current?.focus(), 380);
+      return () => clearTimeout(t);
+    }
+  }, [focusInput]);
 
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState<CommentData[]>(() =>
@@ -557,6 +564,7 @@ export default function PostDetail() {
         />
         <div className="flex-1">
           <textarea
+            ref={commentInputRef}
             value={commentText}
             onChange={e => {
               setCommentText(e.target.value);
