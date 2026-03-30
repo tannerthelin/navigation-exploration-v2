@@ -2281,33 +2281,37 @@ function HomeSidebar() {
       {/* Upcoming Sessions */}
       <div className="px-1">
         <div className="mb-4 flex items-center justify-between">
-          <span className="text-[11px] font-medium uppercase tracking-widest text-gray-xlight">Upcoming Sessions</span>
+          <span className="text-[14px] font-medium uppercase tracking-widest text-gray-xlight">Upcoming Sessions</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-xlight"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-4">
           {[
             { month: "OCT", day: "22", title: "Mock Interview", time: "Today, 3:00 PM", coach: "Jasmine Singer", avatar: pic3 },
             { month: "OCT", day: "29", title: "Resume Review", time: "Oct 29, 5:00 PM", coach: "Michael Busby", avatar: pic5 },
             { month: "NOV", day: "3",  title: "Jasmine <> James Sync", time: "Nov 3, 5:00 PM", coach: "Jasmine Singer", avatar: pic3 },
           ].map(s => (
-            <div key={s.title} className="flex items-center gap-4">
-              {/* Large square calendar tile */}
-              <div className="flex h-[72px] w-[72px] shrink-0 flex-col items-center justify-center rounded-xl bg-gray-100">
-                <span className="text-[14px] font-medium uppercase tracking-wide text-gray-light">{s.month}</span>
-                <span className="text-[38px] font-bold leading-none text-gray-dark">{s.day}</span>
+            <div key={s.title} className="flex items-start gap-3">
+              {/* Calendar tile: grey top strip (month) + white bottom (day) */}
+              <div className="w-[46px] shrink-0 overflow-hidden rounded-lg border border-gray-200 shadow-sm">
+                <div className="bg-gray-100 py-0.5 text-center">
+                  <span className="text-[9px] font-medium uppercase tracking-wide text-gray-light">{s.month}</span>
+                </div>
+                <div className="bg-white py-1 text-center">
+                  <span className="text-[18px] font-medium leading-none text-gray-dark">{s.day}</span>
+                </div>
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-[16px] font-semibold text-gray-dark leading-snug">{s.title}</p>
                 <p className="mt-0.5 text-[14px] text-gray-light">{s.time}</p>
                 <div className="mt-1 flex items-center gap-1.5">
-                  <img src={s.avatar} alt={s.coach} className="h-[22px] w-[22px] rounded-full object-cover" />
+                  <img src={s.avatar} alt={s.coach} className="h-[18px] w-[18px] rounded-full object-cover" />
                   <span className="text-[14px] text-gray-light">{s.coach}</span>
                 </div>
               </div>
             </div>
           ))}
         </div>
-        <button className="mt-5 w-full rounded-xl bg-gray-100 py-2.5 text-[14px] font-semibold text-gray-dark transition-colors hover:bg-gray-200">
+        <button className="mt-4 inline-flex items-center rounded-xl bg-gray-100 px-4 py-2 text-[14px] font-medium text-gray-dark transition-colors hover:bg-gray-200">
           See full calendar
         </button>
       </div>
