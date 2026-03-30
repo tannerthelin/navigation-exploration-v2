@@ -2225,7 +2225,7 @@ function HomeSidebar() {
   return (
     <div className="flex flex-col gap-5">
       {/* Profile card */}
-      <div className="overflow-hidden rounded-2xl bg-white shadow-[0_2px_12px_0_rgba(0,0,0,0.06)]">
+      <div className="overflow-hidden rounded-2xl bg-white border border-gray-200">
         {/* Banner — buttons live here, top-right */}
         <div className="relative h-[56px] bg-gray-100">
           {/* Avatar overlaps banner bottom */}
