@@ -1591,9 +1591,11 @@ function CoachCardContent({ avatar, name, verified, headline, price, ctaLabel, p
           {verified ? <img src={verifiedIcon} alt="" className="h-[15px] w-[15px] shrink-0" /> : null}
           {p ? (
             <>
-              <span className="text-yellow-400">★</span>
-              <span className="text-[15px] text-gray-dark">{p.rating.toFixed(1)}</span>
-              <span className="text-[15px] text-gray-light">{p.reviews} reviews</span>
+              <span className="flex items-center gap-0.5">
+                <span className="text-yellow-400">★</span>
+                <span className="text-[15px] text-gray-dark">{p.rating.toFixed(1)}</span>
+              </span>
+              <span className="text-[15px] text-[#C0C0C0]">{p.reviews} reviews</span>
             </>
           ) : null}
         </div>
