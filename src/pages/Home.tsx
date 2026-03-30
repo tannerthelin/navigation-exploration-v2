@@ -400,18 +400,18 @@ export function formatCount(n: number): string {
 }
 
 const FEED_REPOST_PARTICLES = [
-  { angle: -80,  r: 28, color: "#22c55e", size: 6 },
-  { angle: -40,  r: 32, color: "#4ade80", size: 5 },
-  { angle: -10,  r: 25, color: "#16a34a", size: 7 },
-  { angle: 20,   r: 30, color: "#22c55e", size: 5 },
-  { angle: 55,   r: 28, color: "#4ade80", size: 6 },
-  { angle: 90,   r: 32, color: "#22c55e", size: 5 },
-  { angle: 130,  r: 25, color: "#16a34a", size: 7 },
-  { angle: 160,  r: 30, color: "#4ade80", size: 5 },
-  { angle: 200,  r: 28, color: "#22c55e", size: 6 },
-  { angle: 240,  r: 25, color: "#16a34a", size: 5 },
-  { angle: 270,  r: 32, color: "#4ade80", size: 6 },
-  { angle: 310,  r: 28, color: "#22c55e", size: 5 },
+  { angle: -80,  r: 28, color: "#138462", size: 6 },
+  { angle: -40,  r: 32, color: "#1aad80", size: 5 },
+  { angle: -10,  r: 25, color: "#0d6b50", size: 7 },
+  { angle: 20,   r: 30, color: "#138462", size: 5 },
+  { angle: 55,   r: 28, color: "#1aad80", size: 6 },
+  { angle: 90,   r: 32, color: "#138462", size: 5 },
+  { angle: 130,  r: 25, color: "#0d6b50", size: 7 },
+  { angle: 160,  r: 30, color: "#1aad80", size: 5 },
+  { angle: 200,  r: 28, color: "#138462", size: 6 },
+  { angle: 240,  r: 25, color: "#0d6b50", size: 5 },
+  { angle: 270,  r: 32, color: "#1aad80", size: 6 },
+  { angle: 310,  r: 28, color: "#138462", size: 5 },
 ];
 
 const FEED_HEART_PARTICLES = [
@@ -578,13 +578,13 @@ export function FeedRepostButton({ initialCount }: { initialCount: number }) {
 
       <button
         onClick={(e) => { e.stopPropagation(); setOpen(o => !o); }}
-        className={`flex cursor-pointer items-center gap-1 rounded-[100px] px-2 py-1.5 transition-colors hover:bg-gray-hover ${reposted ? "text-green-500" : "text-gray-light"}`}
+        className={`flex cursor-pointer items-center gap-1 rounded-[100px] px-2 py-1.5 transition-colors hover:bg-gray-hover ${reposted ? "text-[#138462]" : "text-gray-light"}`}
       >
         <motion.img
           src={repostsIcon}
           alt="Repost"
           className="h-[22px] w-[22px]"
-          style={{ filter: reposted ? "invert(62%) sepia(80%) saturate(400%) hue-rotate(115deg)" : "invert(44%)" }}
+          style={{ filter: reposted ? "invert(27%) sepia(60%) saturate(600%) hue-rotate(122deg) brightness(90%)" : "invert(44%)" }}
           animate={reposted && burst ? { scale: [1, 0.6, 1.8, 0.9, 1.05, 1], rotate: [0, 360] } : { scale: 1, rotate: 0 }}
           transition={{ duration: 0.5, times: [0, 0.15, 0.35, 0.55, 0.75, 1], ease: "easeOut" }}
         />
