@@ -4,7 +4,6 @@ import BottomNav from "../components/BottomNav";
 import { ExtraLinksProvider } from "../components/ExtraLinksContext";
 import profilePhoto from "../assets/profile photos/profile photo.png";
 import pic1 from "../assets/profile photos/pic-1.png";
-import pic2 from "../assets/profile photos/pic-2.png";
 import pic3 from "../assets/profile photos/pic-3.png";
 import pic4 from "../assets/profile photos/pic-4.png";
 import pic5 from "../assets/profile photos/pic-5.png";
@@ -103,19 +102,18 @@ export default function Calendar() {
         <TopNav />
       </div>
 
-      <div className="mx-auto max-w-[940px] px-4 pt-20 pb-20 md:px-10 md:pt-6 md:pb-0">
-        <div className="flex gap-16">
+      <div className="mx-auto max-w-[1020px] px-4 pt-20 pb-20 md:px-10 md:pt-6 md:pb-0">
+        {/* Header — spans full width above both columns */}
+        <h1 className="text-[32px] font-medium text-gray-dark md:text-[40px]">
+          Calendar
+        </h1>
+        <p className="mt-2 text-[18px] text-gray-light">
+          Everything on your schedule, between 1:1 coaching sessions, events, and courses.
+        </p>
+
+        <div className="mt-6 flex gap-16">
           {/* Left column — main content */}
-          <div className="min-w-0 flex-1">
-            <h1 className="text-[32px] font-medium text-gray-dark md:text-[40px]">
-              Calendar
-            </h1>
-            <p className="mt-2 text-[18px] text-gray-light">
-              Everything on your schedule, between 1:1 coaching sessions, events, and courses.
-            </p>
-
-            <div className="mt-6 border-t border-gray-stroke" />
-
+          <div className="min-w-0 flex-1 border-t border-gray-stroke">
             {/* Event list */}
             <div className="flex flex-col">
               {upcomingEvents.map((event, i) => (
@@ -170,7 +168,6 @@ export default function Calendar() {
 
           {/* Right column — sidebar */}
           <div className="hidden w-[300px] shrink-0 lg:block">
-            <div className="mt-[116px]">
               {/* Popular events */}
               <div className="flex items-center justify-between">
                 <p className="text-[12px] font-medium uppercase tracking-[0.08em] text-[#707070]">
@@ -186,11 +183,11 @@ export default function Calendar() {
                     <img
                       src={event.image}
                       alt=""
-                      className="h-[44px] w-[44px] shrink-0 rounded-lg object-cover"
+                      className="h-[44px] w-[44px] shrink-0 rounded-[4px] object-cover"
                     />
                     <div className="min-w-0">
-                      <p className="truncate text-[14px] font-medium text-gray-dark">{event.title}</p>
-                      <p className="truncate text-[13px]">
+                      <p className="truncate text-[16px] font-medium text-gray-dark">{event.title}</p>
+                      <p className="truncate text-[14px]">
                         <span className={event.subtitleColor}>{event.subtitle}</span>
                         <span className="text-gray-light"> · {event.meta}</span>
                       </p>
@@ -200,10 +197,9 @@ export default function Calendar() {
               </div>
 
               {/* Browse events button */}
-              <button className="mt-5 w-full cursor-pointer rounded-lg bg-[#222222]/5 py-2.5 text-center text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#222222]/[0.08]">
+              <button className="mt-5 cursor-pointer rounded-lg bg-[#222222]/5 px-4 py-2.5 text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#222222]/[0.08]">
                 Browse events
               </button>
-            </div>
           </div>
         </div>
       </div>

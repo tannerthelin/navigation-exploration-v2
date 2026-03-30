@@ -12,7 +12,6 @@ import calendarInactive from "../assets/icons/nav-icons/calendar-inactive.svg";
 import calendarActive from "../assets/icons/nav-icons/calendar-active.svg";
 import giftIcon from "../assets/icons/gift.svg";
 import settingsIcon from "../assets/icons/settings.svg";
-import arrowRoundIcon from "../assets/icons/arrow-round.svg";
 import switchIcon from "../assets/icons/switch.svg";
 import helpIcon from "../assets/icons/help.svg";
 import logOutIcon from "../assets/icons/log out.svg";
