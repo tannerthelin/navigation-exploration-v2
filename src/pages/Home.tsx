@@ -2242,10 +2242,6 @@ function HomeSidebar() {
           {/* Name / headline */}
           <p className="text-[19px] font-medium leading-tight text-gray-dark">Jamie Allen</p>
           <p className="mt-0.5 text-[15px] leading-snug text-gray-light">Interactive Lead at Airbnb</p>
-          <a href="#" className="mt-1.5 inline-flex items-center gap-1 text-[15px] font-medium text-blue-600 hover:underline">
-            My website
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </a>
           {/* Work & Education */}
           <div className="mt-3 flex flex-col gap-2">
             <div className="flex items-center gap-2">
@@ -2255,20 +2251,6 @@ function HomeSidebar() {
             <div className="flex items-center gap-2">
               <img src={orgHBS} alt="HBS" className="h-[20px] w-[20px] shrink-0 rounded-[4px] object-contain" />
               <span className="text-[14px] text-gray-light">Studied at Harvard Business School</span>
-            </div>
-          </div>
-          {/* Goals */}
-          <div className="mt-4">
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-xlight">Goals</p>
-            <div className="mt-2 flex flex-col gap-2.5">
-              <div className="flex items-center justify-between gap-2">
-                <span className="text-[14px] text-gray-dark truncate">Land McKinsey offer</span>
-                <span className="shrink-0 rounded-[4px] bg-[#e6f4ef] px-2.5 py-0.5 text-[12px] font-normal text-[#138462]">In Progress</span>
-              </div>
-              <div className="flex items-center justify-between gap-2">
-                <span className="text-[14px] text-gray-dark truncate">GMAT 750+</span>
-                <span className="shrink-0 rounded-[4px] bg-gray-100 px-2.5 py-0.5 text-[12px] font-normal text-gray-light">Planning</span>
-              </div>
             </div>
           </div>
         </div>
