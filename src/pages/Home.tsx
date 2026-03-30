@@ -1583,15 +1583,6 @@ function CoachCardContent({ avatar, name, verified, headline, price, ctaLabel, s
         <div className="absolute right-3 top-3 rounded-xl bg-white/90 px-3 py-1.5 text-[14px] font-medium text-gray-dark shadow-sm backdrop-blur-sm">
           {price ?? "$150/hr"}
         </div>
-        {isOnline ? (
-          <div className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-xl bg-transparent px-2.5 py-1.5">
-            <span className="relative flex h-2 w-2 shrink-0">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-            </span>
-            <span className="text-[13px] font-medium text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Talk now</span>
-          </div>
-        ) : null}
       </div>
 
       {/* Content */}
@@ -1633,8 +1624,16 @@ function CoachCardContent({ avatar, name, verified, headline, price, ctaLabel, s
 
         {/* CTAs */}
         <div className="mt-4 flex gap-2">
-          <button className="flex flex-1 cursor-pointer items-center justify-center rounded-lg bg-gray-dark py-2.5 text-[15px] font-medium text-white transition-colors hover:bg-[#333]">
-            {ctaLabel}
+          <button className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg bg-gray-dark py-2.5 text-[15px] font-medium text-white transition-colors hover:bg-[#333]">
+            {isOnline ? (
+              <>
+                <span className="relative flex h-2 w-2 shrink-0">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-green-400" />
+                </span>
+                Talk now
+              </>
+            ) : ctaLabel}
           </button>
           <button className="flex h-[42px] w-[42px] shrink-0 cursor-pointer items-center justify-center rounded-lg border border-gray-stroke bg-white transition-colors hover:bg-gray-50" aria-label="Message">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-dark">
