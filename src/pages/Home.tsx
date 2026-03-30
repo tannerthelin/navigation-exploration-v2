@@ -400,18 +400,18 @@ export function formatCount(n: number): string {
 }
 
 const FEED_REPOST_PARTICLES = [
-  { angle: -80,  r: 28, color: "#00b894", size: 6 },
-  { angle: -40,  r: 32, color: "#55efc4", size: 5 },
-  { angle: -10,  r: 25, color: "#00cec9", size: 7 },
-  { angle: 20,   r: 30, color: "#00b894", size: 5 },
-  { angle: 55,   r: 28, color: "#55efc4", size: 6 },
-  { angle: 90,   r: 32, color: "#00b894", size: 5 },
-  { angle: 130,  r: 25, color: "#00cec9", size: 7 },
-  { angle: 160,  r: 30, color: "#55efc4", size: 5 },
-  { angle: 200,  r: 28, color: "#00b894", size: 6 },
-  { angle: 240,  r: 25, color: "#00cec9", size: 5 },
-  { angle: 270,  r: 32, color: "#55efc4", size: 6 },
-  { angle: 310,  r: 28, color: "#00b894", size: 5 },
+  { angle: -80,  r: 28, color: "#22c55e", size: 6 },
+  { angle: -40,  r: 32, color: "#4ade80", size: 5 },
+  { angle: -10,  r: 25, color: "#16a34a", size: 7 },
+  { angle: 20,   r: 30, color: "#22c55e", size: 5 },
+  { angle: 55,   r: 28, color: "#4ade80", size: 6 },
+  { angle: 90,   r: 32, color: "#22c55e", size: 5 },
+  { angle: 130,  r: 25, color: "#16a34a", size: 7 },
+  { angle: 160,  r: 30, color: "#4ade80", size: 5 },
+  { angle: 200,  r: 28, color: "#22c55e", size: 6 },
+  { angle: 240,  r: 25, color: "#16a34a", size: 5 },
+  { angle: 270,  r: 32, color: "#4ade80", size: 6 },
+  { angle: 310,  r: 28, color: "#22c55e", size: 5 },
 ];
 
 const FEED_HEART_PARTICLES = [
@@ -573,7 +573,7 @@ export function FeedRepostButton({ initialCount }: { initialCount: number }) {
 
       <button
         onClick={(e) => { e.stopPropagation(); setOpen(o => !o); }}
-        className={`flex cursor-pointer items-center gap-1 rounded-[100px] px-2 py-1.5 transition-colors hover:bg-gray-hover ${reposted ? "text-[#00b894]" : "text-gray-light"}`}
+        className={`flex cursor-pointer items-center gap-1 rounded-[100px] px-2 py-1.5 transition-colors hover:bg-gray-hover ${reposted ? "text-green-500" : "text-gray-light"}`}
       >
         <motion.img
           src={repostsIcon}
