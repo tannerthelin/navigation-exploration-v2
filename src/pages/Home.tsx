@@ -768,7 +768,7 @@ function EventCard({ event }: { event: EventPost["event"] }) {
                   {event.spotsLeft !== undefined ? <> ({event.spotsLeft} spots remaining)</> : null}
                 </span>
               </div>
-              <button className="shrink-0 cursor-pointer rounded-lg bg-gray-100 px-4 py-2.5 text-[14px] font-semibold text-gray-dark transition-colors hover:bg-gray-200">
+              <button className="shrink-0 cursor-pointer rounded-lg bg-gray-100 px-4 py-2.5 text-[14px] font-medium text-gray-dark transition-colors hover:bg-gray-200">
                 Register for free
               </button>
             </div>
@@ -886,7 +886,7 @@ function MilestoneCard({ milestone, postId, authorName }: { milestone: Milestone
               e.stopPropagation();
               navigate(`/post/${postId}`, { state: { focusInput: true, prefillComment: `@${authorName} Congratulations! 🎉` } });
             }}
-            className="shrink-0 cursor-pointer rounded-lg bg-gray-100 px-4 py-2.5 text-[14px] font-semibold text-gray-dark transition-colors hover:bg-gray-200"
+            className="shrink-0 cursor-pointer rounded-lg bg-gray-100 px-4 py-2.5 text-[14px] font-medium text-gray-dark transition-colors hover:bg-gray-200"
           >
             Say congratulations
           </button>
@@ -1234,7 +1234,7 @@ function LiveCard({ live, author, avatar }: { live: LivePost["live"]; author: st
         </div>
         <button
           onClick={() => setModal("info")}
-          className="shrink-0 cursor-pointer rounded-lg bg-gray-100 px-4 py-2.5 text-[14px] font-semibold text-gray-dark transition-colors hover:bg-gray-200"
+          className="shrink-0 cursor-pointer rounded-lg bg-gray-100 px-4 py-2.5 text-[14px] font-medium text-gray-dark transition-colors hover:bg-gray-200"
         >
           Join live
         </button>
@@ -1715,7 +1715,7 @@ function ExpertCard({ expert }: { expert: typeof suggestedExperts[number]; isOnl
       <div className="flex-1" />
 
       <div className="mt-4 flex gap-2">
-        <button className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg bg-gray-100 py-2.5 text-[14px] font-semibold text-gray-dark transition-colors hover:bg-gray-200">
+        <button className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg bg-gray-100 py-2.5 text-[14px] font-medium text-gray-dark transition-colors hover:bg-gray-200">
           Free intro call
         </button>
         <button className="flex h-[42px] w-[42px] shrink-0 cursor-pointer items-center justify-center rounded-xl border border-gray-stroke bg-white transition-colors hover:bg-gray-50" aria-label="Follow">
@@ -2289,7 +2289,7 @@ function HomeSidebar() {
             </div>
           ))}
         </div>
-        <button className="mt-5 w-full cursor-pointer rounded-lg bg-[#222222]/5 py-2.5 text-center text-[15px] font-medium text-gray-dark transition-colors hover:bg-[#222222]/[0.08]">
+        <button className="mt-5 w-full cursor-pointer rounded-lg bg-gray-100 py-2.5 text-center text-[15px] font-medium text-gray-dark transition-colors hover:bg-gray-200">
           Create post
         </button>
       </div>
