@@ -133,7 +133,7 @@ export const posts: Post[] = [
   {
     id: 1,
     type: "text",
-    author: "Sarah Chen",
+    author: "James Allen",
     avatar: pic1,
     time: "2h",
     verified: true,
@@ -1278,7 +1278,7 @@ interface CoachProfile {
 }
 
 const coachProfiles: Record<string, CoachProfile> = {
-  "Sarah Chen": {
+  "James Allen": {
     rating: 4.9, reviews: 187, customerFavorite: true, supercoach: true,
     minutesCoached: 156420, followers: 843,
     affiliation: "Admissions at Stanford GSB",
@@ -1550,7 +1550,7 @@ function FeedPost({ post }: { post: Post }) {
 // ─── Suggested experts ────────────────────────────────
 
 const suggestedExperts = [
-  { name: "Sarah Chen",     avatar: pic1,  verified: true, headline: "Former Director of Admissions at Stanford GSB | 200+ M7 Admits" },
+  { name: "James Allen",     avatar: pic1,  verified: true, headline: "Former Director of Admissions at Stanford GSB | 200+ M7 Admits" },
   { name: "David Kim",      avatar: pic4,  verified: true, headline: "MBA Admissions Consultant | Ex-Bain, HBS '19 | Ranked Top 4 on P&Q" },
   { name: "Nina Kowalski",  avatar: pic7,  verified: true, headline: "Partner at McKinsey & Company | Consulting Recruiting Lead" },
   { name: "Alex Thompson",  avatar: pic8,  verified: false, headline: "Career Coach | Ex-Google PM | Tech & MBA Transitions" },
