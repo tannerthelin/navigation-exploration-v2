@@ -13,8 +13,8 @@ import notificationsActive from "../assets/icons/nav-icons/notifications-active.
 import notificationsInactive from "../assets/icons/nav-icons/notifications-inactive.svg";
 import inboxActive from "../assets/icons/nav-icons/inbox-active.svg";
 import inboxInactive from "../assets/icons/nav-icons/inbox-inactive.svg";
-import eventsActive from "../assets/icons/nav-icons/events-active.svg";
-import eventsInactive from "../assets/icons/nav-icons/events-inactive.svg";
+import eventsActive from "../assets/icons/nav-icons/calendar-active.svg";
+import eventsInactive from "../assets/icons/nav-icons/calendar-inactive.svg";
 import coursesActive from "../assets/icons/nav-icons/courses-active.svg";
 import coursesInactive from "../assets/icons/nav-icons/courses-inactive.svg";
 import lelandPlusActive from "../assets/icons/nav-icons/leland-plus-active.svg";

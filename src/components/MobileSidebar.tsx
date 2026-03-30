@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useExtraLinks } from "./ExtraLinksContext";
 import profilePhoto from "../assets/profile photos/profile photo.png";
 
-import eventsIcon from "../assets/icons/nav-icons/events-inactive.svg";
+import eventsIcon from "../assets/icons/nav-icons/calendar-inactive.svg";
 import coursesIcon from "../assets/icons/nav-icons/courses-inactive.svg";
 import lelandPlusIcon from "../assets/icons/nav-icons/leland-plus-inactive.svg";
 import giftIcon from "../assets/icons/gift.svg";

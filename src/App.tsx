@@ -12,6 +12,7 @@ import Courses from "./pages/Courses";
 import LelandPlus from "./pages/LelandPlus";
 import PostDetail from "./pages/PostDetail";
 import AccountSettings from "./pages/AccountSettings";
+import Calendar from "./pages/Calendar";
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
         <Route path="/events" element={<Events />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/plus" element={<LelandPlus />} />
+        <Route path="/calendar" element={<Calendar />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/messages" element={<Messaging />} />
         <Route path="/profile" element={<Profile />} />
