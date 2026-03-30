@@ -2356,7 +2356,7 @@ export default function Home() {
       </div>
 
       {/* Feed */}
-      <div className="divide-y divide-gray-stroke">
+      <div className="divide-y divide-gray-stroke/50">
         {feedPosts.map((post, i) => (
           <div key={post.id}>
             <FeedPost post={post} />
