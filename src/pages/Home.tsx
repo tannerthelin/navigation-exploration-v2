@@ -2281,6 +2281,9 @@ function HomeSidebar() {
             </div>
           ))}
         </div>
+        <button className="mt-5 w-full cursor-pointer rounded-lg bg-[#222222]/5 py-2.5 text-center text-[15px] font-medium text-gray-dark transition-colors hover:bg-[#222222]/[0.08]">
+          Create post
+        </button>
       </div>
 
     </div>
