@@ -2240,7 +2240,7 @@ function HomeSidebar() {
         {/* Body */}
         <div className="px-4 pb-5 pt-12">
           {/* Name / headline */}
-          <p className="text-[19px] font-medium leading-tight text-gray-dark">Jamie</p>
+          <p className="text-[19px] font-medium leading-tight text-gray-dark">Jamie Allen</p>
           <p className="mt-0.5 text-[15px] leading-snug text-gray-light">Interactive Lead at Airbnb</p>
           <a href="#" className="mt-1.5 inline-flex items-center gap-1 text-[15px] font-medium text-blue-600 hover:underline">
             My website
