@@ -2279,7 +2279,7 @@ function HomeSidebar() {
                 </div>
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-[16px] font-semibold text-gray-dark leading-snug">{s.title}</p>
+                <p className="truncate text-[16px] font-medium text-gray-dark leading-snug">{s.title}</p>
                 <p className="mt-0.5 text-[14px] text-gray-light">{s.time}</p>
                 <div className="mt-1 flex items-center gap-1.5">
                   <img src={s.avatar} alt={s.coach} className="h-[18px] w-[18px] rounded-full object-cover" />
