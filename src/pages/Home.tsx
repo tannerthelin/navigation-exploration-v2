@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useSetLeftSidebar } from "../components/LeftSidebarContext";
 import profilePhoto from "../assets/profile photos/profile photo.png";
 import eventImageSrc from "../assets/img/EventImage.avif";
