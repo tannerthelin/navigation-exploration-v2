@@ -1440,31 +1440,28 @@ function CoachHoverCard({ author, avatar, verified, headline, isEvent }: {
       transition={{ duration: 0.15, ease: "easeOut" }}
       onMouseEnter={(e) => e.stopPropagation()}
     >
-      {/* Avatar — reduced height with price badge overlaid */}
-      <div className="relative h-[150px] w-full overflow-hidden rounded-xl shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]">
+      {/* Top row — small image left, name/rating/price right */}
+      <div className="flex items-start gap-3">
         <img
           src={avatar}
           alt={author}
-          className="h-full w-full object-cover"
+          className="h-[90px] w-[90px] shrink-0 rounded-xl object-cover shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]"
           style={{ objectPosition: "50% 15%" }}
         />
-        {/* Price — top right */}
-        <div className="absolute top-2 right-2 rounded-md bg-black/60 px-2 py-1 text-[13px] font-semibold text-white backdrop-blur-sm">
-          $150/hr
-        </div>
-      </div>
-
-      {/* Name + rating on same line below avatar */}
-      <div className="mt-2.5 flex items-center gap-2">
-        <span className="text-[17px] font-medium leading-tight text-gray-dark">{author}</span>
-        {verified ? <img src={verifiedIcon} alt="" className="h-[15px] w-[15px] shrink-0" /> : null}
-        {p ? (
-          <div className="flex items-center gap-1 text-[15px]">
-            <span className="text-yellow-400">★</span>
-            <span className="font-semibold text-gray-dark">{p.rating.toFixed(1)}</span>
-            <span className="text-gray-light">({p.reviews})</span>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[17px] font-medium leading-tight text-gray-dark">{author}</span>
+            {verified ? <img src={verifiedIcon} alt="" className="h-[15px] w-[15px] shrink-0" /> : null}
           </div>
-        ) : null}
+          {p ? (
+            <div className="mt-0.5 flex items-center gap-1 text-[15px]">
+              <span className="text-yellow-400">★</span>
+              <span className="font-semibold text-gray-dark">{p.rating.toFixed(1)}</span>
+              <span className="text-gray-light">({p.reviews})</span>
+            </div>
+          ) : null}
+          <p className="mt-1 text-[14px] text-gray-light">$150/hr</p>
+        </div>
       </div>
 
       {/* Headline */}
@@ -1479,32 +1476,6 @@ function CoachHoverCard({ author, avatar, verified, headline, isEvent }: {
           <span className="mx-1.5 text-gray-stroke">|</span>
           <span className="font-medium text-gray-dark">{p.followers.toLocaleString()}</span> followers
         </p>
-      ) : null}
-
-      {/* Badge rows — real logos */}
-      {p ? (
-        <div className="mt-3 flex flex-col gap-2">
-          {p.supercoach ? (
-            <div className="flex items-center gap-2">
-              <span className="text-[15px] leading-none">🏆</span>
-              <span className="text-[14px] text-gray-dark">Supercoach</span>
-            </div>
-          ) : null}
-          {p.affiliation && p.companyLogo ? (
-            <div className="flex items-center gap-2">
-              <OrgLogo logo={p.companyLogo} name={p.company ?? ""} size={20} />
-              <span className="truncate text-[14px] text-gray-dark">{p.affiliation}</span>
-            </div>
-          ) : null}
-          {p.company && p.companyLogo ? (
-            <div className="flex items-center gap-2">
-              <OrgLogo logo={p.companyLogo} name={p.company} size={20} />
-              <span className="truncate text-[14px] text-gray-dark">
-                {p.affiliation ? `Worked at ${p.company}` : `Director at ${p.company}`}
-              </span>
-            </div>
-          ) : null}
-        </div>
       ) : null}
 
       {/* Successful clients */}
