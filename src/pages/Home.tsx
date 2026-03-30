@@ -1559,7 +1559,7 @@ const suggestedExperts = [
   { name: "Jason Park",     avatar: pic14, verified: false, headline: "Deloitte Strategy Lead | MBA Career Coach | Finance & Consulting" },
 ];
 
-function CoachCardContent({ avatar, name, verified, headline, price, ctaLabel, showFollow = true, p }: {
+function CoachCardContent({ avatar, name, verified, headline, price, ctaLabel, showFollow = true, isOnline, p }: {
   avatar: string;
   name: string;
   verified?: boolean;
@@ -1567,6 +1567,7 @@ function CoachCardContent({ avatar, name, verified, headline, price, ctaLabel, s
   price?: string;
   ctaLabel: string;
   showFollow?: boolean;
+  isOnline?: boolean;
   p: typeof coachProfiles[string] | undefined;
 }) {
   return (
@@ -1582,6 +1583,15 @@ function CoachCardContent({ avatar, name, verified, headline, price, ctaLabel, s
         <div className="absolute right-3 top-3 rounded-xl bg-white/90 px-3 py-1.5 text-[14px] font-medium text-gray-dark shadow-sm backdrop-blur-sm">
           {price ?? "$150/hr"}
         </div>
+        {isOnline ? (
+          <div className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-xl bg-transparent px-2.5 py-1.5">
+            <span className="relative flex h-2 w-2 shrink-0">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+            </span>
+            <span className="text-[13px] font-medium text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Talk now</span>
+          </div>
+        ) : null}
       </div>
 
       {/* Content */}
@@ -1647,7 +1657,7 @@ function CoachCardContent({ avatar, name, verified, headline, price, ctaLabel, s
   );
 }
 
-function ExpertCard({ expert }: { expert: typeof suggestedExperts[number]; isOnline?: boolean }) {
+function ExpertCard({ expert, isOnline }: { expert: typeof suggestedExperts[number]; isOnline?: boolean }) {
   const p = coachProfiles[expert.name];
   return (
     <div
@@ -1661,6 +1671,7 @@ function ExpertCard({ expert }: { expert: typeof suggestedExperts[number]; isOnl
         headline={expert.headline}
         ctaLabel="Free intro call"
         showFollow={false}
+        isOnline={isOnline}
         p={p}
       />
     </div>
