@@ -2294,8 +2294,8 @@ function HomeSidebar() {
           ].map(s => (
             <div key={s.title} className="flex items-start gap-3">
               <div className="flex w-10 shrink-0 flex-col items-center rounded-lg border border-[#e8e8e8] bg-white pb-1.5 pt-0.5 shadow-sm">
-                <span className="text-[9px] font-bold uppercase tracking-wide text-[#e05252]">{s.month}</span>
-                <span className="text-[17px] font-semibold leading-tight text-gray-dark">{s.day}</span>
+                <span className="text-[9px] font-semibold uppercase tracking-wide text-[#888]">{s.month}</span>
+                <span className="text-[18px] font-semibold leading-tight text-gray-dark">{s.day}</span>
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-[13px] font-semibold text-gray-dark leading-tight">{s.title}</p>
