@@ -743,7 +743,7 @@ function EventCard({ event }: { event: EventPost["event"] }) {
         <img src={event.image} alt={event.title} className="aspect-[1200/628] w-full object-cover" />
       </div>
       <div className="px-4 py-4">
-        <p className="text-[17px] font-semibold leading-snug text-gray-dark">{event.title}</p>
+        <p className="text-[17px] font-medium leading-snug text-gray-dark">{event.title}</p>
         <div className="mt-2 space-y-1">
           <div className="flex items-center gap-2 text-[15px] text-gray-light">
             <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -876,7 +876,7 @@ function MilestoneCard({ milestone, postId, authorName }: { milestone: Milestone
           {/* Text */}
           <div className="min-w-0 flex-1">
             <p className="text-[13px] font-medium uppercase tracking-wide text-gray-light">Admitted</p>
-            <p className="mt-0.5 text-[17px] font-semibold leading-tight text-gray-dark">{milestone.school}</p>
+            <p className="mt-0.5 text-[17px] font-medium leading-tight text-gray-dark">{milestone.school}</p>
             <p className="text-[14px] text-gray-light">{milestone.program}</p>
           </div>
 
@@ -1229,7 +1229,7 @@ function LiveCard({ live, author, avatar }: { live: LivePost["live"]; author: st
       {/* Info row */}
       <div className="flex items-center justify-between gap-3 px-4 py-4">
         <div className="min-w-0">
-          <p className="text-[17px] font-semibold leading-snug text-gray-dark">{live.title}</p>
+          <p className="text-[17px] font-medium leading-snug text-gray-dark">{live.title}</p>
           <p className="mt-1 text-[14px] text-gray-light">{live.topic}</p>
         </div>
         <button
@@ -1704,7 +1704,7 @@ function SuggestedExperts() {
   return (
     <div className="py-5">
       <div className="flex items-center justify-between">
-        <p className="text-[17px] font-semibold text-gray-dark">Suggested experts</p>
+        <p className="text-[17px] font-medium text-gray-dark">Suggested experts</p>
         <div className="flex items-center gap-1.5">
           <NavBtn dir={-1} label="Scroll left" />
           <NavBtn dir={1} label="Scroll right" />
