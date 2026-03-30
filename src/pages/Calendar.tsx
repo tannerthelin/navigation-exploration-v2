@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import TopNav from "../components/TopNav";
 import MobileTopNav from "../components/MobileTopNav";
 import BottomNav from "../components/BottomNav";
@@ -8,6 +10,10 @@ import pic3 from "../assets/profile photos/pic-3.png";
 import pic4 from "../assets/profile photos/pic-4.png";
 import pic5 from "../assets/profile photos/pic-5.png";
 import pic6 from "../assets/profile photos/pic-6.png";
+import arrowRoundIcon from "../assets/icons/arrow-round.svg";
+import event1 from "../assets/placeholder images/placeholder-event-01.png";
+import event2 from "../assets/placeholder images/placeholder-event-02.png";
+import event3 from "../assets/placeholder images/placeholder-event-03.png";
 
 const upcomingEvents = [
   {
@@ -29,38 +35,38 @@ const upcomingEvents = [
     isNow: false,
   },
   {
-    day: "MON",
-    date: 30,
+    day: "WED",
+    date: 1,
     title: "Intro Call with Samantha",
-    dateTime: "March 30 at 4:00 PM",
-    duration: "45 minutes",
+    dateTime: "April 1 at 11:00 AM",
+    duration: "30 minutes",
     image: pic1,
     isNow: false,
   },
   {
-    day: "MON",
-    date: 30,
+    day: "THU",
+    date: 2,
     title: "GMAT Exam Prep Bootcamp",
-    dateTime: "March 30 at 4:00 PM",
-    duration: "45 minutes",
+    dateTime: "April 2 at 6:00 PM",
+    duration: "60 minutes",
     image: pic4,
     isNow: false,
   },
   {
-    day: "MON",
-    date: 30,
+    day: "SAT",
+    date: 4,
     title: "MBA Strategy Live",
-    dateTime: "March 30 at 4:00 PM",
+    dateTime: "April 4 at 10:00 AM",
     duration: "45 minutes",
     image: pic5,
     isNow: false,
   },
   {
-    day: "MON",
-    date: 30,
+    day: "TUE",
+    date: 7,
     title: "Deferred MBA Application Bootcamp",
-    dateTime: "March 30 at 4:00 PM",
-    duration: "45 minutes",
+    dateTime: "April 7 at 3:00 PM",
+    duration: "90 minutes",
     image: pic6,
     isNow: false,
   },
@@ -70,27 +76,88 @@ const popularEvents = [
   {
     title: "MBA Strategy Live",
     subtitle: "Live now",
-    subtitleColor: "text-[#038561]",
+    subtitleColor: "text-[#D92D20] font-medium",
     meta: "125 watching",
-    image: pic3,
+    image: event1,
   },
   {
     title: "Tech Consulting Workshop",
     subtitle: "Starts 4:30 PM",
     subtitleColor: "text-gray-light",
     meta: "89 registered",
-    image: pic4,
+    image: event2,
   },
   {
     title: "Interview Prep Session",
     subtitle: "Tomorrow, 2:00 PM",
     subtitleColor: "text-gray-light",
     meta: "54 registered",
+    image: event3,
+  },
+];
+
+const pastEvents = [
+  {
+    title: "1:1 Session with Marcus",
+    dateTime: "March 28 at 10:00 AM",
+    duration: "45 minutes",
+    image: pic3,
+    hasRecording: false,
+  },
+  {
+    title: "Resume Review Workshop",
+    dateTime: "March 27 at 3:00 PM",
+    duration: "60 minutes",
+    image: pic4,
+    hasRecording: true,
+  },
+  {
+    title: "1:1 Session with Jessica",
+    dateTime: "March 26 at 2:00 PM",
+    duration: "45 minutes",
+    image: profilePhoto,
+    hasRecording: false,
+  },
+  {
+    title: "MBA Admissions Strategy",
+    dateTime: "March 25 at 1:00 PM",
+    duration: "45 minutes",
     image: pic5,
+    hasRecording: true,
+  },
+  {
+    title: "Intro Call with David",
+    dateTime: "March 24 at 11:00 AM",
+    duration: "30 minutes",
+    image: pic1,
+    hasRecording: false,
+  },
+  {
+    title: "GMAT Prep Live Session",
+    dateTime: "March 21 at 4:00 PM",
+    duration: "60 minutes",
+    image: pic6,
+    hasRecording: true,
+  },
+  {
+    title: "Career Pivot Workshop",
+    dateTime: "March 19 at 12:00 PM",
+    duration: "45 minutes",
+    image: pic3,
+    hasRecording: false,
+  },
+  {
+    title: "1:1 Session with Jessica",
+    dateTime: "March 17 at 2:00 PM",
+    duration: "45 minutes",
+    image: profilePhoto,
+    hasRecording: false,
   },
 ];
 
 export default function Calendar() {
+  const [pastOpen, setPastOpen] = useState(false);
+
   return (
     <div className="min-h-full bg-white">
       <div className="md:hidden">
@@ -102,7 +169,7 @@ export default function Calendar() {
         <TopNav />
       </div>
 
-      <div className="mx-auto max-w-[1020px] px-4 pt-20 pb-20 md:px-10 md:pt-6 md:pb-0">
+      <div className="mx-auto max-w-[1020px] px-4 pt-20 pb-20 md:px-10 md:pt-6 md:pb-[100px]">
         {/* Header — spans full width above both columns */}
         <h1 className="text-[32px] font-medium text-gray-dark md:text-[40px]">
           Calendar
@@ -115,11 +182,11 @@ export default function Calendar() {
           {/* Left column — main content */}
           <div className="min-w-0 flex-1 border-t border-gray-stroke">
             {/* Event list */}
-            <div className="flex flex-col">
+            <div className="mt-2 flex flex-col gap-1">
               {upcomingEvents.map((event, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-4 py-5"
+                  className="flex items-center gap-4 rounded-lg px-2 py-3 transition-colors hover:bg-[#F5F5F5]"
                 >
                   {/* Profile photo / event thumbnail */}
                   <img
@@ -131,7 +198,7 @@ export default function Calendar() {
                   {/* Event details */}
                   <div className="min-w-0 flex-1">
                     <p className="text-[18px] font-medium text-gray-dark">{event.title}</p>
-                    <p className="mt-0.5 text-[16px] text-[#707070]">
+                    <p className="text-[16px] text-[#707070]">
                       {event.dateTime} · <span className="text-[#9B9B9B]">{event.duration}</span>
                     </p>
                   </div>
@@ -158,32 +225,71 @@ export default function Calendar() {
             </div>
 
             {/* View past sessions */}
-            <button className="mt-2 flex cursor-pointer items-center gap-2 rounded-lg bg-[#222222]/5 px-4 py-2.5 text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#222222]/[0.08]">
-              View past sessions
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <button
+              onClick={() => setPastOpen(!pastOpen)}
+              className="my-4 flex cursor-pointer items-center gap-2 rounded-lg bg-[#222222]/5 px-4 py-2.5 text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#222222]/[0.08]"
+            >
+              {pastOpen ? "Hide past sessions" : "View past sessions"}
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                fill="none"
+                className={`transition-transform ${pastOpen ? "rotate-180" : ""}`}
+              >
                 <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
+
+            {/* Past sessions (collapsible) */}
+            {pastOpen && (
+              <div className="mt-2 flex flex-col gap-1">
+                {pastEvents.map((event, i) => (
+                  <div
+                    key={i}
+                    className="group flex items-center gap-4 rounded-lg px-2 py-3 transition-colors hover:bg-[#F5F5F5]"
+                  >
+                    <img
+                      src={event.image}
+                      alt=""
+                      className="h-[44px] w-[44px] shrink-0 rounded-[4px] object-cover opacity-50 transition-opacity group-hover:opacity-100"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[18px] font-medium text-[#707070]">{event.title}</p>
+                      <p className="text-[16px] text-[#707070]">
+                        {event.dateTime} · <span className="text-[#9B9B9B]">{event.duration}</span>
+                      </p>
+                    </div>
+                    {event.hasRecording && (
+                      <div className="flex shrink-0 items-center self-stretch">
+                        <button className="flex cursor-pointer items-center gap-2 rounded-lg border border-[#222222]/10 bg-white px-4 py-2.5 text-[16px] font-medium text-gray-dark transition-colors hover:border-[#222222]/20">
+                          <img src={arrowRoundIcon} alt="" className="h-5 w-5" />
+                          Rewatch
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Right column — sidebar */}
           <div className="hidden w-[300px] shrink-0 lg:block">
               {/* Popular events */}
-              <div className="flex items-center justify-between">
-                <p className="text-[12px] font-medium uppercase tracking-[0.08em] text-[#707070]">
-                  Popular events
-                </p>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-[#707070]">
+              <NavLink to="/events" className="flex items-center gap-1.5 text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070] transition-opacity hover:opacity-80">
+                Popular events
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" className="shrink-0">
                   <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-              </div>
+              </NavLink>
               <div className="mt-4 flex flex-col gap-4">
                 {popularEvents.map((event, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <img
                       src={event.image}
                       alt=""
-                      className="h-[44px] w-[44px] shrink-0 rounded-[4px] object-cover"
+                      className="h-[36px] w-[55px] shrink-0 rounded-[4px] object-cover"
                     />
                     <div className="min-w-0">
                       <p className="truncate text-[16px] font-medium text-gray-dark">{event.title}</p>
@@ -195,11 +301,6 @@ export default function Calendar() {
                   </div>
                 ))}
               </div>
-
-              {/* Browse events button */}
-              <button className="mt-5 cursor-pointer rounded-lg bg-[#222222]/5 px-4 py-2.5 text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#222222]/[0.08]">
-                Browse events
-              </button>
           </div>
         </div>
       </div>
