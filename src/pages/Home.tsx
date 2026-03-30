@@ -1440,25 +1440,16 @@ function CoachHoverCard({ author, avatar, verified, headline, isEvent }: {
       transition={{ duration: 0.15, ease: "easeOut" }}
       onMouseEnter={(e) => e.stopPropagation()}
     >
-      {/* Avatar — square with price badge and follow button overlaid */}
-      <div className="relative aspect-square w-full overflow-hidden rounded-xl shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]">
+      {/* Avatar — reduced height with price badge overlaid */}
+      <div className="relative h-[150px] w-full overflow-hidden rounded-xl shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]">
         <img
           src={avatar}
           alt={author}
           className="h-full w-full object-cover"
           style={{ objectPosition: "50% 15%" }}
         />
-        {/* Follow button — top right */}
-        <button aria-label="Follow" className="absolute right-2 top-2 flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg bg-white/90 text-gray-dark shadow-sm backdrop-blur-sm transition-colors hover:bg-white">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-            <circle cx="9" cy="7" r="4"/>
-            <line x1="19" y1="8" x2="19" y2="14"/>
-            <line x1="22" y1="11" x2="16" y2="11"/>
-          </svg>
-        </button>
-        {/* Price — bottom right */}
-        <div className="absolute bottom-2 right-2 rounded-md bg-black/60 px-2 py-1 text-[13px] font-semibold text-white backdrop-blur-sm">
+        {/* Price — top right */}
+        <div className="absolute top-2 right-2 rounded-md bg-black/60 px-2 py-1 text-[13px] font-semibold text-white backdrop-blur-sm">
           $150/hr
         </div>
       </div>
@@ -1537,6 +1528,15 @@ function CoachHoverCard({ author, avatar, verified, headline, isEvent }: {
         <button aria-label="Message" className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-gray-100 text-gray-dark transition-colors hover:bg-gray-200">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </button>
+        {/* Follow — icon only */}
+        <button aria-label="Follow" className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-gray-100 text-gray-dark transition-colors hover:bg-gray-200">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <line x1="19" y1="8" x2="19" y2="14"/>
+            <line x1="22" y1="11" x2="16" y2="11"/>
           </svg>
         </button>
         {/* Book — full width */}
