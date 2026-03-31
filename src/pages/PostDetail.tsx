@@ -543,13 +543,13 @@ export default function PostDetail() {
       initial={{ y: 16, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="flex items-start gap-2 xl:ml-[296px]"
+      className="flex items-start gap-4 xl:ml-[288px]"
     >
       {/* Persistent circle back button — xl only, sits left of avatars */}
       <button
         onClick={() => navigate(-1)}
         aria-label="Go back"
-        className="mt-4 hidden shrink-0 sticky top-6 self-start h-9 w-9 xl:flex items-center justify-center rounded-full border border-gray-200 bg-white text-gray-dark shadow-sm transition-colors hover:bg-gray-50"
+        className="mt-4 hidden shrink-0 sticky top-6 self-start h-9 w-9 xl:flex items-center justify-center rounded-full border border-gray-200 bg-white text-gray-dark transition-colors hover:bg-gray-50"
       >
         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="15 18 9 12 15 6"/>
