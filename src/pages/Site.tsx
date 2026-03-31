@@ -185,7 +185,7 @@ function CategoryScreen({ onSelect }: { onSelect: (label: string) => void }) {
   );
 }
 
-function DetailsScreen({ category, onBack, onChangeCategory, onClose }: { category: string; onBack: () => void; onChangeCategory: () => void; onClose: () => void }) {
+function DetailsScreen({ category, onBack, onChangeCategory }: { category: string; onBack: () => void; onChangeCategory: () => void; onClose: () => void }) {
   return (
     <motion.div
       key="details"
