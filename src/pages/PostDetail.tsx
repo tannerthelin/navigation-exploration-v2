@@ -549,7 +549,7 @@ export default function PostDetail() {
       <button
         onClick={() => navigate(-1)}
         aria-label="Go back"
-        className="mt-4 hidden shrink-0 sticky top-6 self-start h-9 w-9 xl:flex items-center justify-center rounded-full border border-gray-200 bg-white text-gray-dark transition-colors hover:bg-gray-50"
+        className="hidden shrink-0 sticky top-6 self-start h-9 w-9 xl:flex items-center justify-center rounded-full border border-gray-200 bg-white text-gray-dark transition-colors hover:bg-gray-50"
       >
         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="15 18 9 12 15 6"/>
@@ -570,7 +570,7 @@ export default function PostDetail() {
         </button>
 
         {/* Post */}
-        <div className="mt-3 pb-2">
+        <div className="pb-2">
           <AuthorRow post={post} />
           <p className="mt-1 pl-[56px] text-[17px] leading-[1.4] text-gray-dark">{post.body}</p>
           <div className="pl-[56px]"><PostMedia post={post} /></div>
