@@ -57,9 +57,9 @@ function sortKey(course: EnrolledCourse): number {
   return Number.MAX_SAFE_INTEGER / 2;
 }
 
-const enrolledCourses: EnrolledCourse[] = [
+const enrolledCourses = [
   {
-    type: "live",
+    type: "live" as const,
     id: 1,
     title: "MBA Admissions Strategy Bootcamp",
     cohortLabel: "Cohort 3",
@@ -77,7 +77,7 @@ const enrolledCourses: EnrolledCourse[] = [
     },
   },
   {
-    type: "live",
+    type: "live" as const,
     id: 2,
     title: "GMAT Exam Prep Bootcamp",
     cohortLabel: "Cohort 1",
@@ -95,7 +95,7 @@ const enrolledCourses: EnrolledCourse[] = [
     },
   },
   {
-    type: "live",
+    type: "live" as const,
     id: 5,
     title: "Tech PM Interview Accelerator",
     cohortLabel: "Cohort 2",
@@ -106,7 +106,7 @@ const enrolledCourses: EnrolledCourse[] = [
     nextSession: null,
   },
   {
-    type: "selfPaced",
+    type: "selfPaced" as const,
     id: 3,
     title: "Nail the Google PM Interview Cycle",
     image: event3,
@@ -114,7 +114,7 @@ const enrolledCourses: EnrolledCourse[] = [
     totalTime: "7 hours",
   },
   {
-    type: "selfPaced",
+    type: "selfPaced" as const,
     id: 4,
     title: "Consulting Case Interview Mastery",
     image: eventImage,
@@ -122,7 +122,7 @@ const enrolledCourses: EnrolledCourse[] = [
     totalTime: "6 hours",
   },
   {
-    type: "selfPaced",
+    type: "selfPaced" as const,
     id: 6,
     title: "MBA Application Essay Masterclass",
     image: event1,
