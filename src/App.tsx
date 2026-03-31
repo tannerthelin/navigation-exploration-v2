@@ -1,5 +1,7 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { VersionProvider } from "./contexts/VersionContext";
+import VersionToggle from "./components/VersionToggle";
 import Layout from "./components/Layout";
 
 function ScrollToTop() {
@@ -26,6 +28,8 @@ import Site from "./pages/Site";
 
 export default function App() {
   return (
+    <VersionProvider>
+    <VersionToggle />
     <Routes>
       <Route path="*" element={<ScrollToTop />} />
       {/* Pages with their own full-width layout */}
@@ -59,5 +63,6 @@ export default function App() {
         <Route path="/profile" element={<Profile />} />
       </Route>
     </Routes>
+    </VersionProvider>
   );
 }
