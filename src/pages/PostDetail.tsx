@@ -438,19 +438,29 @@ function CommentItem({ comment, depth = 0 }: { comment: CommentData; depth?: num
     setShowReply(false);
   };
 
+  const hasThread = replies.length > 0 || showReply;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex gap-3 py-3"
+      className="flex gap-3 pt-3"
     >
-      <img
-        src={comment.avatar}
-        alt={comment.author}
-        className="h-11 w-11 shrink-0 rounded-full object-cover"
-        style={{ objectPosition: "50% 15%" }}
-      />
-      <div className="min-w-0 flex-1">
+      {/* Avatar column + vertical thread line */}
+      <div className="flex w-11 shrink-0 flex-col items-center">
+        <img
+          src={comment.avatar}
+          alt={comment.author}
+          className="h-11 w-11 shrink-0 rounded-full object-cover"
+          style={{ objectPosition: "50% 15%" }}
+        />
+        {hasThread ? (
+          <div className="mt-2 w-px flex-1 rounded-full bg-gray-200" />
+        ) : null}
+      </div>
+
+      {/* Content + nested replies */}
+      <div className="min-w-0 flex-1 pb-1">
         {/* Author + time */}
         <div className="flex items-baseline gap-1.5">
           <span className="text-[17px] font-medium text-gray-dark">{comment.author}</span>
@@ -477,9 +487,9 @@ function CommentItem({ comment, depth = 0 }: { comment: CommentData; depth?: num
         {/* Reply input */}
         {showReply ? <ReplyInput onPost={addReply} onCancel={() => setShowReply(false)} /> : null}
 
-        {/* Nested replies — Reddit-style indent line */}
+        {/* Nested replies */}
         {replies.length > 0 ? (
-          <div className={`mt-1 ${depth < 4 ? "border-l-2 border-gray-100 pl-3" : ""}`}>
+          <div className="mt-1">
             {replies.map(r => (
               <CommentItem key={r.id} comment={r} depth={depth + 1} />
             ))}
