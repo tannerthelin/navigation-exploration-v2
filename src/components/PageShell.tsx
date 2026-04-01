@@ -30,13 +30,18 @@ export default function PageShell({
   return (
     <div className="mx-auto max-w-[1280px] px-6 py-6">
       <div
-        className={`flex items-start gap-[40px]${contentMaxWidth ? " justify-center" : ""}`}
+        className={contentMaxWidth
+          ? "flex items-start justify-center"
+          : "flex items-start"
+        }
+        style={{ gap: 40 }}
       >
         {hasLeft && (
           <aside
-            className={`hidden w-[320px] shrink-0 sticky top-5 self-start ${
-              hasBoth ? "xl:block" : "xl:block"
-            }`}
+            className={hasBoth
+              ? "hidden w-[320px] shrink-0 sticky top-5 self-start xl:block"
+              : "hidden w-[320px] shrink-0 sticky top-5 self-start xl:block"
+            }
           >
             {leftSidebar}
           </aside>
@@ -49,9 +54,10 @@ export default function PageShell({
         </div>
         {hasRight && (
           <aside
-            className={`hidden w-[320px] shrink-0 sticky top-5 self-start ${
-              hasBoth ? "2xl:block" : "xl:block"
-            }`}
+            className={hasBoth
+              ? "hidden w-[320px] shrink-0 sticky top-5 self-start 2xl:block"
+              : "hidden w-[320px] shrink-0 sticky top-5 self-start xl:block"
+            }
           >
             {rightSidebar}
           </aside>
