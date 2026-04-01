@@ -6,8 +6,6 @@ import browseActive from "../assets/icons/nav-icons/browse-active.svg";
 import browseInactive from "../assets/icons/nav-icons/browse-inactive.svg";
 import searchActive from "../assets/icons/nav-icons/search-active.svg";
 import searchInactive from "../assets/icons/nav-icons/search-inactive.svg";
-import calendarActive from "../assets/icons/nav-icons/calendar-active.svg";
-import calendarInactive from "../assets/icons/nav-icons/calendar-inactive.svg";
 import chatActive from "../assets/icons/nav-icons/chat-active.svg";
 import chatInactive from "../assets/icons/nav-icons/chat-inactive.svg";
 

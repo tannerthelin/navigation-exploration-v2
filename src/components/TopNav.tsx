@@ -8,8 +8,6 @@ import searchInactive from "../assets/icons/nav-icons/search-inactive.svg";
 import searchActive from "../assets/icons/nav-icons/search-active.svg";
 import chatInactive from "../assets/icons/nav-icons/chat-inactive.svg";
 import chatActive from "../assets/icons/nav-icons/chat-active.svg";
-import calendarInactive from "../assets/icons/nav-icons/calendar-inactive.svg";
-import calendarActive from "../assets/icons/nav-icons/calendar-active.svg";
 import myCoursesIcon from "../assets/icons/my-courses.svg";
 import giftIcon from "../assets/icons/gift.svg";
 import settingsIcon from "../assets/icons/settings.svg";
