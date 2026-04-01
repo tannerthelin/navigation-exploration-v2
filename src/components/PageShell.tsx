@@ -30,7 +30,7 @@ export default function PageShell({
   return (
     <div className="mx-auto max-w-[1280px] px-6 py-6">
       <div
-        className={`flex items-start gap-10${contentMaxWidth ? " justify-center" : ""}`}
+        className={`flex items-start gap-[40px]${contentMaxWidth ? " justify-center" : ""}`}
       >
         {hasLeft && (
           <aside

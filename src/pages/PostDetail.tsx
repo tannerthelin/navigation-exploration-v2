@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
+
 import { useSetLayoutVariant } from "../components/LayoutVariantContext";
 import { posts, type Post, FeedLikeButton, FeedRepostButton, ShareDropdown } from "./Home";
 
@@ -545,7 +546,7 @@ export default function PostDetail() {
       initial={{ y: 16, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="flex items-start gap-4 xl:ml-[288px]"
+      className="flex items-start gap-4"
     >
       {/* Persistent circle back button — xl only, sits left of avatars */}
       <button
