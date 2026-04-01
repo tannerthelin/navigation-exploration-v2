@@ -48,7 +48,7 @@ const COMMENT_SEEDS: CommentData[] = [
     replies: [
       {
         id: 101,
-        author: "Sarah Chen",
+        author: "James Allen",
         avatar: pic1,
         headline: "Admissions Coach",
         time: "45m",
@@ -442,7 +442,7 @@ function CommentItem({ comment, depth = 0 }: { comment: CommentData; depth?: num
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex gap-3 py-2"
+      className="flex gap-3 py-3"
     >
       <img
         src={comment.avatar}
@@ -453,7 +453,7 @@ function CommentItem({ comment, depth = 0 }: { comment: CommentData; depth?: num
       <div className="min-w-0 flex-1">
         {/* Author + time */}
         <div className="flex items-baseline gap-1.5">
-          <span className="text-[15px] font-semibold text-gray-dark">{comment.author}</span>
+          <span className="text-[15px] font-medium text-gray-dark">{comment.author}</span>
           {comment.headline ? (
             <span className="text-[13px] text-gray-light">· {comment.headline}</span>
           ) : null}
@@ -461,29 +461,27 @@ function CommentItem({ comment, depth = 0 }: { comment: CommentData; depth?: num
         </div>
 
         {/* Comment text */}
-        <p className="mt-0.5 text-[17px] leading-[1.45] text-gray-dark">{comment.text}</p>
+        <p className="mt-0.5 text-[16px] leading-[1.45] text-gray-dark">{comment.text}</p>
 
         {/* Actions */}
         <div className="mt-2 flex items-center gap-4">
           <HeartButton liked={liked} count={comment.likes + (liked ? 1 : 0)} onToggle={() => setLiked(l => !l)} />
-          {depth === 0 ? (
-            <button
-              onClick={() => setShowReply(s => !s)}
-              className="text-[13px] text-gray-light transition-colors hover:text-gray-dark"
-            >
-              Reply
-            </button>
-          ) : null}
+          <button
+            onClick={() => setShowReply(s => !s)}
+            className="text-[13px] text-gray-light transition-colors hover:text-gray-dark"
+          >
+            Reply
+          </button>
         </div>
 
         {/* Reply input */}
         {showReply ? <ReplyInput onPost={addReply} onCancel={() => setShowReply(false)} /> : null}
 
-        {/* Nested replies */}
+        {/* Nested replies — Reddit-style indent line */}
         {replies.length > 0 ? (
-          <div className="mt-1 pl-2">
+          <div className={`mt-1 ${depth < 4 ? "border-l-2 border-gray-100 pl-3" : ""}`}>
             {replies.map(r => (
-              <CommentItem key={r.id} comment={r} depth={1} />
+              <CommentItem key={r.id} comment={r} depth={depth + 1} />
             ))}
           </div>
         ) : null}
