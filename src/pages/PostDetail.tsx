@@ -487,11 +487,15 @@ function CommentItem({ comment, depth = 0 }: { comment: CommentData; depth?: num
         {/* Reply input */}
         {showReply ? <ReplyInput onPost={addReply} onCancel={() => setShowReply(false)} /> : null}
 
-        {/* Nested replies */}
+        {/* Nested replies with L-shaped connectors */}
         {replies.length > 0 ? (
           <div className="mt-1">
             {replies.map(r => (
-              <CommentItem key={r.id} comment={r} depth={depth + 1} />
+              <div key={r.id} className="relative">
+                {/* L-shaped connector: runs from parent avatar center, curves right to child avatar */}
+                <div className="absolute -left-[34px] top-0 h-[34px] w-[34px] rounded-bl-[10px] border-b border-l border-gray-200" />
+                <CommentItem comment={r} depth={depth + 1} />
+              </div>
             ))}
           </div>
         ) : null}
