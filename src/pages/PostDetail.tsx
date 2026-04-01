@@ -303,7 +303,7 @@ function ReplyInput({ onPost, onCancel }: { onPost: (text: string) => void; onCa
       }}
     >
       <img src={profilePhoto} alt="You" className="h-9 w-9 shrink-0 rounded-full object-cover" />
-      <div className="flex-1">
+      <div className="relative flex-1">
         <textarea
           autoFocus
           value={text}
@@ -314,24 +314,20 @@ function ReplyInput({ onPost, onCancel }: { onPost: (text: string) => void; onCa
           }}
           placeholder="Write a reply…"
           rows={1}
-          className="w-full resize-none overflow-hidden rounded-xl border border-gray-stroke px-3 py-2.5 text-[15px] text-gray-dark outline-none transition-[border] focus:border-gray-dark"
+          className="w-full resize-none overflow-hidden rounded-xl border border-gray-stroke pl-3 pr-[72px] py-2.5 text-[15px] text-gray-dark outline-none transition-[border] focus:border-gray-dark"
           onKeyDown={e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey) && text.trim()) { onPost(text.trim()); } }}
         />
         <AnimatePresence>
           {text.trim() ? (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="mt-2 flex justify-end"
+            <motion.button
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.85 }}
+              onClick={() => { onPost(text.trim()); }}
+              className="absolute bottom-2 right-2 rounded-[8px] bg-gray-dark px-3 py-1 text-[13px] font-semibold text-white transition-colors hover:bg-[#222]"
             >
-              <button
-                onClick={() => { onPost(text.trim()); }}
-                className="rounded-xl bg-gray-dark px-5 py-2 text-[14px] font-semibold text-white transition-colors hover:bg-[#222]"
-              >
-                Reply
-              </button>
-            </motion.div>
+              Reply
+            </motion.button>
           ) : null}
         </AnimatePresence>
       </div>
@@ -599,7 +595,7 @@ export default function PostDetail() {
             alt="You"
             className="h-9 w-9 shrink-0 rounded-full object-cover"
           />
-          <div className="flex-1">
+          <div className="relative flex-1">
             <textarea
               ref={commentInputRef}
               value={commentText}
@@ -610,24 +606,20 @@ export default function PostDetail() {
               }}
               placeholder="Add a comment…"
               rows={1}
-              className="w-full resize-none overflow-hidden rounded-xl border border-gray-stroke px-3 py-2.5 text-[15px] text-gray-dark outline-none transition-[border] focus:border-gray-dark"
+              className="w-full resize-none overflow-hidden rounded-xl border border-gray-stroke pl-3 pr-[72px] py-2.5 text-[15px] text-gray-dark outline-none transition-[border] focus:border-gray-dark"
               onKeyDown={e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) submitComment(); }}
             />
             <AnimatePresence>
               {commentText.trim() ? (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="mt-2 flex justify-end"
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.85 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.85 }}
+                  onClick={submitComment}
+                  className="absolute bottom-2 right-2 rounded-[8px] bg-gray-dark px-3 py-1 text-[13px] font-semibold text-white transition-colors hover:bg-[#222]"
                 >
-                  <button
-                    onClick={submitComment}
-                    className="rounded-[8px] bg-gray-dark px-5 py-1.5 text-[14px] font-semibold text-white transition-colors hover:bg-[#222]"
-                  >
-                    Post
-                  </button>
-                </motion.div>
+                  Post
+                </motion.button>
               ) : null}
             </AnimatePresence>
           </div>
