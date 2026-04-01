@@ -447,21 +447,21 @@ function CommentItem({ comment, depth = 0 }: { comment: CommentData; depth?: num
       <img
         src={comment.avatar}
         alt={comment.author}
-        className={`${depth === 0 ? "h-9 w-9" : "h-7 w-7"} shrink-0 rounded-full object-cover`}
+        className="h-11 w-11 shrink-0 rounded-full object-cover"
         style={{ objectPosition: "50% 15%" }}
       />
       <div className="min-w-0 flex-1">
         {/* Author + time */}
         <div className="flex items-baseline gap-1.5">
-          <span className="text-[15px] font-medium text-gray-dark">{comment.author}</span>
+          <span className="text-[17px] font-medium text-gray-dark">{comment.author}</span>
           {comment.headline ? (
-            <span className="text-[13px] text-gray-light">· {comment.headline}</span>
+            <span className="text-[15px] text-gray-light">· {comment.headline}</span>
           ) : null}
-          <span className="text-[13px] text-gray-light">· {comment.time}</span>
+          <span className="text-[15px] text-gray-light">· {comment.time}</span>
         </div>
 
         {/* Comment text */}
-        <p className="mt-0.5 text-[16px] leading-[1.45] text-gray-dark">{comment.text}</p>
+        <p className="mt-0.5 text-[17px] leading-[1.4] text-gray-dark">{comment.text}</p>
 
         {/* Actions */}
         <div className="mt-2 flex items-center gap-4">
