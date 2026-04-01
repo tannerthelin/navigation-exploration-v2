@@ -303,7 +303,7 @@ function ReplyInput({ onPost, onCancel }: { onPost: (text: string) => void; onCa
       }}
     >
       <img src={profilePhoto} alt="You" className="h-9 w-9 shrink-0 rounded-full object-cover" />
-      <div className="relative flex-1">
+      <div className="flex flex-1 items-center gap-2">
         <textarea
           autoFocus
           value={text}
@@ -314,7 +314,7 @@ function ReplyInput({ onPost, onCancel }: { onPost: (text: string) => void; onCa
           }}
           placeholder="Write a reply…"
           rows={1}
-          className="w-full resize-none overflow-hidden rounded-xl border border-gray-stroke pl-3 pr-[72px] py-2.5 text-[15px] text-gray-dark outline-none transition-[border] focus:border-gray-dark"
+          className="flex-1 resize-none overflow-hidden rounded-xl border border-gray-stroke px-3 py-2.5 text-[15px] text-gray-dark outline-none transition-[border] focus:border-gray-dark"
           onKeyDown={e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey) && text.trim()) { onPost(text.trim()); } }}
         />
         <AnimatePresence>
@@ -324,7 +324,7 @@ function ReplyInput({ onPost, onCancel }: { onPost: (text: string) => void; onCa
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.85 }}
               onClick={() => { onPost(text.trim()); }}
-              className="absolute top-[2px] right-[2px] bottom-[2px] rounded-[6px] bg-gray-dark px-4 text-[13px] font-semibold text-white transition-colors hover:bg-[#222]"
+              className="shrink-0 rounded-[8px] bg-gray-dark px-4 py-2 text-[13px] font-semibold text-white transition-colors hover:bg-[#222]"
             >
               Reply
             </motion.button>
@@ -590,7 +590,7 @@ export default function PostDetail() {
             alt="You"
             className="h-9 w-9 shrink-0 rounded-full object-cover"
           />
-          <div className="relative flex-1">
+          <div className="flex flex-1 items-center gap-2">
             <textarea
               ref={commentInputRef}
               value={commentText}
@@ -601,7 +601,7 @@ export default function PostDetail() {
               }}
               placeholder="Add a comment…"
               rows={1}
-              className="w-full resize-none overflow-hidden rounded-xl border border-gray-stroke pl-3 pr-[72px] py-2.5 text-[15px] text-gray-dark outline-none transition-[border] focus:border-gray-dark"
+              className="flex-1 resize-none overflow-hidden rounded-xl border border-gray-stroke px-3 py-2.5 text-[15px] text-gray-dark outline-none transition-[border] focus:border-gray-dark"
               onKeyDown={e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) submitComment(); }}
             />
             <AnimatePresence>
@@ -611,7 +611,7 @@ export default function PostDetail() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.85 }}
                   onClick={submitComment}
-                  className="absolute top-[2px] right-[2px] bottom-[2px] rounded-[6px] bg-gray-dark px-4 text-[13px] font-semibold text-white transition-colors hover:bg-[#222]"
+                  className="shrink-0 rounded-[8px] bg-gray-dark px-4 py-2 text-[13px] font-semibold text-white transition-colors hover:bg-[#222]"
                 >
                   Post
                 </motion.button>
