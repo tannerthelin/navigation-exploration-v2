@@ -450,25 +450,22 @@ function CommentItem({ comment, depth = 0 }: { comment: CommentData; depth?: num
   const hasThread = replies.length > 0 || showReply;
 
   return (
-    <div className="relative">
-      {/* Absolute vertical line — starts below avatar, spans through ALL replies at this level */}
-      {hasThread ? (
-        <div className="absolute left-[21px] top-[64px] bottom-0 w-px bg-gray-200" />
-      ) : null}
-
-      {/* Main row: avatar + content */}
+    <div>
+      {/* Main row: avatar (+ flex-1 line down to first reply) + content */}
       <motion.div
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
         className="flex gap-3 pt-3"
       >
-        <div className="w-11 shrink-0">
+        {/* Avatar + line — flex-1 ends exactly at the bottom of THIS flex row */}
+        <div className="flex w-11 shrink-0 flex-col items-center">
           <img
             src={comment.avatar}
             alt={comment.author}
             className="h-11 w-11 shrink-0 rounded-full object-cover"
             style={{ objectPosition: "50% 15%" }}
           />
+          {hasThread ? <div className="mt-2 w-px flex-1 bg-gray-200" /> : null}
         </div>
 
         {/* Content */}
@@ -494,18 +491,26 @@ function CommentItem({ comment, depth = 0 }: { comment: CommentData; depth?: num
         </div>
       </motion.div>
 
-      {/* Replies sit OUTSIDE the flex row so the vertical line ends exactly where the L-connector begins */}
+      {/* Replies outside the flex row. Each non-last reply carries a full-height continuation
+          line so it bridges to the next sibling. The last reply only gets the L-connector,
+          so the line stops exactly at the last child's avatar center. */}
       {replies.length > 0 ? (
         <div className="pl-[44px]">
-          {replies.map(r => (
-            <div key={r.id} className="relative">
-              {/* L-connector: -left-[22px] anchors to parent avatar center (x=22 in outer div)
-                  w-[18px] stops 4px before child avatar left edge
-                  h-[34px] = child avatar vertical center (pt-3=12 + half-avatar=22) */}
-              <div className="absolute -left-[22px] top-0 h-[34px] w-[18px] rounded-bl-[10px] border-b border-l border-gray-200" />
-              <CommentItem comment={r} depth={depth + 1} />
-            </div>
-          ))}
+          {replies.map((r, i) => {
+            const isLast = i === replies.length - 1;
+            return (
+              <div key={r.id} className="relative">
+                {/* L-connector: curves from parent line down to this child's avatar */}
+                <div className="absolute -left-[22px] top-0 h-[34px] w-[18px] rounded-bl-[10px] border-b border-l border-gray-200" />
+                {/* Continuation line: bridges this reply's full height to the next sibling's L-connector.
+                    Only rendered for non-last siblings so the line stops at the last child. */}
+                {!isLast ? (
+                  <div className="absolute -left-[22px] top-0 bottom-0 w-px bg-gray-200" />
+                ) : null}
+                <CommentItem comment={r} depth={depth + 1} />
+              </div>
+            );
+          })}
         </div>
       ) : null}
     </div>
