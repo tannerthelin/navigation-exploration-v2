@@ -14,14 +14,20 @@ import pic5 from "../assets/profile photos/pic-5.png";
 import pic6 from "../assets/profile photos/pic-6.png";
 import pic7 from "../assets/profile photos/pic-7.png";
 
-// ─── Data ────────────────────────────────────────────────────────────────────
+// ─── Figma icon assets ────────────────────────────────────────────────────────
+const figmaSyllabusIcon = "https://www.figma.com/api/mcp/asset/6eb7cc2d-90b9-49e5-9d0b-541c668a79f0";
+const figmaPlayIcon = "https://www.figma.com/api/mcp/asset/dab3b9c4-442a-4fe1-b04e-5026b09d9843";
+const figmaSlack1 = "https://www.figma.com/api/mcp/asset/c66c77e8-363b-4742-87f2-1fb9b18416c0";
+const figmaSlack2 = "https://www.figma.com/api/mcp/asset/9453f0d5-c53a-4128-b604-1ff16db95a9f";
+const figmaSlack3 = "https://www.figma.com/api/mcp/asset/a51db8bb-c981-4b77-a5dc-761d347a7019";
+const figmaSlack4 = "https://www.figma.com/api/mcp/asset/d6fb8824-812f-4b5c-8d90-5b56cb53286a";
+const figmaVideoIcon = "https://www.figma.com/api/mcp/asset/38cad94b-b535-4e09-9a67-a935b180f7ed";
 
-type SessionState = "past-recording" | "past-pending" | "live" | "soon" | "future";
+// ─── Data ────────────────────────────────────────────────────────────────────
 
 type Session = {
   id: number;
   title: string;
-  date: string;
   startTime: Date;
   endTime: Date;
   duration: string;
@@ -32,9 +38,8 @@ type LiveCourse = {
   type: "live";
   id: number;
   title: string;
-  cohortLabel: string;
+  cohortDateLabel: string;
   cohortDates: string;
-  enrolledCount: number;
   registrants: string[];
   sessions: Session[];
   image: string;
@@ -52,11 +57,11 @@ type SelfPacedCourse = {
 
 type EnrolledCourse = LiveCourse | SelfPacedCourse;
 
+type SessionState = "past-recording" | "past-pending" | "live" | "soon" | "future";
+
 function getSessionState(session: Session): SessionState {
   const now = new Date();
-  if (session.endTime < now) {
-    return session.recordingUrl ? "past-recording" : "past-pending";
-  }
+  if (session.endTime < now) return session.recordingUrl ? "past-recording" : "past-pending";
   if (session.startTime.getTime() - now.getTime() <= 30 * 60 * 1000) return "live";
   if (session.startTime.getTime() - now.getTime() <= 7 * 24 * 60 * 60 * 1000) return "soon";
   return "future";
@@ -64,200 +69,78 @@ function getSessionState(session: Session): SessionState {
 
 function sortKey(course: EnrolledCourse): number {
   if (course.type === "live") {
-    const nextSession = course.sessions.find((s) => {
-      const state = getSessionState(s);
-      return state === "live" || state === "soon" || state === "future";
+    const next = course.sessions.find((s) => {
+      const st = getSessionState(s);
+      return st === "live" || st === "soon" || st === "future";
     });
-    if (nextSession) return nextSession.startTime.getTime();
+    if (next) return next.startTime.getTime();
     return Number.MAX_SAFE_INTEGER;
   }
   if (course.percentComplete >= 100) return Number.MAX_SAFE_INTEGER;
   return Number.MAX_SAFE_INTEGER / 2;
 }
 
-// Session 4 of course 1 is "live now" (starts in 15 min)
-const liveSessionStart = new Date(Date.now() + 15 * 60 * 1000);
-const liveSessionEnd = new Date(Date.now() + 105 * 60 * 1000);
+const liveNow = new Date(Date.now() + 15 * 60 * 1000);
+const liveEnd = new Date(Date.now() + 105 * 60 * 1000);
 
 const enrolledCourses: EnrolledCourse[] = ([
   {
     type: "live" as const,
     id: 1,
     title: "MBA Admissions Strategy Bootcamp",
-    cohortLabel: "Cohort 3",
+    cohortDateLabel: "Spring admissions",
     cohortDates: "Mar 12 – Apr 23, 2026",
-    enrolledCount: 24,
     registrants: [pic1, pic3, pic4],
     image: event1,
     instructor: { name: "Sarah Chen", avatar: pic2 },
     sessions: [
-      {
-        id: 101, title: "Introduction & Goal Setting",
-        date: "Mar 12", duration: "90 min",
-        startTime: new Date("2026-03-12T17:00:00"),
-        endTime: new Date("2026-03-12T18:30:00"),
-        recordingUrl: "#",
-      },
-      {
-        id: 102, title: "School Selection Strategy",
-        date: "Mar 19", duration: "90 min",
-        startTime: new Date("2026-03-19T17:00:00"),
-        endTime: new Date("2026-03-19T18:30:00"),
-      },
-      {
-        id: 103, title: "Crafting Your Story",
-        date: "Mar 26", duration: "90 min",
-        startTime: new Date("2026-03-26T17:00:00"),
-        endTime: new Date("2026-03-26T18:30:00"),
-        recordingUrl: "#",
-      },
-      {
-        id: 104, title: "Building Your Narrative",
-        date: "Today", duration: "90 min",
-        startTime: liveSessionStart,
-        endTime: liveSessionEnd,
-      },
-      {
-        id: 105, title: "Essays & Short Answers",
-        date: "Apr 9", duration: "90 min",
-        startTime: new Date("2026-04-09T17:00:00"),
-        endTime: new Date("2026-04-09T18:30:00"),
-      },
-      {
-        id: 106, title: "Final Q&A & Wrap-Up",
-        date: "Apr 23", duration: "60 min",
-        startTime: new Date("2026-04-23T17:00:00"),
-        endTime: new Date("2026-04-23T18:00:00"),
-      },
+      { id: 101, title: "Introduction & Goal Setting", duration: "90 min", startTime: new Date("2026-03-12T17:00:00"), endTime: new Date("2026-03-12T18:30:00"), recordingUrl: "#" },
+      { id: 102, title: "School Selection Strategy", duration: "90 min", startTime: new Date("2026-03-19T17:00:00"), endTime: new Date("2026-03-19T18:30:00") },
+      { id: 103, title: "Crafting Your Story", duration: "90 min", startTime: new Date("2026-03-26T17:00:00"), endTime: new Date("2026-03-26T18:30:00"), recordingUrl: "#" },
+      { id: 104, title: "Building Your Narrative", duration: "90 min", startTime: liveNow, endTime: liveEnd },
+      { id: 105, title: "Essays & Short Answers", duration: "90 min", startTime: new Date("2026-04-09T17:00:00"), endTime: new Date("2026-04-09T18:30:00") },
+      { id: 106, title: "Final Q&A & Wrap-Up", duration: "60 min", startTime: new Date("2026-04-23T17:00:00"), endTime: new Date("2026-04-23T18:00:00") },
     ],
   },
   {
     type: "live" as const,
     id: 2,
     title: "GMAT Exam Prep Bootcamp",
-    cohortLabel: "Cohort 1",
+    cohortDateLabel: "Fall admissions",
     cohortDates: "Apr 7 – May 19, 2026",
-    enrolledCount: 31,
     registrants: [pic5, pic6, pic3],
     image: event2,
     instructor: { name: "James Park", avatar: pic7 },
     sessions: [
-      {
-        id: 201, title: "Quantitative Reasoning Foundations",
-        date: "Apr 7", duration: "60 min",
-        startTime: new Date("2026-04-07T16:00:00"),
-        endTime: new Date("2026-04-07T17:00:00"),
-      },
-      {
-        id: 202, title: "Verbal Reasoning Deep Dive",
-        date: "Apr 14", duration: "60 min",
-        startTime: new Date("2026-04-14T16:00:00"),
-        endTime: new Date("2026-04-14T17:00:00"),
-      },
-      {
-        id: 203, title: "Data Insights & Problem Solving",
-        date: "Apr 21", duration: "60 min",
-        startTime: new Date("2026-04-21T16:00:00"),
-        endTime: new Date("2026-04-21T17:00:00"),
-      },
-      {
-        id: 204, title: "Practice Test Review",
-        date: "Apr 28", duration: "60 min",
-        startTime: new Date("2026-04-28T16:00:00"),
-        endTime: new Date("2026-04-28T17:00:00"),
-      },
-      {
-        id: 205, title: "Timing & Test Strategy",
-        date: "May 5", duration: "60 min",
-        startTime: new Date("2026-05-05T16:00:00"),
-        endTime: new Date("2026-05-05T17:00:00"),
-      },
-      {
-        id: 206, title: "Final Mock Exam & Debrief",
-        date: "May 12", duration: "90 min",
-        startTime: new Date("2026-05-12T16:00:00"),
-        endTime: new Date("2026-05-12T17:30:00"),
-      },
-      {
-        id: 207, title: "Score Submission Strategy",
-        date: "May 19", duration: "60 min",
-        startTime: new Date("2026-05-19T16:00:00"),
-        endTime: new Date("2026-05-19T17:00:00"),
-      },
+      { id: 201, title: "Quantitative Reasoning Foundations", duration: "60 min", startTime: new Date("2026-04-07T16:00:00"), endTime: new Date("2026-04-07T17:00:00") },
+      { id: 202, title: "Verbal Reasoning Deep Dive", duration: "60 min", startTime: new Date("2026-04-14T16:00:00"), endTime: new Date("2026-04-14T17:00:00") },
+      { id: 203, title: "Data Insights & Problem Solving", duration: "60 min", startTime: new Date("2026-04-21T16:00:00"), endTime: new Date("2026-04-21T17:00:00") },
+      { id: 204, title: "Practice Test Review", duration: "60 min", startTime: new Date("2026-04-28T16:00:00"), endTime: new Date("2026-04-28T17:00:00") },
+      { id: 205, title: "Timing & Test Strategy", duration: "60 min", startTime: new Date("2026-05-05T16:00:00"), endTime: new Date("2026-05-05T17:00:00") },
+      { id: 206, title: "Final Mock Exam & Debrief", duration: "90 min", startTime: new Date("2026-05-12T16:00:00"), endTime: new Date("2026-05-12T17:30:00") },
+      { id: 207, title: "Score Submission Strategy", duration: "60 min", startTime: new Date("2026-05-19T16:00:00"), endTime: new Date("2026-05-19T17:00:00") },
     ],
   },
   {
     type: "live" as const,
     id: 5,
     title: "Tech PM Interview Accelerator",
-    cohortLabel: "Cohort 2",
+    cohortDateLabel: "Winter cohort",
     cohortDates: "Jan 6 – Feb 3, 2026",
-    enrolledCount: 18,
     registrants: [pic4, pic1, pic6],
     image: eventImage,
     instructor: { name: "Maria Torres", avatar: pic5 },
     sessions: [
-      {
-        id: 501, title: "PM Fundamentals",
-        date: "Jan 6", duration: "60 min",
-        startTime: new Date("2026-01-06T17:00:00"),
-        endTime: new Date("2026-01-06T18:00:00"),
-        recordingUrl: "#",
-      },
-      {
-        id: 502, title: "Product Sense & Design",
-        date: "Jan 13", duration: "60 min",
-        startTime: new Date("2026-01-13T17:00:00"),
-        endTime: new Date("2026-01-13T18:00:00"),
-        recordingUrl: "#",
-      },
-      {
-        id: 503, title: "Metrics & Analytical Questions",
-        date: "Jan 20", duration: "60 min",
-        startTime: new Date("2026-01-20T17:00:00"),
-        endTime: new Date("2026-01-20T18:00:00"),
-        recordingUrl: "#",
-      },
-      {
-        id: 504, title: "Behavioral & Leadership",
-        date: "Jan 27", duration: "60 min",
-        startTime: new Date("2026-01-27T17:00:00"),
-        endTime: new Date("2026-01-27T18:00:00"),
-        recordingUrl: "#",
-      },
-      {
-        id: 505, title: "Mock Interviews & Debrief",
-        date: "Feb 3", duration: "90 min",
-        startTime: new Date("2026-02-03T17:00:00"),
-        endTime: new Date("2026-02-03T18:30:00"),
-        recordingUrl: "#",
-      },
+      { id: 501, title: "PM Fundamentals", duration: "60 min", startTime: new Date("2026-01-06T17:00:00"), endTime: new Date("2026-01-06T18:00:00"), recordingUrl: "#" },
+      { id: 502, title: "Product Sense & Design", duration: "60 min", startTime: new Date("2026-01-13T17:00:00"), endTime: new Date("2026-01-13T18:00:00"), recordingUrl: "#" },
+      { id: 503, title: "Metrics & Analytical Questions", duration: "60 min", startTime: new Date("2026-01-20T17:00:00"), endTime: new Date("2026-01-20T18:00:00"), recordingUrl: "#" },
+      { id: 504, title: "Behavioral & Leadership", duration: "60 min", startTime: new Date("2026-01-27T17:00:00"), endTime: new Date("2026-01-27T18:00:00"), recordingUrl: "#" },
+      { id: 505, title: "Mock Interviews & Debrief", duration: "90 min", startTime: new Date("2026-02-03T17:00:00"), endTime: new Date("2026-02-03T18:30:00"), recordingUrl: "#" },
     ],
   },
-  {
-    type: "selfPaced",
-    id: 3,
-    title: "Nail the Google PM Interview Cycle",
-    image: event3,
-    percentComplete: 65,
-    totalTime: "7 hours",
-  },
-  {
-    type: "selfPaced",
-    id: 4,
-    title: "Consulting Case Interview Mastery",
-    image: eventImage,
-    percentComplete: 20,
-    totalTime: "6 hours",
-  },
-  {
-    type: "selfPaced",
-    id: 6,
-    title: "MBA Application Essay Masterclass",
-    image: event1,
-    percentComplete: 100,
-    totalTime: "4 hours",
-  },
+  { type: "selfPaced" as const, id: 3, title: "Nail the Google PM Interview Cycle", image: event3, percentComplete: 65, totalTime: "7 hours" },
+  { type: "selfPaced" as const, id: 4, title: "Consulting Case Interview Mastery", image: eventImage, percentComplete: 20, totalTime: "6 hours" },
+  { type: "selfPaced" as const, id: 6, title: "MBA Application Essay Masterclass", image: event1, percentComplete: 100, totalTime: "4 hours" },
 ] as EnrolledCourse[]).sort((a, b) => sortKey(a) - sortKey(b));
 
 const suggestedCourses = [
@@ -278,75 +161,128 @@ function formatStartsIn(ms: number): string {
   return `Starts in ${hours}h`;
 }
 
+function formatSessionDateTime(date: Date): string {
+  const dateStr = date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  const timeStr = date.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+  return `${dateStr} at ${timeStr}`;
+}
+
+function getCalendarInfo(date: Date) {
+  return {
+    day: date.toLocaleDateString("en-US", { weekday: "short" }).toUpperCase(),
+    date: date.getDate(),
+  };
+}
+
+// ─── Icons ────────────────────────────────────────────────────────────────────
+
+function SlackIcon() {
+  return (
+    <div className="relative h-5 w-5 shrink-0 overflow-hidden">
+      <div className="absolute inset-[10%]">
+        <div className="absolute inset-[52.14%_52.15%_10.01%_10%]">
+          <img alt="" className="absolute block max-w-none size-full" src={figmaSlack1} />
+        </div>
+        <div className="absolute inset-[10%_52.15%_52.14%_10%]">
+          <img alt="" className="absolute block max-w-none size-full" src={figmaSlack2} />
+        </div>
+        <div className="absolute inset-[10%_10%_52.14%_52.15%]">
+          <img alt="" className="absolute block max-w-none size-full" src={figmaSlack3} />
+        </div>
+        <div className="absolute inset-[52.14%_10%_10%_52.15%]">
+          <img alt="" className="absolute block max-w-none size-full" src={figmaSlack4} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Action button ────────────────────────────────────────────────────────────
+
+function ActionButton({ icon, label }: { icon: React.ReactNode; label: string }) {
+  return (
+    <button className="flex shrink-0 items-center gap-2 rounded-lg bg-gray-hover px-3 py-2 text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#ebebeb]">
+      {icon}
+      {label}
+    </button>
+  );
+}
+
 // ─── Session CTA ──────────────────────────────────────────────────────────────
 
 function SessionCTA({ session }: { session: Session }) {
   const state = getSessionState(session);
+
   if (state === "live") {
     return (
-      <button className="h-[30px] cursor-pointer rounded-lg bg-[#038561] px-3 text-[13px] font-medium text-white transition-colors hover:bg-[#038561]/90 whitespace-nowrap">
-        Join now
+      <button className="flex shrink-0 cursor-pointer items-center gap-2 rounded-lg bg-black px-3 py-2 text-[16px] font-medium text-white transition-colors hover:bg-[#222]">
+        <div className="relative h-5 w-5 shrink-0 overflow-hidden">
+          <div className="absolute inset-[26.04%_12.5%]">
+            <div className="absolute inset-[-7.83%_-5%]">
+              <img alt="" className="block max-w-none size-full" src={figmaVideoIcon} />
+            </div>
+          </div>
+        </div>
+        Join
       </button>
     );
   }
   if (state === "past-recording") {
     return (
-      <button className="flex h-[28px] cursor-pointer items-center gap-1.5 rounded-lg border border-gray-stroke bg-white px-3 text-[12px] font-medium text-gray-dark transition-colors hover:bg-gray-hover whitespace-nowrap">
-        <span className="h-1.5 w-1.5 rounded-full bg-[#038561] shrink-0" />
-        View recording
+      <button className="flex shrink-0 cursor-pointer items-center gap-2 rounded-lg bg-gray-hover px-3 py-2 text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#ebebeb]">
+        <div className="relative h-5 w-5 shrink-0">
+          <div className="absolute inset-0">
+            <img alt="" className="absolute block max-w-none size-full" src={figmaPlayIcon} />
+          </div>
+        </div>
+        Recording
       </button>
     );
   }
   if (state === "past-pending") {
-    return (
-      <button className="flex h-[28px] cursor-pointer items-center gap-1.5 rounded-lg border border-gray-stroke bg-white px-3 text-[12px] font-medium text-gray-dark transition-colors hover:bg-gray-hover whitespace-nowrap" disabled>
-        <span className="h-1.5 w-1.5 rounded-full bg-gray-stroke shrink-0" />
-        Check back soon
-      </button>
-    );
+    return <span className="shrink-0 text-[16px] font-medium text-[#9b9b9b]">Check back soon</span>;
   }
   if (state === "soon") {
-    const ms = session.startTime.getTime() - Date.now();
     return (
-      <span className="inline-flex h-[22px] items-center rounded-full bg-[#fdf0e1] px-2.5 text-[11.5px] font-medium text-[#ef8509] whitespace-nowrap">
-        {formatStartsIn(ms)}
+      <span className="shrink-0 text-[16px] font-medium text-[#3b7dfd]">
+        {formatStartsIn(session.startTime.getTime() - Date.now())}
       </span>
     );
   }
-  return (
-    <span className="inline-flex h-[22px] items-center rounded-full bg-gray-hover px-2.5 text-[11.5px] font-medium text-[#9b9b9b] whitespace-nowrap">
-      {session.date}
-    </span>
-  );
+  return null;
 }
 
 // ─── Session row ──────────────────────────────────────────────────────────────
 
-function SessionRow({ session, index }: { session: Session; index: number }) {
+function SessionRow({ session }: { session: Session }) {
   const state = getSessionState(session);
   const isPast = state === "past-recording" || state === "past-pending";
-  const isLive = state === "live";
+  const cal = getCalendarInfo(session.startTime);
 
   return (
-    <div
-      className={`flex items-center gap-3 border-t border-gray-stroke px-5 py-[11px] transition-colors ${
-        isLive ? "bg-[rgba(227,246,239,0.35)]" : ""
-      } ${isPast ? "opacity-45" : ""}`}
-    >
-      <div
-        className={`flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full border text-[11px] font-medium ${
-          isLive
-            ? "border-[#038561] bg-[#e3f6ef] text-[#185440]"
-            : "border-gray-stroke bg-gray-hover text-[#9b9b9b]"
-        }`}
-      >
-        {index + 1}
+    <div className="flex gap-4 border-b border-[#e6e6e6] py-4 last:border-b-0">
+      {/* Mini calendar */}
+      <div className="w-[47px] shrink-0 overflow-hidden rounded-lg border border-gray-stroke">
+        <div className="flex items-center justify-center bg-gray-hover px-2.5 py-0.5">
+          <span className="text-[12px] font-medium uppercase tracking-[1.2px] text-gray-dark">{cal.day}</span>
+        </div>
+        <div className="flex items-center justify-center bg-white px-2 py-1">
+          <span className="text-[18px] font-medium leading-[1.2] text-gray-dark">{cal.date}</span>
+        </div>
       </div>
-      <div className="min-w-0 flex-1">
-        <p className="truncate text-[13px] font-medium text-gray-dark">{session.title}</p>
-        <p className="mt-0.5 text-[12px] text-[#9b9b9b]">{session.date} · {session.duration}</p>
-      </div>
-      <div className="shrink-0">
+
+      {/* Content + CTA */}
+      <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+        {/* Text */}
+        <div className="min-w-0 flex-1">
+          <p className={`truncate text-[18px] font-medium leading-[1.2] ${isPast ? "text-gray-light" : "text-gray-dark"}`}>
+            {session.title}
+          </p>
+          <p className="mt-0.5 text-[16px] text-gray-light">
+            {formatSessionDateTime(session.startTime)}
+            <span className="text-[#9b9b9b]"> · {session.duration}</span>
+          </p>
+        </div>
         <SessionCTA session={session} />
       </div>
     </div>
@@ -357,107 +293,104 @@ function SessionRow({ session, index }: { session: Session; index: number }) {
 
 function LiveCourseCard({ course }: { course: LiveCourse }) {
   const isCompleted = course.sessions.every((s) => {
-    const state = getSessionState(s);
-    return state === "past-recording" || state === "past-pending";
+    const st = getSessionState(s);
+    return st === "past-recording" || st === "past-pending";
   });
-
   const [sessionsOpen, setSessionsOpen] = useState(!isCompleted);
 
-  // Find the next upcoming/live session to pin above the accordion
-  const nextSessionIndex = course.sessions.findIndex((s) => {
-    const state = getSessionState(s);
-    return state === "live" || state === "soon" || state === "future";
-  });
-  const nextSession = nextSessionIndex !== -1 ? course.sessions[nextSessionIndex] : null;
+  const actionButtons = (
+    <>
+      <ActionButton
+        icon={
+          <div className="relative h-5 w-5 shrink-0 overflow-hidden">
+            <div className="absolute inset-[18.75%_16.67%]">
+              <div className="absolute inset-[-6%_-5.63%]">
+                <img alt="" className="block max-w-none size-full" src={figmaSyllabusIcon} />
+              </div>
+            </div>
+          </div>
+        }
+        label="Syllabus"
+      />
+      <ActionButton
+        icon={
+          <div className="relative h-5 w-5 shrink-0">
+            <img alt="" className="absolute block max-w-none size-full" src={figmaPlayIcon} />
+          </div>
+        }
+        label="Recordings"
+      />
+      <ActionButton icon={<SlackIcon />} label="Group Slack" />
+    </>
+  );
 
   return (
-    <div className={`overflow-hidden rounded-xl border border-gray-stroke bg-white shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] ${isCompleted ? "opacity-75" : ""}`}>
+    <div className={`overflow-hidden rounded-xl border border-gray-stroke ${isCompleted ? "opacity-75" : ""}`}>
 
       {/* Zone 1: Header */}
-      <div className="flex gap-4 p-5">
-        {/* Thumbnail */}
-        <div className="h-[54px] w-[72px] shrink-0 overflow-hidden rounded-lg border border-gray-stroke">
-          <img src={course.image} alt="" className="h-full w-full object-cover" />
-        </div>
-
-        {/* Title + badges + instructor */}
-        <div className="min-w-0 flex-1">
-          <div className="mb-2 flex flex-wrap items-center gap-1.5">
-            <span className="inline-flex items-center gap-1 rounded-full bg-[#e3f6ef] px-2.5 py-0.5 text-[12px] font-medium text-[#185440]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#038561] shrink-0" />
-              Live cohort
-            </span>
+      <div className="flex flex-col gap-5 bg-white p-4 sm:p-5 md:flex-row md:items-center md:gap-5">
+        {/* On mobile: image + title side-by-side. On desktop: image and content are separate flex children. */}
+        <div className="flex items-start gap-5 md:contents">
+          {/* Thumbnail */}
+          <img
+            src={course.image}
+            alt=""
+            className="h-16 w-[122px] shrink-0 rounded-lg object-cover sm:h-20 sm:w-[152px] md:h-[100px] md:w-[190px]"
+          />
+          {/* Title group (mobile/tablet: inline with image) */}
+          <div className="flex min-w-0 flex-1 flex-col gap-1 md:flex-[1_0_0] md:gap-4">
+            <div>
+              <p className="text-[14px] font-medium uppercase tracking-[1.4px] text-gray-light">Live cohort</p>
+              <p className="mt-1 text-[20px] font-medium leading-[1.2] text-gray-dark md:text-[24px]">{course.title}</p>
+            </div>
+            {/* Buttons: desktop only (inside content column) */}
+            <div className="hidden flex-wrap gap-2 md:flex">{actionButtons}</div>
           </div>
-          <p className="truncate text-[17px] font-semibold leading-snug text-gray-dark">{course.title}</p>
-          <div className="mt-1.5 flex items-center gap-1.5">
-            <img src={course.instructor.avatar} alt="" className="h-5 w-5 rounded-full object-cover shrink-0" />
-            <span className="text-[13px] text-gray-light">{course.instructor.name}</span>
-          </div>
         </div>
-
-        {/* Action buttons */}
-        <div className="flex shrink-0 flex-col items-end gap-1.5">
-          <a href="#" className="flex h-8 items-center gap-1.5 rounded-lg border border-gray-stroke bg-white px-3.5 text-[13px] font-medium text-gray-dark transition-colors hover:bg-gray-hover whitespace-nowrap">
-            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" className="opacity-50 shrink-0">
-              <path d="M2 2h10v10H2V2zm0 3h10M5 2v10" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-            </svg>
-            Syllabus
-          </a>
-          <a href="#" className="flex h-8 items-center gap-1.5 rounded-lg border border-gray-stroke bg-white px-3.5 text-[13px] font-medium text-gray-dark transition-colors hover:bg-gray-hover whitespace-nowrap">
-            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" className="opacity-50 shrink-0">
-              <circle cx="7" cy="7" r="5" stroke="currentColor" strokeWidth="1.2" />
-              <path d="M5.5 5l3 2-3 2V5z" fill="currentColor" />
-            </svg>
-            Recordings
-          </a>
-        </div>
+        {/* Buttons: mobile/tablet only (full-width row below image+title) */}
+        <div className="flex flex-wrap gap-2 md:hidden">{actionButtons}</div>
       </div>
 
-      {/* Zone 2: Cohort strip */}
-      <div className="flex flex-wrap items-center gap-0 border-t border-b border-gray-stroke bg-gray-hover px-5 py-2.5">
-        <div className="flex flex-col gap-0.5 border-r border-gray-stroke pr-4 mr-4">
-          <span className="text-[10px] font-medium uppercase tracking-[0.06em] text-[#9b9b9b]">Cohort</span>
-          <span className="text-[13px] font-medium text-gray-dark">{course.cohortLabel}</span>
+      {/* Zone 2: Metadata strip */}
+      <div className="flex items-center gap-6 border-t border-gray-stroke bg-white px-4 py-3 sm:px-5 sm:py-4">
+        {/* Dates */}
+        <div className="flex flex-col gap-0.5 md:flex-row md:items-center md:gap-2">
+          <span className="text-[16px] font-medium leading-[1.2] text-gray-dark">{course.cohortDateLabel}:</span>
+          <span className="text-[16px] leading-[1.2] text-gray-light">{course.cohortDates}</span>
         </div>
-        <div className="flex flex-col gap-0.5 border-r border-gray-stroke pr-4 mr-4">
-          <span className="text-[10px] font-medium uppercase tracking-[0.06em] text-[#9b9b9b]">Dates</span>
-          <span className="text-[13px] font-medium text-gray-dark">{course.cohortDates}</span>
-        </div>
-        <div className="flex flex-col gap-0.5">
-          <span className="text-[10px] font-medium uppercase tracking-[0.06em] text-[#9b9b9b]">Enrolled</span>
-          <span className="text-[13px] font-medium text-gray-dark">{course.enrolledCount} people</span>
+        {/* Divider */}
+        <div className="w-px self-stretch bg-gray-stroke" />
+        {/* Instructors */}
+        <div className="flex flex-col gap-0.5 md:flex-row md:items-center md:gap-2">
+          <span className="text-[16px] font-medium leading-[1.2] text-gray-dark">Instructors:</span>
+          <div className="flex items-center gap-1.5">
+            <img src={course.instructor.avatar} alt="" className="h-4 w-4 shrink-0 rounded-full object-cover" />
+            <span className="text-[16px] leading-[1.2] text-gray-light">{course.instructor.name}</span>
+          </div>
         </div>
       </div>
-
-      {/* Pinned next session (always visible) */}
-      {nextSession && (
-        <SessionRow session={nextSession} index={nextSessionIndex} />
-      )}
 
       {/* Zone 3: Sessions accordion toggle */}
       <button
         onClick={() => setSessionsOpen(!sessionsOpen)}
-        className="flex w-full items-center justify-between border-t border-gray-stroke px-5 py-[11px] transition-colors hover:bg-gray-hover"
+        className="flex w-full cursor-pointer items-center gap-3 bg-gray-hover px-4 py-3 sm:px-5"
       >
-        <div className="flex items-center gap-2">
-          <span className="text-[13px] font-semibold text-gray-dark">Sessions</span>
-          <span className="inline-flex min-w-[28px] items-center justify-center rounded-full border border-gray-stroke bg-gray-hover px-2 py-px text-[11px] font-medium text-gray-light">
-            {course.sessions.length}
-          </span>
-        </div>
+        <span className="flex-1 text-left text-[16px] font-medium text-gray-dark">
+          {course.sessions.length} Sessions
+        </span>
         <svg
-          width="16" height="16" viewBox="0 0 16 16" fill="none"
+          width="24" height="24" viewBox="0 0 24 24" fill="none"
           className={`shrink-0 text-[#9b9b9b] transition-transform ${sessionsOpen ? "rotate-180" : ""}`}
         >
-          <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
 
       {/* Sessions list */}
       {sessionsOpen && (
-        <div>
-          {course.sessions.map((session, i) => (
-            <SessionRow key={session.id} session={session} index={i} />
+        <div className="bg-white px-4 sm:px-5">
+          {course.sessions.map((session) => (
+            <SessionRow key={session.id} session={session} />
           ))}
         </div>
       )}
@@ -484,9 +417,7 @@ function SelfPacedCourseCard({ course }: { course: SelfPacedCourse }) {
           <img src={playIcon} alt="" className="h-[20px] w-[20px] shrink-0" />
           <span className="text-[14px] text-[#707070]">Self-paced</span>
         </div>
-        <h3 className="mt-1 text-[18px] font-medium leading-[1.2] text-gray-dark">
-          {course.title}
-        </h3>
+        <h3 className="mt-1 text-[18px] font-medium leading-[1.2] text-gray-dark">{course.title}</h3>
         <div className="mt-3 flex items-center gap-4">
           <div className="min-w-0 flex-1">
             <div className="mb-1.5 flex items-center justify-between">
@@ -494,10 +425,7 @@ function SelfPacedCourseCard({ course }: { course: SelfPacedCourse }) {
               <p className="text-[14px] text-[#9B9B9B]">{course.totalTime}</p>
             </div>
             <div className="h-[6px] w-full rounded-full bg-[#E5E5E5]">
-              <div
-                className="h-full rounded-full bg-[#038561] transition-all"
-                style={{ width: `${course.percentComplete}%` }}
-              />
+              <div className="h-full rounded-full bg-[#038561] transition-all" style={{ width: `${course.percentComplete}%` }} />
             </div>
           </div>
           {isCompleted ? (
@@ -527,12 +455,8 @@ function SuggestedCourseCard({ course }: { course: (typeof suggestedCourses)[0] 
         <p className="line-clamp-2 text-[15px] font-medium leading-snug text-gray-dark transition-opacity group-hover:opacity-70">
           {course.title}
         </p>
-        <p className="mt-0.5 text-[13px] text-[#707070]">
-          {course.type} · {course.duration}
-        </p>
-        {course.enrolledCount && (
-          <p className="text-[13px] text-[#707070]">{course.enrolledCount}</p>
-        )}
+        <p className="mt-0.5 text-[13px] text-[#707070]">{course.type} · {course.duration}</p>
+        {course.enrolledCount && <p className="text-[13px] text-[#707070]">{course.enrolledCount}</p>}
       </div>
     </div>
   );
@@ -560,29 +484,22 @@ export default function MyCourses() {
         </svg>
       </NavLink>
       <div className="mt-4 flex flex-col gap-5">
-        {suggestedCourses.map((course, i) => (
-          <SuggestedCourseCard key={i} course={course} />
-        ))}
+        {suggestedCourses.map((course, i) => <SuggestedCourseCard key={i} course={course} />)}
       </div>
     </>
   );
 
   return (
     <PageShell rightSidebar={suggestedCoursesSection}>
-      {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-[32px] font-medium text-gray-dark leading-[1.1] md:text-[40px]">
-          My Courses
-        </h1>
+        <h1 className="text-[32px] font-medium leading-[1.1] text-gray-dark md:text-[40px]">My Courses</h1>
         <div className="flex rounded-lg border border-gray-stroke/50 bg-gray-hover p-0.5 text-[14px] font-medium">
           {(["all", "live", "selfPaced"] as Filter[]).map((f) => (
             <button
               key={f}
               onClick={() => setFilter(f)}
               className={`cursor-pointer rounded-md px-3 py-1.5 transition-colors ${
-                filter === f
-                  ? "bg-white text-gray-dark shadow-[0_1px_2px_rgba(0,0,0,0.08)]"
-                  : "text-[#707070] hover:text-gray-dark"
+                filter === f ? "bg-white text-gray-dark shadow-[0_1px_2px_rgba(0,0,0,0.08)]" : "text-[#707070] hover:text-gray-dark"
               }`}
             >
               {f === "all" ? "All" : f === "live" ? "Live" : "Self-paced"}
@@ -595,9 +512,7 @@ export default function MyCourses() {
       <div className="mt-6 flex flex-col gap-4">
         {visibleCourses
           .filter((c) => c.type === "live")
-          .map((course) => (
-            <LiveCourseCard key={course.id} course={course as LiveCourse} />
-          ))}
+          .map((course) => <LiveCourseCard key={course.id} course={course as LiveCourse} />)}
       </div>
 
       {/* Self-paced courses */}
@@ -605,9 +520,7 @@ export default function MyCourses() {
         <div className={`border-t border-gray-stroke/50 ${visibleCourses.some((c) => c.type === "live") ? "mt-6" : "mt-0"}`}>
           {visibleCourses
             .filter((c) => c.type === "selfPaced")
-            .map((course) => (
-              <SelfPacedCourseCard key={course.id} course={course as SelfPacedCourse} />
-            ))}
+            .map((course) => <SelfPacedCourseCard key={course.id} course={course as SelfPacedCourse} />)}
         </div>
       )}
     </PageShell>
