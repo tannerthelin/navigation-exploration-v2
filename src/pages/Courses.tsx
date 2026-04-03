@@ -2,6 +2,28 @@ import { useState, useEffect, useContext, useRef } from "react";
 import { SubNavContext } from "../components/SubNavContext";
 import SubNavItem from "../components/SubNavItem";
 
+/* ── Course thumbnail images ── */
+import courseImg1 from "../assets/placeholder images/placeholder-event-01.png";
+import courseImg2 from "../assets/placeholder images/placeholder-event-02.png";
+import courseImg3 from "../assets/placeholder images/placeholder-event-03.png";
+import courseImg4 from "../assets/img/EventImage.avif";
+import courseImg5 from "../assets/img/Video-Thumbnail.png";
+import courseImg6 from "../assets/img/work-together.png";
+
+/* ── Avatar images ── */
+import pic1 from "../assets/profile photos/pic-1.png";
+import pic2 from "../assets/profile photos/pic-2.png";
+import pic3 from "../assets/profile photos/pic-3.png";
+import pic4 from "../assets/profile photos/pic-4.png";
+import pic5 from "../assets/profile photos/pic-5.png";
+import pic6 from "../assets/profile photos/pic-6.png";
+import pic7 from "../assets/profile photos/pic-7.png";
+import pic8 from "../assets/profile photos/pic-8.png";
+import pic9 from "../assets/profile photos/pic-9.png";
+import pic10 from "../assets/profile photos/pic-10.png";
+import pic11 from "../assets/profile photos/pic-11.png";
+import pic12 from "../assets/profile photos/pic-12.png";
+
 /* ── Sub-nav departments ── */
 const departments = [
   {
@@ -193,77 +215,79 @@ function FilterToggle({
 const liveCohorts = [
   {
     id: 1,
-    gradient: "from-[#3B82F6] to-[#1E40AF]",
+    image: courseImg1,
     title: "Nail the Google PM Interview Cycle",
     duration: "3 weeks",
     enrolled: 12,
-    avatars: ["#6EA085", "#C6C4C4", "#E8BF78"],
+    avatars: [pic1, pic2, pic3],
   },
   {
     id: 2,
-    gradient: "from-[#10B981] to-[#065F46]",
+    image: courseImg2,
     title: "MBA Application Mastery: Essays to Interview",
     duration: "6 weeks",
     enrolled: 24,
-    avatars: ["#E8BF78", "#6EA085", "#C6C4C4"],
+    avatars: [pic4, pic5, pic6],
   },
   {
     id: 3,
-    gradient: "from-[#F59E0B] to-[#B45309]",
+    image: courseImg3,
     title: "Breaking Into Investment Banking",
     duration: "4 weeks",
     enrolled: 18,
-    avatars: ["#C6C4C4", "#E8BF78", "#6EA085"],
+    avatars: [pic7, pic8, pic9],
   },
   {
     id: 4,
-    gradient: "from-[#8B5CF6] to-[#4C1D95]",
+    image: courseImg4,
     title: "Data Science for Product Managers",
     duration: "5 weeks",
     enrolled: 31,
-    avatars: ["#6EA085", "#E8BF78", "#C6C4C4"],
+    avatars: [pic10, pic11, pic12],
   },
   {
     id: 5,
-    gradient: "from-[#EF4444] to-[#991B1B]",
+    image: courseImg5,
     title: "LSAT Prep: Logic Games Deep Dive",
     duration: "3 weeks",
     enrolled: 8,
-    avatars: ["#C6C4C4", "#6EA085", "#E8BF78"],
+    avatars: [pic1, pic4, pic7],
   },
   {
     id: 6,
-    gradient: "from-[#06B6D4] to-[#0E4A6F]",
+    image: courseImg6,
     title: "Software Engineering Interview Bootcamp",
     duration: "8 weeks",
     enrolled: 42,
-    avatars: ["#E8BF78", "#C6C4C4", "#6EA085"],
+    avatars: [pic2, pic5, pic8],
   },
 ];
 
 /* ── Self-paced mock data ── */
 const selfPacedCourses = [
-  { id: 1, gradient: "from-[#3B82F6] to-[#1E40AF]", title: "PM Interview Mastery", duration: "7h" },
-  { id: 2, gradient: "from-[#10B981] to-[#065F46]", title: "MBA Essays That Get You In", duration: "5h" },
-  { id: 3, gradient: "from-[#F59E0B] to-[#B45309]", title: "Investment Banking Fundamentals", duration: "12h" },
-  { id: 4, gradient: "from-[#8B5CF6] to-[#4C1D95]", title: "Machine Learning for Beginners", duration: "9h" },
-  { id: 5, gradient: "from-[#EF4444] to-[#991B1B]", title: "LSAT Logic Games Mastery", duration: "6h" },
-  { id: 6, gradient: "from-[#06B6D4] to-[#0E4A6F]", title: "System Design Interview Prep", duration: "8h" },
+  { id: 1, image: courseImg3, title: "PM Interview Mastery", duration: "7h", avatars: [pic3, pic6, pic9] },
+  { id: 2, image: courseImg4, title: "MBA Essays That Get You In", duration: "5h", avatars: [pic10, pic11, pic12] },
+  { id: 3, image: courseImg5, title: "Investment Banking Fundamentals", duration: "12h", avatars: [pic1, pic4, pic7] },
+  { id: 4, image: courseImg6, title: "Machine Learning for Beginners", duration: "9h", avatars: [pic2, pic5, pic8] },
+  { id: 5, image: courseImg1, title: "LSAT Logic Games Mastery", duration: "6h", avatars: [pic3, pic6, pic9] },
+  { id: 6, image: courseImg2, title: "System Design Interview Prep", duration: "8h", avatars: [pic10, pic11, pic12] },
 ];
 
 /* ── Live cohort card ── */
 function LiveCohortCard({ cohort }: { cohort: typeof liveCohorts[0] }) {
   return (
     <div className="w-[320px] shrink-0">
-      <div className={`aspect-[120/63] w-full rounded-lg bg-gradient-to-br ${cohort.gradient}`} />
+      <img src={cohort.image} alt={cohort.title} className="aspect-[120/63] w-full rounded-lg object-cover" />
       <div className="mt-2 px-1">
         <div className="flex items-center gap-1.5">
           <div className="flex items-center pr-2">
-            {cohort.avatars.map((color, i) => (
-              <div
+            {cohort.avatars.map((src, i) => (
+              <img
                 key={i}
-                className="h-5 w-5 rounded-full border border-white -mr-2"
-                style={{ backgroundColor: color, zIndex: cohort.avatars.length - i, position: "relative" }}
+                src={src}
+                alt=""
+                className="h-5 w-5 rounded-full border border-white object-cover -mr-2"
+                style={{ zIndex: cohort.avatars.length - i, position: "relative" }}
               />
             ))}
           </div>
@@ -280,11 +304,24 @@ function LiveCohortCard({ cohort }: { cohort: typeof liveCohorts[0] }) {
 function SelfPacedCard({ course }: { course: typeof selfPacedCourses[0] }) {
   return (
     <div className="w-[320px] shrink-0">
-      <div className={`aspect-[120/63] w-full rounded-lg bg-gradient-to-br ${course.gradient}`} />
+      <img src={course.image} alt={course.title} className="aspect-[120/63] w-full rounded-lg object-cover" />
       {/* Content */}
       <div className="mt-2 px-1">
-        {/* "Featured course" label */}
         <div className="flex items-center gap-1.5">
+          <div className="flex items-center pr-2">
+            {course.avatars.map((src, i) => (
+              <img
+                key={i}
+                src={src}
+                alt=""
+                className="h-5 w-5 rounded-full border border-white object-cover -mr-2"
+                style={{ zIndex: course.avatars.length - i, position: "relative" }}
+              />
+            ))}
+          </div>
+        </div>
+        {/* "Premium course" label */}
+        <div className="mt-1.5 flex items-center gap-1.5">
           <div className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#EBAC0C]">
             <svg width="7" height="8" viewBox="0 0 7 8" fill="white">
               <path d="M1 1l5 3-5 3z" />
