@@ -330,7 +330,7 @@ export default function ProfileV2() {
 
           {/* Name + Supercoach badge */}
           <div className={`flex items-center ${isCustomerProfile ? "gap-2" : "gap-1 mb-1"}`}>
-            <h1 className={`font-medium text-gray-dark ${isCustomerProfile ? "text-[24px]" : "text-[18px]"}`}>{profileName}</h1>
+            <h1 className={`font-medium text-gray-dark leading-[1.2] ${isCustomerProfile ? "text-[24px]" : "text-[18px]"}`}>{profileName}</h1>
             {!isCustomerProfile && (
               <img src={verifiedIcon} alt="Verified" className="mt-[2px] h-[16px] w-[16px]" />
             )}
@@ -707,7 +707,7 @@ export default function ProfileV2() {
             {/* Events */}
             <div className="my-[36px] border-t border-gray-200" />
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-[24px] font-medium text-gray-dark">Events</h2>
+              <h2 className="text-[24px] font-medium text-gray-dark leading-[1.2]">Events</h2>
               <div ref={eventsCategoryRef} className="relative">
                 <button
                   onClick={() => setEventsCategoryOpen(!eventsCategoryOpen)}
@@ -786,11 +786,11 @@ export default function ProfileV2() {
             </div>
 
             <div className="my-[36px] border-t border-gray-200" />
-            <h2 className="mb-4 text-[24px] font-medium text-gray-dark">About Samantha</h2>
+            <h2 className="mb-4 text-[24px] font-medium text-gray-dark leading-[1.2]">About Samantha</h2>
             <div className="h-[160px] rounded-xl bg-[#f5f5f5]" style={dashedBorderStyle} />
 
             <div className="my-[36px] border-t border-gray-200" />
-            <h2 className="mb-4 text-[24px] font-medium text-gray-dark">Why do I coach?</h2>
+            <h2 className="mb-4 text-[24px] font-medium text-gray-dark leading-[1.2]">Why do I coach?</h2>
             <div className="h-[160px] rounded-xl bg-[#f5f5f5]" style={dashedBorderStyle} />
           </div>
 
@@ -813,7 +813,7 @@ export default function ProfileV2() {
             </div>
 
             <div className="my-[36px] border-t border-gray-200" />
-            <h2 className="mb-4 text-[24px] font-medium text-gray-dark">Education</h2>
+            <h2 className="mb-4 text-[24px] font-medium text-gray-dark leading-[1.2]">Education</h2>
             <div className="flex flex-col gap-4">
               {[...Array(3)].map((_, i) => (
                 <div key={i} className="flex gap-4">

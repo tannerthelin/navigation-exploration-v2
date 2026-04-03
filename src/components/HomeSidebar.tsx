@@ -78,7 +78,7 @@ const experts = [
 function SectionHeader({ title }: { title: string }) {
   return (
     <div className="flex items-center justify-between">
-      <h3 className="text-[14px] font-medium uppercase tracking-[0.1em] text-gray-light">
+      <h3 className="text-[14px] font-medium uppercase tracking-[0.1em] text-gray-light leading-[1.2]">
         {title}
       </h3>
       <button className="cursor-pointer text-[14px] font-medium text-gray-light transition-colors hover:text-gray-dark">

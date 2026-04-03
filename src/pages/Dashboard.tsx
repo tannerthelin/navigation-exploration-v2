@@ -153,7 +153,7 @@ export default function Dashboard() {
   } else if (layoutVersion === 2) {
     rightSidebarContent = (
       <div className="pt-6">
-        <h2 className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070]">
+        <h2 className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070] leading-[1.2]">
           Upcoming Sessions
         </h2>
         <div className="mt-3">
@@ -227,7 +227,7 @@ export default function Dashboard() {
   } else {
     rightSidebarContent = (
       <div className="pt-6">
-        <h2 className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070]">
+        <h2 className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070] leading-[1.2]">
           My Content
         </h2>
         <div className="mt-3 flex flex-wrap gap-[6px]">
@@ -255,13 +255,13 @@ export default function Dashboard() {
   return (
     <>
       <PageShell rightSidebar={rightSidebarContent}>
-        <h1 className="text-[32px] font-medium text-gray-dark md:text-[40px]">
+        <h1 className="text-[32px] font-medium text-gray-dark leading-[1.1] md:text-[40px]">
           Welcome back, Alex
         </h1>
 
         {/* My Goals */}
         <section className="mt-8">
-          <h2 className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070]">
+          <h2 className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070] leading-[1.2]">
             My Goals
           </h2>
           <div className="scrollbar-hide -mx-4 mt-3 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2">
@@ -279,7 +279,7 @@ export default function Dashboard() {
         {/* Upcoming Sessions — V1 and V3 show inline */}
         {(layoutVersion === 1 || layoutVersion === 3) && (
           <section className="mt-12">
-            <h2 className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070]">
+            <h2 className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070] leading-[1.2]">
               Upcoming Sessions
             </h2>
             <div className="mt-3">
@@ -352,7 +352,7 @@ export default function Dashboard() {
 
         {/* My Courses */}
         <section className="mt-12">
-          <h2 className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070]">
+          <h2 className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070] leading-[1.2]">
             My Courses
           </h2>
           <div className="mt-3 flex flex-col gap-4">

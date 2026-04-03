@@ -997,7 +997,7 @@ function OfficeHoursInfoModal({ live, author, avatar, onBuy, onClose }: {
                 <p className="text-[13px] text-white/70">{live.viewers.toLocaleString()} watching now</p>
               </div>
             </div>
-            <h2 className="mt-4 text-[22px] font-bold text-white">Join Office Hours</h2>
+            <h2 className="mt-4 text-[22px] font-bold text-white leading-[1.2]">Join Office Hours</h2>
             <p className="mt-1 text-[14px] leading-snug text-white/70">
               {author} is holding a live session open to anyone. Ask your questions directly and get real-time answers.
             </p>
@@ -1068,7 +1068,7 @@ function CheckoutModal({ onClose }: { onClose: () => void }) {
           {/* Left — checkout form */}
           <div className="flex-1 overflow-y-auto px-8 py-8" style={{ maxHeight: "90vh" }}>
             <div className="flex items-center justify-between">
-              <h2 className="text-[24px] font-bold text-gray-dark">Checkout</h2>
+              <h2 className="text-[24px] font-bold text-gray-dark leading-[1.2]">Checkout</h2>
               <button onClick={onClose} className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-dark hover:bg-gray-200">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>
@@ -2058,7 +2058,7 @@ function GoLiveModal({ onClose }: { onClose: () => void }) {
           <>
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-gray-stroke">
-              <h2 className="text-[17px] font-semibold text-gray-dark">Go Live</h2>
+              <h2 className="text-[17px] font-semibold text-gray-dark leading-[1.2]">Go Live</h2>
               <button onClick={onClose} className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-stroke bg-white text-gray-dark hover:bg-gray-hover transition-colors">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
               </button>

@@ -187,7 +187,7 @@ export default function Calendar() {
   return (
     <PageShell rightSidebar={popularEventsSection}>
         {/* Header — spans full width above both columns */}
-        <h1 className="text-[32px] font-medium text-gray-dark md:text-[40px]">
+        <h1 className="text-[32px] font-medium text-gray-dark leading-[1.1] md:text-[40px]">
           Calendar
         </h1>
         <p className="mt-2 text-[18px] text-gray-light">

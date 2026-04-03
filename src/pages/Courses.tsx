@@ -331,13 +331,13 @@ function CourseCarousel({
     scrollRef.current?.scrollBy({ left: dir === "left" ? -340 : 340, behavior: "smooth" });
 
   return (
-    <section className="mt-10">
-      <div className="flex items-start justify-between">
+    <section className="mt-6 pb-2">
+      <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-[22px] font-medium text-gray-dark">{title}</h2>
+          <h2 className="text-[22px] font-medium text-gray-dark leading-[1.2]">{title}</h2>
           {subtitle && <p className="mt-0.5 text-[16px] text-gray-light">{subtitle}</p>}
         </div>
-        <div className="hidden shrink-0 items-center gap-1.5 pt-0.5 md:flex">
+        <div className="hidden shrink-0 items-center gap-1.5 md:flex">
           <button
             onClick={() => scroll("left")}
             disabled={!canScrollLeft}
@@ -397,7 +397,7 @@ export default function Courses() {
     <div>
       <div className="flex items-end justify-between gap-4">
         <div>
-          <h1 className="text-[32px] font-medium text-gray-dark md:text-[40px]">Courses</h1>
+          <h1 className="text-[32px] font-medium text-gray-dark leading-[1.1] md:text-[40px]">Courses</h1>
         </div>
         <div className="hidden shrink-0 items-center gap-2 pb-0.5 md:flex">
           <CategoryFilter selected={filterCategory} onSelect={setFilterCategory} />
@@ -421,7 +421,7 @@ export default function Courses() {
         ))}
       </CourseCarousel>
 
-      <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
         {[1, 2, 3, 4].map((i) => (
           <div key={i} className="rounded-lg border border-gray-stroke p-4">
             <div className="h-32 w-full animate-pulse rounded bg-gray-stroke" />

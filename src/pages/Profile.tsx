@@ -159,7 +159,7 @@ export default function Profile() {
       <div>
         {/* Name with verified badge */}
         <div className="flex items-center gap-2">
-          <h1 className="text-[26px] font-bold text-gray-dark">Alex Ward</h1>
+          <h1 className="text-[26px] font-bold text-gray-dark leading-[1.2]">Alex Ward</h1>
           {isVerifiedExpert && (
             <img src={verifiedIcon} alt="Verified" className="mt-[2px] h-[19px] w-[19px]" />
           )}
@@ -400,7 +400,7 @@ export default function Profile() {
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 {/* Free Intro Call */}
                 <div className="flex flex-col items-center rounded-xl border border-gray-stroke bg-[#F5F5F5] px-8 py-10 text-center">
-                  <h3 className="text-[20px] font-semibold text-gray-dark">Free 15-minute intro call</h3>
+                  <h3 className="text-[20px] font-semibold text-gray-dark leading-[1.2]">Free 15-minute intro call</h3>
                   <p className="mt-3 text-[16px] text-gray-600">
                     Get to know Alex and make a plan for working together.
                   </p>
@@ -411,7 +411,7 @@ export default function Profile() {
 
                 {/* Custom Hourly */}
                 <div className="flex flex-col items-center rounded-xl border border-gray-stroke bg-[#F5F5F5] px-8 py-10 text-center">
-                  <h3 className="text-[20px] font-semibold text-gray-dark">Custom hourly coaching</h3>
+                  <h3 className="text-[20px] font-semibold text-gray-dark leading-[1.2]">Custom hourly coaching</h3>
                   <p className="mt-3 text-[16px] text-gray-600">
                     Get help with Editing, School Selection, and more.
                   </p>
@@ -438,7 +438,7 @@ export default function Profile() {
             <div className="space-y-8">
               {/* About Section */}
               <div>
-                <h3 className="mb-3 text-[20px] font-bold text-gray-dark">About</h3>
+                <h3 className="mb-3 text-[20px] font-bold text-gray-dark leading-[1.2]">About</h3>
                 <p className="text-[17px] leading-relaxed text-gray-dark">
                   Product Manager at Stripe with a background in consulting and engineering. Currently pursuing my MBA at HBS while preparing for a career pivot into VC. Passionate about fintech, developer tools, and building products that scale.
                 </p>
@@ -446,14 +446,14 @@ export default function Profile() {
 
               {/* Experience Section */}
               <div>
-                <h3 className="mb-4 text-[20px] font-bold text-gray-dark">Experience</h3>
+                <h3 className="mb-4 text-[20px] font-bold text-gray-dark leading-[1.2]">Experience</h3>
                 <div className="space-y-6">
                   <div className="flex gap-4">
                     <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-gray-100">
                       <span className="text-[20px] font-semibold text-gray-dark">💳</span>
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-[18px] font-semibold text-gray-dark">Product Manager</h4>
+                      <h4 className="text-[18px] font-semibold text-gray-dark leading-[1.2]">Product Manager</h4>
                       <p className="text-[16px] text-gray-light">Stripe</p>
                       <p className="mt-1 text-[15px] text-gray-light">2022 – Present</p>
                       <p className="mt-3 text-[16px] leading-relaxed text-gray-dark">
@@ -467,7 +467,7 @@ export default function Profile() {
                       <span className="text-[20px] font-semibold text-gray-dark">📦</span>
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-[18px] font-semibold text-gray-dark">Associate Product Manager</h4>
+                      <h4 className="text-[18px] font-semibold text-gray-dark leading-[1.2]">Associate Product Manager</h4>
                       <p className="text-[16px] text-gray-light">Dropbox</p>
                       <p className="mt-1 text-[15px] text-gray-light">2020 – 2022</p>
                       <p className="mt-3 text-[16px] leading-relaxed text-gray-dark">
@@ -494,14 +494,14 @@ export default function Profile() {
 
               {/* Education Section */}
               <div>
-                <h3 className="mb-4 text-[20px] font-bold text-gray-dark">Education</h3>
+                <h3 className="mb-4 text-[20px] font-bold text-gray-dark leading-[1.2]">Education</h3>
                 <div className="space-y-6">
                   <div className="flex gap-4">
                     <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-gray-100">
                       <span className="text-[20px] font-semibold text-gray-dark">🎓</span>
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-[18px] font-semibold text-gray-dark">Harvard Business School</h4>
+                      <h4 className="text-[18px] font-semibold text-gray-dark leading-[1.2]">Harvard Business School</h4>
                       <p className="text-[16px] text-gray-light">MBA</p>
                       <p className="mt-1 text-[15px] text-gray-light">2024 – 2026</p>
                     </div>
@@ -512,7 +512,7 @@ export default function Profile() {
                       <span className="text-[20px] font-semibold text-gray-dark">🎓</span>
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-[18px] font-semibold text-gray-dark">MIT</h4>
+                      <h4 className="text-[18px] font-semibold text-gray-dark leading-[1.2]">MIT</h4>
                       <p className="text-[16px] text-gray-light">B.S. in Computer Science and Engineering</p>
                       <p className="mt-1 text-[15px] text-gray-light">2014 – 2018</p>
                     </div>

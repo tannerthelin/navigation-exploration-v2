@@ -159,7 +159,7 @@ export default function AccountSettings() {
   return (
     <PageShell leftSidebar={settingsNav}>
       <div>
-          <h1 className="text-[32px] font-medium text-gray-dark md:text-[40px]">
+          <h1 className="text-[32px] font-medium text-gray-dark leading-[1.1] md:text-[40px]">
             {(() => { const t = tabs.find((t) => t.key === activeTab); return t?.title ?? t?.label; })()}
           </h1>
           {(() => { const t = tabs.find((t) => t.key === activeTab); return t?.subtitle ? <p className="mt-2 text-[18px] text-gray-light">{t.subtitle}</p> : null; })()}
