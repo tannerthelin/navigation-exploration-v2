@@ -2194,11 +2194,11 @@ const HAPPENING_NOW = [
 ];
 
 const TRENDING_TOPICS = [
-  { id: 1, tag: "MBA", posts: 234 },
-  { id: 2, tag: "GMAT", posts: 189 },
-  { id: 3, tag: "Consulting", posts: 156 },
-  { id: 4, tag: "Product Management", posts: 98 },
-  { id: 5, tag: "Investment Banking", posts: 74 },
+  { id: 1, tag: "MBA", coaches: 234 },
+  { id: 2, tag: "GMAT", coaches: 189 },
+  { id: 3, tag: "Consulting", coaches: 156 },
+  { id: 4, tag: "Product Management", coaches: 98 },
+  { id: 5, tag: "Investment Banking", coaches: 74 },
 ];
 
 function HomeRightSidebar() {
@@ -2253,7 +2253,7 @@ function HomeRightSidebar() {
       <div>
         <div className="mb-4 flex items-center gap-1.5">
           <span className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070]">
-            Categories
+            Coach Categories
           </span>
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" className="shrink-0 text-[#707070]">
             <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -2266,7 +2266,7 @@ function HomeRightSidebar() {
               className="-mx-1.5 rounded-xl p-1.5 text-left transition-colors hover:bg-gray-hover"
             >
               <p className="text-[16px] font-medium leading-snug text-gray-dark">{topic.tag}</p>
-              <p className="mt-0.5 text-[14px] text-gray-light">{topic.posts} posts today</p>
+              <p className="mt-0.5 text-[14px] text-gray-light">{topic.coaches} coaches</p>
             </button>
           ))}
         </div>
