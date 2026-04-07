@@ -330,8 +330,8 @@ function SlotOption({ slot, isNext }: { slot: TimeSlot; isNext: boolean }) {
   const isRecording = state === "past-recording";
 
   return (
-    <div className={`flex w-full items-center justify-between rounded-lg px-4 py-4 ${
-      isLive ? "bg-[#296cef]" : isRecording ? "bg-gray-hover" : "border border-gray-stroke"
+    <div className={`flex w-full items-center justify-between rounded-lg px-4 py-4 transition-colors ${
+      isLive ? "cursor-pointer bg-[#296cef] hover:bg-[#3b7dfd]" : isRecording ? "cursor-pointer bg-gray-hover hover:bg-[#ebebeb]" : "border border-gray-stroke"
     }`}>
       <span className={`text-[16px] leading-[1.2] ${isLive ? "text-[#f5f5f5]" : "text-gray-light"}`}>
         {formatTime(slot.startTime)}
@@ -354,7 +354,7 @@ function SessionRow({ session, isNext }: { session: Session; isNext: boolean }) 
     <div className="border-t border-[#e6e6e6] first:border-t-0">
       {/* Title row */}
       <div className="flex gap-4 px-4 pb-3 pt-4 sm:px-5 sm:pt-5">
-        <div className="w-12 shrink-0 text-center">
+        <div className="w-8 shrink-0 text-center">
           <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[1.4px] text-gray-light">{cal.day}</p>
           <p className={`text-[20px] font-medium leading-[1.2] ${isPast ? "text-gray-light" : "text-gray-dark"}`}>{cal.date}</p>
         </div>
@@ -369,7 +369,7 @@ function SessionRow({ session, isNext }: { session: Session; isNext: boolean }) 
       {/* Slots row */}
       <div className="flex items-stretch px-4 pb-4 sm:px-5 sm:pb-5">
         {/* OR column — aligns with date column above */}
-        <div className="flex w-16 shrink-0 flex-col items-end pr-2">
+        <div className="flex w-12 shrink-0 flex-col items-end pr-2">
           <div className="flex-1 border-r border-dashed border-gray-stroke" />
           <span className="py-1 text-[14px] font-medium uppercase leading-[1.2] tracking-[1.4px] text-[#9b9b9b]">or</span>
           <div className="flex-1 border-r border-dashed border-gray-stroke" />
