@@ -2201,24 +2201,24 @@ const TRENDING_TOPICS = [
 
 function HomeRightSidebar() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 px-1">
       {/* Happening Now */}
       <div>
-        <div className="mb-3 flex items-center justify-between">
-          <span className="text-[11px] font-semibold uppercase tracking-widest text-gray-400">
+        <div className="mb-4 flex items-center gap-1.5">
+          <span className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070]">
             Happening Now
           </span>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="text-gray-400">
-            <path d="M5.5 3L9 7L5.5 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" className="shrink-0 text-[#707070]">
+            <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           {HAPPENING_NOW.map(event => (
             <button
               key={event.id}
-              className="flex items-center gap-3 rounded-xl p-2 text-left transition-colors hover:bg-gray-50"
+              className="flex items-start gap-3 rounded-xl p-1.5 -mx-1.5 text-left transition-colors hover:bg-gray-hover"
             >
-              <div className="relative h-11 w-16 shrink-0 overflow-hidden rounded-lg">
+              <div className="relative h-[52px] w-[72px] shrink-0 overflow-hidden rounded-[8px]">
                 <img
                   src={event.thumbnail}
                   alt={event.title}
@@ -2231,14 +2231,12 @@ function HomeRightSidebar() {
                   </div>
                 )}
               </div>
-              <div className="min-w-0">
-                <p className="truncate text-[14px] font-medium text-gray-dark">{event.title}</p>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-[16px] font-medium leading-snug text-gray-dark">{event.title}</p>
                 {event.status === "live" ? (
-                  <p className="text-[12px] text-red-500">
-                    Live now · {event.detail}
-                  </p>
+                  <p className="mt-0.5 text-[14px] text-red-500">Live now · {event.detail}</p>
                 ) : (
-                  <p className="text-[12px] text-gray-light">{event.detail}</p>
+                  <p className="mt-0.5 text-[14px] text-gray-light">{event.detail}</p>
                 )}
               </div>
             </button>
@@ -2251,26 +2249,26 @@ function HomeRightSidebar() {
 
       {/* Trending Topics */}
       <div>
-        <div className="mb-3 flex items-center justify-between">
-          <span className="text-[11px] font-semibold uppercase tracking-widest text-gray-400">
+        <div className="mb-4 flex items-center gap-1.5">
+          <span className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070]">
             Trending Topics
           </span>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="text-gray-400">
-            <path d="M5.5 3L9 7L5.5 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" className="shrink-0 text-[#707070]">
+            <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
         <div className="flex flex-col gap-1">
           {TRENDING_TOPICS.map(topic => (
             <button
               key={topic.id}
-              className="flex items-center gap-3 rounded-xl px-2 py-2.5 text-left transition-colors hover:bg-gray-50"
+              className="flex items-center gap-3 rounded-xl p-1.5 -mx-1.5 text-left transition-colors hover:bg-gray-hover"
             >
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gray-100">
-                <span className="text-[13px] font-semibold text-gray-500">#</span>
+              <div className="flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-[8px] border border-[#E5E5E5] bg-white shadow-[0_1px_2px_0_rgba(16,24,40,0.05)]">
+                <span className="text-[18px] font-medium text-[#707070]">#</span>
               </div>
               <div>
-                <p className="text-[14px] font-medium text-gray-dark">{topic.tag}</p>
-                <p className="text-[12px] text-gray-light">{topic.posts} posts today</p>
+                <p className="text-[16px] font-medium leading-snug text-gray-dark">{topic.tag}</p>
+                <p className="mt-0.5 text-[14px] text-gray-light">{topic.posts} posts today</p>
               </div>
             </button>
           ))}
