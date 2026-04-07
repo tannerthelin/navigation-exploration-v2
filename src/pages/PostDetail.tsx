@@ -491,21 +491,21 @@ function CommentItem({ comment, depth = 0 }: { comment: CommentData; depth?: num
         </div>
       </motion.div>
 
-      {/* Replies outside the flex row. Each non-last reply carries a full-height continuation
-          line so it bridges to the next sibling. The last reply only gets the L-connector,
-          so the line stops exactly at the last child's avatar center. */}
+      {/* Replies outside the flex row.
+          border-l on the container draws one continuous line from first child top to last child bottom.
+          The last child's white overlay erases everything below its avatar center (top-[34px]),
+          so the line appears to stop cleanly at the last avatar. */}
       {replies.length > 0 ? (
-        <div className="pl-[44px]">
+        <div className="ml-[22px] border-l border-gray-200 pl-[22px]">
           {replies.map((r, i) => {
             const isLast = i === replies.length - 1;
             return (
               <div key={r.id} className="relative">
-                {/* L-connector: curves from parent line down to this child's avatar */}
+                {/* L-connector: curves from the border down-right to this child's avatar */}
                 <div className="absolute -left-[22px] top-0 h-[34px] w-[18px] rounded-bl-[10px] border-b border-l border-gray-200" />
-                {/* Continuation line: bridges this reply's full height to the next sibling's L-connector.
-                    Only rendered for non-last siblings so the line stops at the last child. */}
-                {!isLast ? (
-                  <div className="absolute -left-[22px] top-0 bottom-0 w-px bg-gray-200" />
+                {/* White eraser: covers the border below the last child's avatar center */}
+                {isLast ? (
+                  <div className="absolute -left-[1px] top-[34px] bottom-0 w-px bg-white" />
                 ) : null}
                 <CommentItem comment={r} depth={depth + 1} />
               </div>
