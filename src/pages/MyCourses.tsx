@@ -110,7 +110,7 @@ const enrolledCourses: EnrolledCourse[] = ([
       ] as [TimeSlot, TimeSlot] },
       { id: 103, title: "Crafting Your Story", duration: "90 min", slots: [
         { id: 1030, startTime: new Date("2026-03-26T09:00:00"), endTime: new Date("2026-03-26T10:30:00"), recordingUrl: "#" },
-        { id: 1031, startTime: new Date("2026-03-26T19:00:00"), endTime: new Date("2026-03-26T20:30:00"), recordingUrl: "#" },
+        { id: 1031, startTime: new Date("2026-03-26T19:00:00"), endTime: new Date("2026-03-26T20:30:00") },
       ] as [TimeSlot, TimeSlot] },
       { id: 104, title: "Building Your Narrative", duration: "90 min", slots: [
         { id: 1040, startTime: liveNow, endTime: liveEnd },
