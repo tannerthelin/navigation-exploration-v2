@@ -2194,9 +2194,11 @@ const HAPPENING_NOW = [
 ];
 
 const TRENDING_TOPICS = [
-  { id: 1, tag: "MBB Recruitment", posts: 234 },
-  { id: 2, tag: "Case Interviews", posts: 189 },
-  { id: 3, tag: "MBA Essays", posts: 156 },
+  { id: 1, tag: "MBA", posts: 234 },
+  { id: 2, tag: "GMAT", posts: 189 },
+  { id: 3, tag: "Consulting", posts: 156 },
+  { id: 4, tag: "Product Management", posts: 98 },
+  { id: 5, tag: "Investment Banking", posts: 74 },
 ];
 
 function HomeRightSidebar() {
@@ -2263,7 +2265,7 @@ function HomeRightSidebar() {
               key={topic.id}
               className="-mx-1.5 rounded-xl p-1.5 text-left transition-colors hover:bg-gray-hover"
             >
-              <p className="text-[16px] font-medium leading-snug text-gray-dark">#{topic.tag}</p>
+              <p className="text-[16px] font-medium leading-snug text-gray-dark">{topic.tag}</p>
               <p className="mt-0.5 text-[14px] text-gray-light">{topic.posts} posts today</p>
             </button>
           ))}
