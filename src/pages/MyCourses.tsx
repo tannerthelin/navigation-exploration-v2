@@ -703,7 +703,7 @@ function LiveCourseCard({ course }: { course: LiveCourse }) {
         onClick={() => setSessionsOpen(!sessionsOpen)}
         className="flex w-full cursor-pointer items-center gap-3 border-t border-gray-stroke bg-white px-4 py-3 sm:px-5"
       >
-        <span className="flex flex-1 flex-col gap-0.5 text-left sm:flex-row sm:items-baseline sm:gap-0">
+        <span className="flex flex-1 flex-col text-left leading-[1.2] sm:flex-row sm:items-baseline sm:gap-0">
           <span className="text-[16px] font-medium text-gray-dark">{course.sessions.length} Sessions</span>
           <span className="sm:ml-2">
             <span className="text-[14px] font-normal text-gray-light sm:text-[16px]">{course.cohortDates}</span>
