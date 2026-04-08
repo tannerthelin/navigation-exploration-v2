@@ -719,9 +719,9 @@ function LiveCourseCard({ course }: { course: LiveCourse }) {
       {cohortSelected && sessionsOpen && (
         <div className="bg-white">
           {!isCompleted && (
-            <div className="px-4 pb-2 sm:px-5">
-              <button className="flex items-center gap-1.5 rounded-lg border border-gray-stroke bg-white px-3 py-1.5 text-[14px] font-medium text-gray-dark transition-colors hover:bg-gray-hover">Add all to calendar</button>
-            </div>
+            <button className="flex w-full items-center bg-gray-hover px-4 py-3 text-left text-[14px] font-medium text-gray-dark transition-colors hover:brightness-95 sm:px-5">
+              Add all to calendar
+            </button>
           )}
           {chipSessionLayout
             ? <>
