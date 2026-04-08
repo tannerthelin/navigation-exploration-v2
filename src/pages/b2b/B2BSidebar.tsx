@@ -1,5 +1,5 @@
 import { navItems, type B2BView } from "./B2BData";
-import { Avatar } from "./B2BShared";
+import kelloggLogo from "../../assets/img/kellogg.svg";
 
 export default function B2BSidebar({
   activeView,
@@ -26,14 +26,13 @@ export default function B2BSidebar({
           </button>
         ))}
       </nav>
-      <div className="border-t border-gray-stroke p-4">
-        <div className="flex items-center gap-[10px]">
-          <Avatar initials="KB" bg="bg-primary-xlight" color="text-dark-green" />
-          <div>
-            <div className="text-[13px] font-semibold text-gray-dark">Katie Brown</div>
-            <div className="text-[11px] text-gray-xlight">Account Admin</div>
-          </div>
+      <div className="mx-4 flex flex-col items-center pb-6">
+        <div className="flex w-full items-center gap-[6px]">
+          <div className="h-px flex-1 bg-gray-stroke" />
+          <span className="whitespace-nowrap text-[14px] font-normal uppercase tracking-[0.1em] text-[#9B9B9B]">Provisioned for</span>
+          <div className="h-px flex-1 bg-gray-stroke" />
         </div>
+        <img src={kelloggLogo} alt="Kellogg School of Management" className="mt-5 max-h-16 max-w-[60%]" />
       </div>
     </aside>
   );
