@@ -685,7 +685,7 @@ function LiveCourseCard({ course }: { course: LiveCourse }) {
             ? <>
                 {/* Preferred time row */}
                 <div className="flex items-center gap-3 border-b border-[#e5e5e5] px-4 py-3 sm:px-5">
-                  <span className="shrink-0 text-[14px] text-gray-light">Preferred time</span>
+                  <span className="shrink-0 text-[14px] leading-[1.3] text-gray-light">Preferred<br />time</span>
                   <div className="flex gap-2">
                     {([0, 1] as const).map((i) => (
                       <button
