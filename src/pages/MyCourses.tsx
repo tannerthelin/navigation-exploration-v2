@@ -399,11 +399,31 @@ function SessionRowChip({ session, index, isNext }: { session: Session; index: n
     return null;
   })();
 
+  const chips = (
+    <div className="flex flex-wrap gap-2">
+      {session.slots.map((s, i) => {
+        const selected = i === selectedSlot;
+        return (
+          <button
+            key={s.id}
+            onClick={() => setSelectedSlot(i)}
+            className={`rounded-full px-[14px] py-2 text-[14px] font-medium leading-[1.2] text-gray-dark transition-colors ${
+              selected
+                ? "border-2 border-gray-dark bg-white"
+                : "border border-gray-stroke bg-white hover:bg-gray-hover"
+            }`}
+          >
+            {SLOT_TIME_LABELS[i]}
+          </button>
+        );
+      })}
+    </div>
+  );
+
   return (
-    <div className="flex items-start gap-5 border-t border-[#e5e5e5] px-4 py-5 first:border-t-0 sm:items-center sm:gap-8 sm:px-5">
-      {/* Left: text info */}
-      <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
-        {/* Text stack */}
+    <div className="border-t border-[#e5e5e5] px-4 py-5 first:border-t-0 sm:grid sm:grid-cols-[1fr_auto_auto] sm:items-center sm:gap-6 sm:px-5">
+      {/* Text + chips (mobile) + mobile CTA */}
+      <div className="mb-3 flex items-start gap-4 sm:mb-0">
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <p className="text-[12px] font-medium uppercase tracking-[0.1em] text-gray-light">
             Session {index}
@@ -413,30 +433,16 @@ function SessionRowChip({ session, index, isNext }: { session: Session; index: n
           </p>
           <p className="text-[14px] leading-[1.2] text-gray-light">{dateLabel}</p>
         </div>
-
-        {/* Toggle chips */}
-        <div className="flex flex-wrap gap-2">
-          {session.slots.map((s, i) => {
-            const selected = i === selectedSlot;
-            return (
-              <button
-                key={s.id}
-                onClick={() => setSelectedSlot(i)}
-                className={`rounded-full px-[14px] py-2 text-[14px] font-medium leading-[1.2] text-gray-dark transition-colors ${
-                  selected
-                    ? "border-2 border-gray-dark bg-white"
-                    : "border border-gray-stroke bg-white hover:bg-gray-hover"
-                }`}
-              >
-                {SLOT_TIME_LABELS[i]}
-              </button>
-            );
-          })}
-        </div>
+        {/* CTA icon — mobile only */}
+        <div className="shrink-0 sm:hidden">{cta}</div>
       </div>
 
-      {/* CTA */}
-      {cta}
+      {/* Chips — mobile: below text; desktop: grid col 2 */}
+      <div className="sm:hidden">{chips}</div>
+      <div className="hidden sm:block">{chips}</div>
+
+      {/* CTA — desktop only, grid col 3 */}
+      <div className="hidden sm:flex sm:justify-end">{cta}</div>
     </div>
   );
 }
