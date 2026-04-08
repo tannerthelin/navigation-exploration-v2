@@ -706,16 +706,16 @@ function LiveCourseCard({ course }: { course: LiveCourse }) {
         <span className="flex-1 text-left leading-[1.2]">
           <span className="text-[16px] font-medium text-gray-dark">{course.sessions.length} Sessions</span>
           <span className="ml-2 text-[16px] font-normal text-gray-light">{course.cohortDates}</span>
+          {!isCompleted && sessionsOpen && (
+            <a
+              href="#"
+              onClick={(e) => e.stopPropagation()}
+              className="ml-3 hidden text-[16px] font-normal text-gray-light underline sm:inline"
+            >
+              Add all to calendar
+            </a>
+          )}
         </span>
-        {!isCompleted && sessionsOpen && (
-          <a
-            href="#"
-            onClick={(e) => e.stopPropagation()}
-            className="hidden text-[16px] font-normal text-gray-light underline sm:block"
-          >
-            Add all to calendar
-          </a>
-        )}
         <svg
           width="24" height="24" viewBox="0 0 24 24" fill="none"
           className={`shrink-0 text-[#9b9b9b] transition-transform ${sessionsOpen ? "rotate-180" : ""}`}
