@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useState, useEffect, Fragment } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import PageShell from "../components/PageShell";
 import { useSessionLayout } from "../components/SessionLayoutContext";
 import event1 from "../assets/placeholder images/placeholder-event-01.png";
@@ -536,6 +537,84 @@ function SessionRow({ session, isNext }: { session: Session; isNext: boolean }) 
   );
 }
 
+// ─── Select Cohort Modal ──────────────────────────────────────────────────────
+
+const mockCohorts = [
+  { id: 1, dates: "May 5 – Jun 9, 2026",   days: "Tuesdays & Thursdays", time: "7:00 PM PT", price: "$799" },
+  { id: 2, dates: "Jul 7 – Aug 11, 2026",  days: "Mondays & Wednesdays",  time: "9:00 AM PT", price: "$799" },
+  { id: 3, dates: "Sep 8 – Oct 13, 2026",  days: "Tuesdays & Thursdays", time: "7:00 PM PT", price: "$799" },
+];
+
+function SelectCohortModal({ open, onClose, onSelect }: { open: boolean; onClose: () => void; onSelect: () => void }) {
+  return (
+    <AnimatePresence>
+      {open && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-40 bg-black/40"
+            onClick={onClose}
+          />
+          {/* Panel — bottom sheet on mobile, centered on sm+ */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 16 }}
+            transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+            className="fixed inset-x-0 bottom-0 z-50 rounded-t-2xl bg-white shadow-xl sm:inset-auto sm:left-1/2 sm:top-1/2 sm:w-[480px] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-gray-stroke px-5 py-4">
+              <h2 className="text-[18px] font-medium text-gray-dark">Select a cohort</h2>
+              <button
+                onClick={onClose}
+                className="flex h-8 w-8 items-center justify-center rounded-full text-gray-light transition-colors hover:bg-gray-hover"
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Cohort list */}
+            <div className="divide-y divide-gray-stroke px-2 py-2">
+              {mockCohorts.map((cohort) => (
+                <div key={cohort.id} className="flex items-center justify-between gap-4 rounded-xl px-3 py-4">
+                  <div className="flex flex-col gap-0.5">
+                    <p className="text-[16px] font-medium leading-[1.2] text-gray-dark">{cohort.dates}</p>
+                    <p className="text-[14px] leading-[1.3] text-gray-light">{cohort.days} · {cohort.time}</p>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-3">
+                    <span className="text-[16px] font-medium text-gray-dark">{cohort.price}</span>
+                    <button
+                      onClick={() => { onSelect(); onClose(); }}
+                      className="rounded-lg bg-gray-dark px-4 py-2 text-[15px] font-medium text-white transition-colors hover:bg-[#444444]"
+                    >
+                      Select
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Footer */}
+            <div className="border-t border-gray-stroke px-5 py-4">
+              <p className="text-[14px] text-gray-light">
+                Don't see a time that works?{" "}
+                <a href="#" className="font-medium text-gray-dark underline">Get notified about future cohorts</a>
+              </p>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
 // ─── Live course card ─────────────────────────────────────────────────────────
 
 function LiveCourseCard({ course }: { course: LiveCourse }) {
@@ -554,8 +633,8 @@ function LiveCourseCard({ course }: { course: LiveCourse }) {
   );
   const [sessionsOpen, setSessionsOpen] = useState(!isCompleted);
   const [preferredSlot, setPreferredSlot] = useState(0);
-
-  const cohortSelected = course.cohortSelected ?? true;
+  const [cohortSelected, setCohortSelected] = useState(course.cohortSelected ?? true);
+  const [cohortModalOpen, setCohortModalOpen] = useState(false);
 
   const actionButtons = cohortSelected ? (
     <>
@@ -582,7 +661,10 @@ function LiveCourseCard({ course }: { course: LiveCourse }) {
       <ActionButton icon={<SlackIcon />} label="Group Slack" />
     </>
   ) : (
-    <button className="flex shrink-0 items-center gap-2 rounded-lg bg-gray-dark px-3 py-2 text-[16px] font-medium text-white transition-colors hover:bg-[#444444]">
+    <button
+      onClick={() => setCohortModalOpen(true)}
+      className="flex shrink-0 items-center gap-2 rounded-lg bg-gray-dark px-3 py-2 text-[16px] font-medium text-white transition-colors hover:bg-[#444444]"
+    >
       Select cohort
     </button>
   );
@@ -680,6 +762,12 @@ function LiveCourseCard({ course }: { course: LiveCourse }) {
           }
         </div>
       )}
+
+      <SelectCohortModal
+        open={cohortModalOpen}
+        onClose={() => setCohortModalOpen(false)}
+        onSelect={() => setCohortSelected(true)}
+      />
     </div>
   );
 }
