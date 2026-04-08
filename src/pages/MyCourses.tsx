@@ -711,7 +711,7 @@ function LiveCourseCard({ course }: { course: LiveCourse }) {
           <a
             href="#"
             onClick={(e) => e.stopPropagation()}
-            className="hidden text-[14px] font-normal text-gray-light underline sm:block"
+            className="hidden text-[16px] font-normal text-gray-light underline sm:block"
           >
             Add all to calendar
           </a>
