@@ -707,6 +707,15 @@ function LiveCourseCard({ course }: { course: LiveCourse }) {
           <span className="text-[16px] font-medium text-gray-dark">{course.sessions.length} Sessions</span>
           <span className="ml-2 text-[16px] font-normal text-gray-light">{course.cohortDates}</span>
         </span>
+        {!isCompleted && sessionsOpen && (
+          <a
+            href="#"
+            onClick={(e) => e.stopPropagation()}
+            className="hidden text-[14px] font-normal text-gray-light underline sm:block"
+          >
+            Add all to calendar
+          </a>
+        )}
         <svg
           width="24" height="24" viewBox="0 0 24 24" fill="none"
           className={`shrink-0 text-[#9b9b9b] transition-transform ${sessionsOpen ? "rotate-180" : ""}`}
@@ -718,16 +727,6 @@ function LiveCourseCard({ course }: { course: LiveCourse }) {
       {/* Sessions list */}
       {cohortSelected && sessionsOpen && (
         <div className="bg-white">
-          {!isCompleted && (
-            <div className="px-4 pb-3 pt-0 sm:px-5">
-              <button className="flex w-full items-center gap-2 rounded-lg bg-gray-hover px-4 py-3 text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#ebebeb]">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="shrink-0 text-gray-light">
-                  <path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                </svg>
-                Add all to calendar
-              </button>
-            </div>
-          )}
           {chipSessionLayout
             ? <>
                 {/* Preferred time row */}
