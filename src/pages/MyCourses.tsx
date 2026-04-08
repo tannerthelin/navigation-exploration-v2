@@ -698,14 +698,6 @@ function LiveCourseCard({ course }: { course: LiveCourse }) {
         <div className="-mx-4 flex gap-2 overflow-x-auto px-4 sm:-mx-5 sm:px-5 md:hidden">{actionButtons}</div>
       </div>
 
-      {/* Zone 2: Metadata strip */}
-      <div className={`flex items-center bg-white px-4 pb-4 sm:px-5 sm:pb-5 ${cohortSelected ? "border-b border-gray-stroke" : ""}`}>
-        <div className="flex flex-col gap-0.5 md:flex-row md:items-center md:gap-2">
-          <span className="text-[16px] font-medium leading-[1.2] text-gray-light">{course.cohortDateLabel}:</span>
-          <span className="text-[16px] leading-[1.2] text-gray-light">{course.cohortDates}</span>
-        </div>
-      </div>
-
       {/* Zone 3: Sessions accordion toggle (cohort-selected only) */}
       {cohortSelected && <button
         onClick={() => setSessionsOpen(!sessionsOpen)}
@@ -713,6 +705,7 @@ function LiveCourseCard({ course }: { course: LiveCourse }) {
       >
         <span className="flex-1 text-left text-[16px] font-medium text-gray-dark">
           {course.sessions.length} Sessions
+          <span className="ml-2 font-normal text-gray-light">{course.cohortDates}</span>
           {!isCompleted && !chipSessionLayout && <a href="#" onClick={(e) => e.stopPropagation()} className="ml-3 font-normal text-gray-light underline">Add all to calendar</a>}
         </span>
         <svg
