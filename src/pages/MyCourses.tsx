@@ -719,8 +719,11 @@ function LiveCourseCard({ course }: { course: LiveCourse }) {
       {cohortSelected && sessionsOpen && (
         <div className="bg-white">
           {!isCompleted && (
-            <button className="flex w-full items-center bg-gray-hover px-4 py-3 text-left text-[14px] font-medium text-gray-dark transition-colors hover:brightness-95 sm:px-5">
+            <button className="flex w-full items-center gap-1 bg-gray-hover px-4 py-3 text-left text-[14px] font-medium text-gray-dark transition-colors hover:bg-[#ebebeb] sm:px-5">
               Add all to calendar
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="shrink-0 text-gray-light">
+                <path d="M5.5 3L9 7L5.5 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </button>
           )}
           {chipSessionLayout
