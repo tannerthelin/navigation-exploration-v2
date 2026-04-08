@@ -540,9 +540,9 @@ function SessionRow({ session, isNext }: { session: Session; isNext: boolean }) 
 // ─── Select Cohort Modal ──────────────────────────────────────────────────────
 
 const mockCohorts = [
-  { id: 1, dates: "May 5 – Jun 9, 2026",   days: "Tuesdays & Thursdays", time: "7:00 PM PT", price: "$799" },
-  { id: 2, dates: "Jul 7 – Aug 11, 2026",  days: "Mondays & Wednesdays",  time: "9:00 AM PT", price: "$799" },
-  { id: 3, dates: "Sep 8 – Oct 13, 2026",  days: "Tuesdays & Thursdays", time: "7:00 PM PT", price: "$799" },
+  { id: 1, dates: "May 5 – Jun 9, 2026",   days: "Tuesdays & Thursdays", time: "7:00 PM PT", urgencyTag: "6 days left to enroll" },
+  { id: 2, dates: "Jul 7 – Aug 11, 2026",  days: "Mondays & Wednesdays",  time: "9:00 AM PT", urgencyTag: null },
+  { id: 3, dates: "Sep 8 – Oct 13, 2026",  days: "Tuesdays & Thursdays", time: "7:00 PM PT", urgencyTag: null },
 ];
 
 function SelectCohortModal({ open, onClose, onSelect }: { open: boolean; onClose: () => void; onSelect: () => void }) {
@@ -581,22 +581,24 @@ function SelectCohortModal({ open, onClose, onSelect }: { open: boolean; onClose
             </div>
 
             {/* Cohort list */}
-            <div className="divide-y divide-gray-stroke px-2 py-2">
+            <div className="divide-y divide-gray-stroke">
               {mockCohorts.map((cohort) => (
-                <div key={cohort.id} className="flex items-center justify-between gap-4 rounded-xl px-3 py-4">
-                  <div className="flex flex-col gap-0.5">
+                <div key={cohort.id} className="flex items-center justify-between gap-4 px-5 py-4">
+                  <div className="flex flex-col gap-1">
                     <p className="text-[16px] font-medium leading-[1.2] text-gray-dark">{cohort.dates}</p>
                     <p className="text-[14px] leading-[1.3] text-gray-light">{cohort.days} · {cohort.time}</p>
+                    {cohort.urgencyTag && (
+                      <span className="mt-0.5 inline-flex w-fit items-center rounded-full bg-[#FEF3C7] px-2.5 py-0.5 text-[12px] font-medium text-[#92400E]">
+                        {cohort.urgencyTag}
+                      </span>
+                    )}
                   </div>
-                  <div className="flex shrink-0 items-center gap-3">
-                    <span className="text-[16px] font-medium text-gray-dark">{cohort.price}</span>
-                    <button
-                      onClick={() => { onSelect(); onClose(); }}
-                      className="rounded-lg bg-gray-dark px-4 py-2 text-[15px] font-medium text-white transition-colors hover:bg-[#444444]"
-                    >
-                      Select
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => { onSelect(); onClose(); }}
+                    className="shrink-0 rounded-lg bg-gray-dark px-4 py-2 text-[15px] font-medium text-white transition-colors hover:bg-[#444444]"
+                  >
+                    Enroll
+                  </button>
                 </div>
               ))}
             </div>
