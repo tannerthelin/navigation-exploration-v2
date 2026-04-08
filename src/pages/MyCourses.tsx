@@ -729,7 +729,7 @@ function LiveCourseCard({ course }: { course: LiveCourse }) {
           {chipSessionLayout
             ? <>
                 {/* Preferred time row */}
-                <div className="flex items-start border-b border-[#e5e5e5] px-4 pb-4 pt-0 sm:px-5">
+                <div className="flex items-start border-b border-[#e5e5e5] px-4 pb-4 pt-3 sm:px-5">
                   <div className="flex flex-col gap-2">
                     <span className="text-[14px] leading-[1.3] text-gray-light">Preferred time</span>
                     <div className="flex gap-2">
