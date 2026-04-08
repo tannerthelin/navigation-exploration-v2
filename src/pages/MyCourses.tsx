@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useState, Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import PageShell from "../components/PageShell";
 import { useSessionLayout } from "../components/SessionLayoutContext";
 import event1 from "../assets/placeholder images/placeholder-event-01.png";
@@ -351,8 +351,10 @@ function SlotOption({ slot, isNext }: { slot: TimeSlot; isNext: boolean }) {
 
 const SLOT_TIME_LABELS = ["9:00 AM", "7:00 PM"] as const;
 
-function SessionRowChip({ session, index, isNext }: { session: Session; index: number; isNext: boolean }) {
-  const [selectedSlot, setSelectedSlot] = useState(0);
+function SessionRowChip({ session, index, isNext, preferredSlot }: { session: Session; index: number; isNext: boolean; preferredSlot: number }) {
+  const [selectedSlot, setSelectedSlot] = useState(preferredSlot);
+  // Sync when global preference changes
+  useEffect(() => { setSelectedSlot(preferredSlot); }, [preferredSlot]);
   const slot = session.slots[selectedSlot];
   const state = getSessionState(slot);
   const isPast = state === "past-recording" || state === "past-pending";
@@ -363,7 +365,7 @@ function SessionRowChip({ session, index, isNext }: { session: Session; index: n
   // CTA — desktop shows text, mobile shows icon only
   const cta = (() => {
     if (isLive) return (
-      <a href={slot.joinUrl ?? "#"} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#296cef] p-3.5 text-[16px] font-medium text-white transition-colors hover:bg-[#3b7dfd] sm:px-4 sm:py-3.5">
+      <a href={slot.joinUrl ?? "#"} className="flex items-center justify-center gap-2 rounded-lg bg-[#296cef] p-3.5 text-[16px] font-medium text-white transition-colors hover:bg-[#3b7dfd] sm:px-4 sm:py-3.5">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
           <path d="M2 7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
           <path d="M14 8.5l4-2v7l-4-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -372,14 +374,14 @@ function SessionRowChip({ session, index, isNext }: { session: Session; index: n
       </a>
     );
     if (state === "past-recording") return (
-      <a href={slot.recordingUrl} className="flex w-full items-center justify-center gap-2 rounded-lg bg-gray-hover p-3.5 text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#ebebeb] sm:px-4 sm:py-3.5">
+      <a href={slot.recordingUrl} className="flex items-center justify-center gap-2 rounded-lg bg-gray-hover p-3.5 text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#ebebeb] sm:px-4 sm:py-3.5">
         <img src={playVideoIcon} alt="" className="h-[18px] w-[18px] shrink-0" />
         <span className="hidden sm:inline">Replay</span>
       </a>
     );
     if (state === "past-pending") return (
-      <div className="group relative w-full">
-        <div className="flex w-full cursor-default items-center justify-center gap-2 rounded-lg bg-gray-hover p-3.5 text-[16px] font-medium text-[#c0c0c0] sm:px-4 sm:py-3.5">
+      <div className="group relative">
+        <div className="flex cursor-default items-center justify-center gap-2 rounded-lg bg-gray-hover p-3.5 text-[16px] font-medium text-[#c0c0c0] sm:px-4 sm:py-3.5">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="animate-spin sm:hidden">
             <path d="M10 2a8 8 0 1 0 8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
           </svg>
@@ -391,7 +393,7 @@ function SessionRowChip({ session, index, isNext }: { session: Session; index: n
       </div>
     );
     if ((state === "soon" || state === "future") && isNext) return (
-      <span className="w-full text-right text-[16px] font-medium text-[#3b7dfd]">
+      <span className="text-right text-[16px] font-medium text-[#3b7dfd]">
         <span className="sm:hidden">{formatStartsIn(slot.startTime.getTime() - Date.now()).replace("Starts in ", "In ")}</span>
         <span className="hidden sm:inline">{formatStartsIn(slot.startTime.getTime() - Date.now())}</span>
       </span>
@@ -590,6 +592,7 @@ function LiveCourseCard({ course }: { course: LiveCourse }) {
     })
   );
   const [sessionsOpen, setSessionsOpen] = useState(!isCompleted);
+  const [preferredSlot, setPreferredSlot] = useState(0);
 
   const cohortSelected = course.cohortSelected ?? true;
 
@@ -679,9 +682,30 @@ function LiveCourseCard({ course }: { course: LiveCourse }) {
       {cohortSelected && sessionsOpen && (
         <div className="bg-white">
           {chipSessionLayout
-            ? course.sessions.map((session, i) => (
-                <SessionRowChip key={session.id} session={session} index={i + 1} isNext={session.id === nextSession?.id} />
-              ))
+            ? <>
+                {/* Preferred time row */}
+                <div className="flex items-center gap-3 border-b border-[#e5e5e5] px-4 py-3 sm:px-5">
+                  <span className="shrink-0 text-[14px] text-gray-light">Preferred time</span>
+                  <div className="flex gap-2">
+                    {([0, 1] as const).map((i) => (
+                      <button
+                        key={i}
+                        onClick={() => setPreferredSlot(i)}
+                        className={`rounded-full px-[14px] py-2 text-[14px] font-medium leading-[1.2] text-gray-dark transition-colors ${
+                          preferredSlot === i
+                            ? "border-2 border-gray-dark bg-white"
+                            : "border border-gray-stroke bg-white hover:bg-gray-hover"
+                        }`}
+                      >
+                        {SLOT_TIME_LABELS[i]}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {course.sessions.map((session, i) => (
+                  <SessionRowChip key={session.id} session={session} index={i + 1} isNext={session.id === nextSession?.id} preferredSlot={preferredSlot} />
+                ))}
+              </>
             : simpleSessionLayout
             ? course.sessions.map((session, i) => (
                 <SessionRowSimple key={session.id} session={session} index={i + 1} isNext={session.id === nextSession?.id} />
@@ -780,13 +804,17 @@ function SuggestedCourseCard({ course }: { course: (typeof suggestedCourses)[0] 
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-type Filter = "all" | "live" | "selfPaced";
+type Variant = "default" | "simple" | "chip";
 
 export default function MyCourses() {
-  const [filter, setFilter] = useState<Filter>("all");
-  const visibleCourses = filter === "all"
-    ? enrolledCourses
-    : enrolledCourses.filter((c) => c.type === (filter === "live" ? "live" : "selfPaced"));
+  const { setSimpleSessionLayout, setChipSessionLayout } = useSessionLayout();
+  const [variant, setVariant] = useState<Variant>("default");
+
+  function applyVariant(v: Variant) {
+    setVariant(v);
+    setSimpleSessionLayout(v === "simple");
+    setChipSessionLayout(v === "chip");
+  }
 
   const suggestedCoursesSection = (
     <>
@@ -810,15 +838,15 @@ export default function MyCourses() {
       <div className="flex items-center justify-between">
         <h1 className="text-[32px] font-medium leading-[1.1] text-gray-dark md:text-[40px]">My Courses</h1>
         <div className="flex rounded-lg border border-gray-stroke/50 bg-gray-hover p-0.5 text-[14px] font-medium">
-          {(["all", "live", "selfPaced"] as Filter[]).map((f) => (
+          {(["default", "simple", "chip"] as Variant[]).map((v) => (
             <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`cursor-pointer rounded-md px-3 py-1.5 transition-colors ${
-                filter === f ? "bg-white text-gray-dark shadow-[0_1px_2px_rgba(0,0,0,0.08)]" : "text-[#707070] hover:text-gray-dark"
+              key={v}
+              onClick={() => applyVariant(v)}
+              className={`cursor-pointer rounded-md px-3 py-1.5 capitalize transition-colors ${
+                variant === v ? "bg-white text-gray-dark shadow-[0_1px_2px_rgba(0,0,0,0.08)]" : "text-[#707070] hover:text-gray-dark"
               }`}
             >
-              {f === "all" ? "All" : f === "live" ? "Live" : "Self-paced"}
+              {v}
             </button>
           ))}
         </div>
@@ -826,15 +854,15 @@ export default function MyCourses() {
 
       {/* Live cohort cards */}
       <div className="mt-8 flex flex-col gap-8">
-        {visibleCourses
+        {enrolledCourses
           .filter((c) => c.type === "live")
           .map((course) => <LiveCourseCard key={course.id} course={course as LiveCourse} />)}
       </div>
 
       {/* Self-paced courses */}
-      {visibleCourses.some((c) => c.type === "selfPaced") && (
-        <div className={`border-t border-gray-stroke/50 ${visibleCourses.some((c) => c.type === "live") ? "mt-8" : "mt-0"}`}>
-          {visibleCourses
+      {enrolledCourses.some((c) => c.type === "selfPaced") && (
+        <div className={`border-t border-gray-stroke/50 ${enrolledCourses.some((c) => c.type === "live") ? "mt-8" : "mt-0"}`}>
+          {enrolledCourses
             .filter((c) => c.type === "selfPaced")
             .map((course) => <SelfPacedCourseCard key={course.id} course={course as SelfPacedCourse} />)}
         </div>
