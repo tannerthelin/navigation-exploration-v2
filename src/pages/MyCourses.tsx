@@ -129,42 +129,14 @@ const enrolledCourses: EnrolledCourse[] = ([
   },
   {
     type: "live" as const,
-    id: 2,
-    title: "GMAT Exam Prep Bootcamp",
+    id: 7,
+    title: "Law School Admissions Bootcamp",
     cohortDateLabel: "Fall admissions",
-    cohortDates: "Apr 7 – May 19, 2026",
-    registrants: [pic5, pic6, pic3],
-    image: event2,
-    sessions: [
-      { id: 201, title: "Quantitative Reasoning Foundations", duration: "60 min", slots: [
-        { id: 2010, startTime: new Date("2026-04-07T09:00:00"), endTime: new Date("2026-04-07T10:00:00") },
-        { id: 2011, startTime: new Date("2026-04-07T19:00:00"), endTime: new Date("2026-04-07T20:00:00") },
-      ] as [TimeSlot, TimeSlot] },
-      { id: 202, title: "Verbal Reasoning Deep Dive", duration: "60 min", slots: [
-        { id: 2020, startTime: new Date("2026-04-14T09:00:00"), endTime: new Date("2026-04-14T10:00:00") },
-        { id: 2021, startTime: new Date("2026-04-14T19:00:00"), endTime: new Date("2026-04-14T20:00:00") },
-      ] as [TimeSlot, TimeSlot] },
-      { id: 203, title: "Data Insights & Problem Solving", duration: "60 min", slots: [
-        { id: 2030, startTime: new Date("2026-04-21T09:00:00"), endTime: new Date("2026-04-21T10:00:00") },
-        { id: 2031, startTime: new Date("2026-04-21T19:00:00"), endTime: new Date("2026-04-21T20:00:00") },
-      ] as [TimeSlot, TimeSlot] },
-      { id: 204, title: "Practice Test Review", duration: "60 min", slots: [
-        { id: 2040, startTime: new Date("2026-04-28T09:00:00"), endTime: new Date("2026-04-28T10:00:00") },
-        { id: 2041, startTime: new Date("2026-04-28T19:00:00"), endTime: new Date("2026-04-28T20:00:00") },
-      ] as [TimeSlot, TimeSlot] },
-      { id: 205, title: "Timing & Test Strategy", duration: "60 min", slots: [
-        { id: 2050, startTime: new Date("2026-05-05T09:00:00"), endTime: new Date("2026-05-05T10:00:00") },
-        { id: 2051, startTime: new Date("2026-05-05T19:00:00"), endTime: new Date("2026-05-05T20:00:00") },
-      ] as [TimeSlot, TimeSlot] },
-      { id: 206, title: "Final Mock Exam & Debrief", duration: "90 min", slots: [
-        { id: 2060, startTime: new Date("2026-05-12T09:00:00"), endTime: new Date("2026-05-12T10:30:00") },
-        { id: 2061, startTime: new Date("2026-05-12T19:00:00"), endTime: new Date("2026-05-12T20:30:00") },
-      ] as [TimeSlot, TimeSlot] },
-      { id: 207, title: "Score Submission Strategy", duration: "60 min", slots: [
-        { id: 2070, startTime: new Date("2026-05-19T09:00:00"), endTime: new Date("2026-05-19T10:00:00") },
-        { id: 2071, startTime: new Date("2026-05-19T19:00:00"), endTime: new Date("2026-05-19T20:00:00") },
-      ] as [TimeSlot, TimeSlot] },
-    ],
+    cohortDates: "May 5 – Jun 9, 2026",
+    registrants: [pic3, pic5, pic1],
+    image: event3,
+    cohortSelected: false,
+    sessions: [],
   },
   {
     type: "live" as const,
@@ -196,17 +168,6 @@ const enrolledCourses: EnrolledCourse[] = ([
         { id: 5051, startTime: new Date("2026-02-03T19:00:00"), endTime: new Date("2026-02-03T20:30:00"), recordingUrl: "#" },
       ] as [TimeSlot, TimeSlot] },
     ],
-  },
-  {
-    type: "live" as const,
-    id: 7,
-    title: "Law School Admissions Bootcamp",
-    cohortDateLabel: "Fall admissions",
-    cohortDates: "May 5 – Jun 9, 2026",
-    registrants: [pic3, pic5, pic1],
-    image: event3,
-    cohortSelected: false,
-    sessions: [],
   },
   { type: "selfPaced" as const, id: 3, title: "Nail the Google PM Interview Cycle", image: event3, percentComplete: 65, totalTime: "7 hours" },
   { type: "selfPaced" as const, id: 4, title: "Consulting Case Interview Mastery", image: eventImage, percentComplete: 20, totalTime: "6 hours" },
