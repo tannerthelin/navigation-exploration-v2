@@ -553,7 +553,7 @@ function SessionRow({ session, isNext }: { session: Session; isNext: boolean }) 
           <p className={`text-[18px] font-medium leading-[1.2] ${isPast ? "text-gray-light" : "text-gray-dark"}`}>
             {session.title}
           </p>
-          <p className="text-[14px] text-gray-light">{session.duration}</p>
+          <p className="text-[14px] text-gray-light">{formatShortDate(session.slots[0].startTime)} · {session.duration}</p>
         </div>
       </div>
 
