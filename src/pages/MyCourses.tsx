@@ -720,7 +720,7 @@ function LiveCourseCard({ course }: { course: LiveCourse }) {
         <div className="bg-white">
           {!isCompleted && (
             <div className="px-4 pb-2 sm:px-5">
-              <a href="#" className="text-[14px] font-normal text-gray-light">Add all to calendar</a>
+              <button className="text-[14px] font-normal text-gray-light">Add all to calendar</button>
             </div>
           )}
           {chipSessionLayout
