@@ -16,6 +16,7 @@ import settingsIcon from "../assets/icons/settings.svg";
 import switchIcon from "../assets/icons/switch.svg";
 import helpIcon from "../assets/icons/help.svg";
 import logOutIcon from "../assets/icons/log out.svg";
+import browserIcon from "../assets/icons/browser.svg";
 import lelandLogo from "../assets/Logo.svg";
 import homeInactive from "../assets/icons/nav-icons/home-inactive.svg";
 import homeActive from "../assets/icons/nav-icons/home-active.svg";
@@ -190,20 +191,6 @@ export default function TopNav() {
                 )}
               </NavLink>
             ))}
-
-            {/* Dashboard */}
-            <div className="relative flex self-stretch items-center">
-              <NavLink to="/dashboard">
-                {({ isActive }) => (
-                  <>
-                    <span className={`flex items-center rounded-lg px-3 py-2 text-[18px] font-medium whitespace-nowrap text-[#222222]${!isActive ? " hover:bg-gray-hover" : ""}`}>
-                      Dashboard
-                    </span>
-                    {isActive && <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#333333]" />}
-                  </>
-                )}
-              </NavLink>
-            </div>
 
             {/* Search */}
             {showSearch && <div className="relative flex self-stretch items-center">
@@ -387,6 +374,14 @@ export default function TopNav() {
                         />
                       </button>
                     </label>
+                    <NavLink
+                      to="/b2b-dashboard"
+                      onClick={() => setProfileOpen(false)}
+                      className="flex w-full items-center gap-[10px] rounded-lg p-3 text-[16px] font-medium text-gray-dark hover:bg-gray-hover"
+                    >
+                      <img src={browserIcon} alt="B2B Dashboard" className="h-6 w-6 shrink-0" />
+                      B2B Dashboard
+                    </NavLink>
                   </div>
 
                 </motion.div>
