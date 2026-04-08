@@ -11,6 +11,11 @@ function ScrollToTop() {
   return null;
 }
 
+function HomeOnlyVersionToggle() {
+  const { pathname } = useLocation();
+  return pathname === "/" ? <VersionToggle /> : null;
+}
+
 import Home from "./pages/Home";
 import Browse from "./pages/Browse";
 import Search from "./pages/Search";
@@ -31,7 +36,7 @@ import Site from "./pages/Site";
 export default function App() {
   return (
     <VersionProvider>
-    <VersionToggle />
+    <HomeOnlyVersionToggle />
     <Routes>
       <Route path="*" element={<ScrollToTop />} />
       <Route element={<Layout />}>
