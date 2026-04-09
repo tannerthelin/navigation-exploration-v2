@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Image as ImageIcon } from "lucide-react";
 import { useVersion } from "../contexts/VersionContext";
 import { useSetLeftSidebar } from "../components/LeftSidebarContext";
 import { useSetRightSidebar } from "../components/RightSidebarContext";
@@ -75,6 +76,7 @@ interface ImagePost extends PostBase {
   type: "image";
   body: string;
   images: string[];
+  imageAspectRatios?: number[];
 }
 
 interface LinkPost extends PostBase {
@@ -641,7 +643,7 @@ function ActionBar({ likes, comments, reposts, postId }: { likes: number; commen
   const [shareOpen, setShareOpen] = useState(false);
 
   return (
-    <div className="mt-1 flex items-center gap-2 pl-[44px]">
+    <div className="mt-1 flex items-center justify-between pl-[44px]">
       <FeedLikeButton initialCount={likes} />
       {/* Comment */}
       <button onClick={(e) => { const rect = (e.currentTarget as HTMLElement).closest('[class*="pt-5"]')?.getBoundingClientRect(); navigate(`/post/${postId}`, { state: { sourceY: rect?.top ?? 80, focusInput: true } }); }} className="flex cursor-pointer items-center gap-1 rounded-[100px] px-2 py-1.5 text-gray-light transition-colors hover:bg-gray-hover">
@@ -664,6 +666,50 @@ function ActionBar({ likes, comments, reposts, postId }: { likes: number; commen
 }
 
 function PostHeaderRow({ author, time, verified, headline }: { author: string; time: string; verified?: boolean; headline?: string }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [menuOpen]);
+
+  const menuItems = [
+    {
+      label: "Delete post",
+      icon: (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
+        </svg>
+      ),
+      danger: true,
+    },
+    {
+      label: "Not interested",
+      icon: (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M17 14c.34-.57.54-1.26.54-2 0-2.21-1.91-4-4.27-4-1.89 0-3.5 1.16-4.12 2.8"/><path d="M9.17 9.17L3 3m18 18-5.18-5.18"/>
+          <path d="M6.5 6.5C5.57 7.4 5 8.63 5 10c0 2.76 2.24 5 5 5 1.37 0 2.6-.57 3.5-1.5"/>
+          <line x1="2" y1="2" x2="22" y2="22"/>
+        </svg>
+      ),
+      danger: false,
+    },
+    {
+      label: "Report post",
+      icon: (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>
+        </svg>
+      ),
+      danger: false,
+    },
+  ];
+
   return (
     <div className="flex items-start justify-between gap-3">
       <div className="min-w-0">
@@ -676,43 +722,126 @@ function PostHeaderRow({ author, time, verified, headline }: { author: string; t
           <p className="truncate text-[15px] leading-tight text-[#707070]">{headline}</p>
         )}
       </div>
-      <button className="cursor-pointer pl-2 text-[#424242] opacity-40 transition-opacity hover:opacity-100">
-        <MoreDotsIcon />
-      </button>
+      <div ref={menuRef} className="relative shrink-0">
+        <button
+          onClick={(e) => { e.stopPropagation(); setMenuOpen(o => !o); }}
+          className="cursor-pointer pl-2 text-[#424242] opacity-40 transition-opacity hover:opacity-100"
+        >
+          <MoreDotsIcon />
+        </button>
+        <AnimatePresence>
+          {menuOpen && (
+            <>
+              <div className="fixed inset-0 z-40" onClick={(e) => { e.stopPropagation(); setMenuOpen(false); }} />
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: -4 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: -4 }}
+                transition={{ duration: 0.12 }}
+                className="absolute right-0 top-7 z-50 w-48 overflow-hidden rounded-xl border border-[#f0f0f0] bg-white shadow-lg"
+              >
+                {menuItems.map(({ label, icon, danger }, i) => (
+                  <button
+                    key={label}
+                    onClick={(e) => { e.stopPropagation(); setMenuOpen(false); }}
+                    className={`flex w-full items-center gap-3 px-4 py-3 text-left text-[14px] transition-colors hover:bg-gray-50 ${
+                      danger ? "text-red-500" : "text-gray-700"
+                    } ${i > 0 ? "border-t border-[#f2f2f2]" : ""}`}
+                  >
+                    {icon}
+                    {label}
+                  </button>
+                ))}
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
 
-function ImageGallery({ images }: { images: string[] }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
+// ─── PostImageGrid ───────────────────────────────────────────────────────────
+// Shared grid used by both the compose preview and the feed post.
+// Layout mirrors Twitter/X: fixed slot aspect-ratios per image count so the
+// grid always looks good regardless of each image's original orientation.
+//   1 image  → full width, aspect ratio clamped to 2:1 – 3:4
+//   2 images → side-by-side, each slot 7:8
+//   3 images → large left (row-span-2) + 2 stacked right; overall container 4:3
+//   4 images → 2×2 grid; overall container 1:1 (each slot ~square)
+function PostImageGrid({
+  images,
+  renderOverlay,
+  className = "",
+}: {
+  images: { src: string; aspectRatio?: number }[];
+  renderOverlay?: (idx: number) => React.ReactNode;
+  className?: string;
+}) {
+  const count = images.length;
+  if (count === 0) return null;
 
-  if (images.length === 1) {
+  const cell = (src: string, idx: number, extraClass = "") => (
+    <div key={idx} className={`relative overflow-hidden bg-black group ${extraClass}`}>
+      <img src={src} alt="" className="absolute inset-0 w-full h-full object-cover object-center" draggable={false} />
+      {renderOverlay?.(idx)}
+    </div>
+  );
+
+  if (count === 1) {
+    const r = images[0].aspectRatio ?? 1;
+    const clamped = Math.min(Math.max(r, 0.5), 2); // 1:2 portrait → 2:1 landscape
+    // Single image: the container IS the positioned element so absolute inset-0 works
     return (
-      <div className="mt-3 overflow-hidden rounded-xl">
-        <img
-          src={images[0]}
-          alt=""
-          className="w-full object-cover"
-          style={{ maxHeight: 400 }}
-        />
+      <div
+        className={`relative overflow-hidden rounded-xl bg-black group ${className}`}
+        style={{ aspectRatio: String(clamped) }}>
+        <img src={images[0].src} alt="" className="absolute inset-0 w-full h-full object-cover object-center" draggable={false} />
+        {renderOverlay?.(0)}
       </div>
     );
   }
 
+  if (count === 2) {
+    // Side-by-side; container aspect 7:4 makes each half-width slot 7:8 (portrait-ish)
+    // grid-rows-1 ensures the single row stretches to fill the container height
+    return (
+      <div className={`grid grid-cols-2 grid-rows-1 gap-0.5 overflow-hidden rounded-xl ${className}`} style={{ aspectRatio: "7/4" }}>
+        {images.map((img, i) => cell(img.src, i))}
+      </div>
+    );
+  }
+
+  if (count === 3) {
+    // Left spans both rows; overall 4:3 container keeps the grid compact
+    return (
+      <div className={`grid grid-cols-2 grid-rows-2 gap-0.5 overflow-hidden rounded-xl ${className}`} style={{ aspectRatio: "4/3" }}>
+        {cell(images[0].src, 0, "row-span-2")}
+        {cell(images[1].src, 1)}
+        {cell(images[2].src, 2)}
+      </div>
+    );
+  }
+
+  // 4 images: horizontal scroll strip
   return (
-    <div
-      ref={scrollRef}
-      className="scrollbar-hide mt-3 flex gap-2 overflow-x-auto"
-    >
-      {images.map((src, i) => (
-        <img
-          key={i}
-          src={src}
-          alt=""
-          className="h-[280px] w-[220px] shrink-0 rounded-xl object-cover"
-        />
+    <div className={`flex gap-2 overflow-x-auto scrollbar-hide rounded-xl ${className}`}>
+      {images.map((img, i) => (
+        <div key={i} className="relative shrink-0 overflow-hidden rounded-xl bg-black group" style={{ height: 220, width: 165 }}>
+          <img src={img.src} alt="" className="absolute inset-0 w-full h-full object-cover object-center" draggable={false} />
+          {renderOverlay?.(i)}
+        </div>
       ))}
     </div>
+  );
+}
+
+function ImageGallery({ images, imageAspectRatios }: { images: string[]; imageAspectRatios?: number[] }) {
+  return (
+    <PostImageGrid
+      className="mt-3"
+      images={images.map((src, i) => ({ src, aspectRatio: imageAspectRatios?.[i] }))}
+    />
   );
 }
 
@@ -1535,7 +1664,7 @@ export function FeedPost({ post }: { post: Post }) {
           <PostHeaderRow author={post.author} time={post.time} verified={post.verified} headline={post.headline} />
           <p className="mt-1 text-[17px] leading-[1.4] text-gray-dark">{post.body}</p>
           <div onClick={e => e.stopPropagation()}>
-            {post.type === "image" && <ImageGallery images={post.images} />}
+            {post.type === "image" && <ImageGallery images={post.images} imageAspectRatios={post.imageAspectRatios} />}
             {post.type === "link" && <LinkCard link={post.link} />}
             {post.type === "event" && <EventCard event={post.event} />}
             {post.type === "milestone" && <MilestoneCard milestone={post.milestone} postId={post.id} authorName={post.milestone.clientName} />}
@@ -1751,25 +1880,176 @@ const UPCOMING_EVENTS: EventPost["event"][] = [
   },
 ];
 
-function ComposeModal({ onClose, onPost, onGoLive, isMVP }: { onClose: () => void; onPost: (text: string) => void; onGoLive?: () => void; isMVP?: boolean }) {
+type CropRatio = "free" | "1:1" | "4:5" | "16:9";
+type ImageEntry = { original: string; cropped: string; aspectRatio: number };
+
+function ComposeModal({ onClose, onPost, onGoLive, isMVP }: { onClose: () => void; onPost: (text: string, images: ImageEntry[]) => void; onGoLive?: () => void; isMVP?: boolean }) {
   const [text, setText] = useState("");
   const [eventAttached, setEventAttached] = useState(false);
   const [selectingEvent, setSelectingEvent] = useState(false);
   const [eventIndex, setEventIndex] = useState(0);
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [images, setImages] = useState<ImageEntry[]>([]);
+  const [cropMode, setCropMode] = useState(false);
+  const [cropOriginalUrl, setCropOriginalUrl] = useState<string | null>(null);
+  const [cropQueue, setCropQueue] = useState<string[]>([]);
+  const [cropReCropIndex, setCropReCropIndex] = useState<number | null>(null);
+  const [cropRatio, setCropRatio] = useState<CropRatio>("free");
+  const [cropRotation, setCropRotation] = useState<0 | 90 | 180 | 270>(0);
+  const [cropBox, setCropBox] = useState({ x: 0, y: 0, w: 1, h: 1 });
+  const [imgBounds, setImgBounds] = useState<{ rw: number; rh: number; ox: number; oy: number; scale: number } | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cropContainerRef = useRef<HTMLDivElement>(null);
+  const cropImgRef = useRef<HTMLImageElement>(null);
+  const dragRef = useRef<{ type: string; startX: number; startY: number; startBox: { x: number; y: number; w: number; h: number }; rw: number; rh: number } | null>(null);
+
+  const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+
+  // ── Crop helpers ─────────────────────────────────────────────────────────────
+  const computeBounds = (rotation = cropRotation) => {
+    const img = cropImgRef.current;
+    const container = cropContainerRef.current;
+    if (!img || !container || !img.naturalWidth) return null;
+    const cw = container.offsetWidth;
+    const ch = container.offsetHeight;
+    const rotated90 = rotation === 90 || rotation === 270;
+    const nw = rotated90 ? img.naturalHeight : img.naturalWidth;
+    const nh = rotated90 ? img.naturalWidth : img.naturalHeight;
+    const scale = Math.min(cw / nw, ch / nh);
+    const rw = nw * scale; const rh = nh * scale;
+    return { rw, rh, ox: (cw - rw) / 2, oy: (ch - rh) / 2, scale };
+  };
+
+  const onCropImgLoad = () => setImgBounds(computeBounds());
+
+  // Recompute bounds when rotation changes
+  useEffect(() => {
+    if (cropMode) { const b = computeBounds(); setImgBounds(b); setCropBox({ x: 0, y: 0, w: 1, h: 1 }); }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cropRotation]);
+
+  const applyRatioPreset = (ratio: CropRatio) => {
+    setCropRatio(ratio);
+    const b = imgBounds ?? computeBounds();
+    if (!b) return;
+    if (ratio === "free") { setCropBox({ x: 0, y: 0, w: 1, h: 1 }); return; }
+    const ratioMap: Record<string, number> = { "1:1": 1, "4:5": 4 / 5, "16:9": 16 / 9 };
+    const normTarget = ratioMap[ratio] / (b.rw / b.rh);
+    let w: number, h: number;
+    if (normTarget >= 1) { w = 1; h = clamp(1 / normTarget, 0.05, 1); }
+    else { h = 1; w = clamp(normTarget, 0.05, 1); }
+    setCropBox({ x: (1 - w) / 2, y: (1 - h) / 2, w, h });
+  };
+
+  const startCropDrag = (type: string, e: React.MouseEvent) => {
+    e.preventDefault(); e.stopPropagation();
+    const b = imgBounds ?? computeBounds();
+    if (!b) return;
+    dragRef.current = { type, startX: e.clientX, startY: e.clientY, startBox: { ...cropBox }, rw: b.rw, rh: b.rh };
+    const onMove = (me: MouseEvent) => {
+      const d = dragRef.current; if (!d) return;
+      const dx = (me.clientX - d.startX) / d.rw;
+      const dy = (me.clientY - d.startY) / d.rh;
+      const min = 0.08;
+      let { x, y, w, h } = d.startBox;
+      if (d.type === "move") {
+        x = clamp(x + dx, 0, 1 - w); y = clamp(y + dy, 0, 1 - h);
+      } else if (d.type === "nw") {
+        const nx = clamp(x + dx, 0, x + w - min); const ny = clamp(y + dy, 0, y + h - min);
+        w = w + (x - nx); h = h + (y - ny); x = nx; y = ny;
+      } else if (d.type === "ne") {
+        const ny = clamp(y + dy, 0, y + h - min);
+        h = h + (y - ny); y = ny; w = clamp(w + dx, min, 1 - x);
+      } else if (d.type === "sw") {
+        const nx = clamp(x + dx, 0, x + w - min);
+        w = w + (x - nx); x = nx; h = clamp(h + dy, min, 1 - y);
+      } else {
+        w = clamp(w + dx, min, 1 - x); h = clamp(h + dy, min, 1 - y);
+      }
+      setCropBox({ x, y, w, h });
+    };
+    const onUp = () => { dragRef.current = null; window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", onUp); };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+  };
+
+  const addProcessedImage = (croppedUrl: string, originalUrl: string, aspectRatio: number) => {
+    if (cropReCropIndex !== null) {
+      setImages(prev => prev.map((item, i) => i === cropReCropIndex ? { ...item, cropped: croppedUrl, aspectRatio } : item));
+      setCropReCropIndex(null);
+      setCropMode(false); setCropOriginalUrl(null);
+    } else {
+      setImages(prev => [...prev, { original: originalUrl, cropped: croppedUrl, aspectRatio }]);
+      if (cropQueue.length > 0) {
+        setCropOriginalUrl(cropQueue[0]);
+        setCropQueue(q => q.slice(1));
+        setCropBox({ x: 0, y: 0, w: 1, h: 1 }); setCropRatio("free"); setCropRotation(0); setImgBounds(null);
+      } else {
+        setCropMode(false); setCropOriginalUrl(null);
+      }
+    }
+  };
+
+  const applyCrop = () => {
+    if (!cropOriginalUrl) return;
+    const b = imgBounds ?? computeBounds();
+    const url = cropOriginalUrl;
+    const img = new Image();
+    img.onload = () => {
+      // No bounds — use the image at its natural ratio without cropping
+      if (!b) {
+        addProcessedImage(url, url, img.naturalWidth / img.naturalHeight);
+        return;
+      }
+      const { rw, rh, scale } = b;
+      const sx = (cropBox.x * rw) / scale; const sy = (cropBox.y * rh) / scale;
+      const sw = (cropBox.w * rw) / scale; const sh = (cropBox.h * rh) / scale;
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.round(sw); canvas.height = Math.round(sh);
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      if (cropRotation === 0) {
+        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+      } else {
+        // Pre-rotate into a temporary canvas then crop
+        const rotated90 = cropRotation === 90 || cropRotation === 270;
+        const rotW = rotated90 ? img.naturalHeight : img.naturalWidth;
+        const rotH = rotated90 ? img.naturalWidth : img.naturalHeight;
+        const tmp = document.createElement("canvas");
+        tmp.width = rotW; tmp.height = rotH;
+        const tctx = tmp.getContext("2d")!;
+        tctx.translate(rotW / 2, rotH / 2);
+        tctx.rotate(cropRotation * Math.PI / 180);
+        tctx.drawImage(img, -img.naturalWidth / 2, -img.naturalHeight / 2);
+        ctx.drawImage(tmp, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+      }
+      // canvas dimensions are the ground truth for the cropped aspect ratio
+      addProcessedImage(canvas.toDataURL("image/jpeg", 0.92), url, canvas.width / canvas.height);
+    };
+    img.src = url;
+  };
+
+  const cancelCrop = () => { setCropMode(false); setCropQueue([]); setCropReCropIndex(null); setCropOriginalUrl(null); };
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const url = URL.createObjectURL(file);
-    setUploadedImage(url);
+    const files = Array.from(e.target.files ?? []);
+    if (!files.length) return;
+    const slots = 4 - images.length;
+    const urls = files.slice(0, slots).map(f => URL.createObjectURL(f));
+    if (!urls.length) return;
+    setCropOriginalUrl(urls[0]);
+    setCropQueue(urls.slice(1));
+    setCropBox({ x: 0, y: 0, w: 1, h: 1 }); setCropRatio("free"); setCropRotation(0); setImgBounds(null);
+    setCropReCropIndex(null);
+    setCropMode(true);
+    e.target.value = "";
   };
 
   useEffect(() => {
-    textareaRef.current?.focus();
-  }, []);
+    if (!cropMode) setTimeout(() => textareaRef.current?.focus(), 50);
+  }, [cropMode]);
+
+  useEffect(() => { textareaRef.current?.focus(); }, []);
 
   const autoGrow = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
@@ -1791,218 +2071,253 @@ function ComposeModal({ onClose, onPost, onGoLive, isMVP }: { onClose: () => voi
     <div
       className="fixed inset-0 z-[9999] flex items-start justify-center"
       style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-      onClick={onClose}
+      onClick={cropMode ? undefined : onClose}
     >
-      {/* Modal */}
       <motion.div
-        className="relative mt-[60px] w-full max-w-[600px] rounded-2xl bg-white shadow-2xl mx-4"
+        className="relative mt-[60px] w-full max-w-[600px] rounded-2xl bg-white shadow-2xl mx-4 overflow-hidden"
         initial={{ opacity: 0, scale: 0.95, y: -20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* X button — absolute top right */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-[16px] border border-gray-stroke bg-white text-gray-dark transition-colors hover:bg-gray-hover"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-            <path d="M18 6L6 18M6 6l12 12" />
-          </svg>
-        </button>
+        {cropMode ? (
+          /* ── CROP MODE ─────────────────────────────────────────────────── */
+          <>
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-stroke">
+              <button onClick={cancelCrop} className="text-[14px] font-medium text-gray-light hover:text-gray-dark transition-colors">Cancel</button>
+              <span className="text-[15px] font-semibold text-gray-dark">
+                {cropQueue.length > 0 ? `Crop photo (${images.length + 1} of ${images.length + 1 + cropQueue.length})` : "Crop photo"}
+              </span>
+              <button onClick={applyCrop} className="rounded-[8px] bg-gray-dark px-4 py-1.5 text-[14px] font-semibold text-white hover:opacity-90 transition-opacity">
+                {cropQueue.length > 0 ? "Next →" : "Apply"}
+              </button>
+            </div>
 
-        {/* Compose area — avatar + textarea flush at top */}
-        <div className="flex gap-3 px-4 pt-4 pb-3 pr-14">
-          <img
-            src={profilePhoto}
-            alt="Your profile"
-            className="h-10 w-10 shrink-0 rounded-full object-cover"
-          />
-          <div className="flex-1 min-w-0">
-            <textarea
-              ref={textareaRef}
-              value={text}
-              onChange={autoGrow}
-              placeholder="What's on your mind?"
-              rows={4}
-              className="w-full resize-none bg-transparent text-[17px] text-gray-dark placeholder:text-gray-light focus:outline-none leading-relaxed"
-              style={{ minHeight: "100px" }}
-            />
-          </div>
-        </div>
-
-        {/* Uploaded image preview */}
-        <AnimatePresence>
-          {uploadedImage ? (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="overflow-hidden px-4 pb-3"
-            >
-              <div className="relative inline-block w-full">
-                <img src={uploadedImage} alt="Uploaded" className="w-full rounded-xl object-cover max-h-72" />
-                <button
-                  onClick={() => { setUploadedImage(null); if (fileInputRef.current) fileInputRef.current.value = ""; }}
-                  className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors"
-                >
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-                </button>
+            {/* Crop area */}
+            <div ref={cropContainerRef} className="relative select-none bg-black overflow-hidden" style={{ height: 360 }}>
+              {/* Rotate buttons */}
+              <div className="absolute top-2 left-2 z-10 flex gap-1">
+                {([
+                  { delta: -90 as const, title: "Rotate left", d: "M2.5 2v6h6M2.66 15.57a10 10 0 1 0 .57-8.38" },
+                  { delta: 90 as const, title: "Rotate right", d: "M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38" },
+                ]).map(({ delta, title, d }) => (
+                  <button
+                    key={delta}
+                    title={title}
+                    onClick={() => setCropRotation(r => (((r + delta) % 360 + 360) % 360) as 0 | 90 | 180 | 270)}
+                    className="flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d={d} />
+                    </svg>
+                  </button>
+                ))}
               </div>
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
 
-        {/* Event picker / attached preview */}
-        <AnimatePresence>
-          {(selectingEvent || eventAttached) ? (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="overflow-hidden px-4 pb-3"
-            >
-              {selectingEvent ? (
-                /* Carousel picker */
-                <div>
-                  <p className="mb-2 text-[13px] font-medium text-gray-light">Select an event to attach</p>
-                  <div className="relative">
-                    <div className="overflow-hidden rounded-xl border border-gray-stroke">
+              <img
+                ref={cropImgRef}
+                src={cropOriginalUrl!}
+                className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+                style={{ transform: `rotate(${cropRotation}deg)`, transformOrigin: "center center" }}
+                draggable={false}
+                onLoad={onCropImgLoad}
+              />
+
+              {imgBounds && (() => {
+                const { rw, rh, ox, oy } = imgBounds;
+                const bx = ox + cropBox.x * rw;
+                const by = oy + cropBox.y * rh;
+                const bw = cropBox.w * rw;
+                const bh = cropBox.h * rh;
+                return (
+                  <>
+                    <div className="absolute bg-black/55 pointer-events-none" style={{ left: 0, right: 0, top: 0, height: by }} />
+                    <div className="absolute bg-black/55 pointer-events-none" style={{ left: 0, right: 0, top: by + bh, bottom: 0 }} />
+                    <div className="absolute bg-black/55 pointer-events-none" style={{ left: 0, width: bx, top: by, height: bh }} />
+                    <div className="absolute bg-black/55 pointer-events-none" style={{ left: bx + bw, right: 0, top: by, height: bh }} />
+                    <div className="absolute cursor-move" style={{ left: bx, top: by, width: bw, height: bh }} onMouseDown={e => startCropDrag("move", e)}>
+                      <div className="absolute inset-0 border-2 border-white pointer-events-none" />
+                      <div className="absolute inset-0 pointer-events-none" style={{
+                        backgroundImage: "linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)",
+                        backgroundSize: "33.333% 33.333%",
+                      }} />
+                      {([
+                        { type: "nw", style: { top: -5, left: -5, cursor: "nw-resize" } },
+                        { type: "ne", style: { top: -5, right: -5, cursor: "ne-resize" } },
+                        { type: "sw", style: { bottom: -5, left: -5, cursor: "sw-resize" } },
+                        { type: "se", style: { bottom: -5, right: -5, cursor: "se-resize" } },
+                      ] as { type: string; style: React.CSSProperties }[]).map(({ type, style }) => (
+                        <div key={type} className="absolute w-5 h-5 bg-white rounded-sm shadow-md" style={style} onMouseDown={e => startCropDrag(type, e)} />
+                      ))}
+                    </div>
+                  </>
+                );
+              })()}
+            </div>
+
+            {/* Aspect ratio pills */}
+            <div className="flex items-center justify-center gap-2 px-4 py-3">
+              {(["free", "1:1", "4:5", "16:9"] as const).map(r => (
+                <button key={r} onClick={() => applyRatioPreset(r)}
+                  className={`px-3.5 py-1.5 rounded-full text-[13px] font-medium transition-colors ${cropRatio === r ? "bg-gray-dark text-white" : "text-gray-light hover:bg-gray-hover"}`}>
+                  {r === "free" ? "Original" : r}
+                </button>
+              ))}
+            </div>
+          </>
+        ) : (
+          /* ── COMPOSE MODE ──────────────────────────────────────────────── */
+          <>
+            {/* X button */}
+            <button onClick={onClose} className="absolute top-4 right-4 z-10 flex h-8 w-8 items-center justify-center rounded-[16px] border border-gray-stroke bg-white text-gray-dark transition-colors hover:bg-gray-hover">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
+            </button>
+
+            {/* Compose area */}
+            <div className="flex gap-3 px-4 pt-4 pb-3 pr-14">
+              <img src={profilePhoto} alt="Your profile" className="h-10 w-10 shrink-0 rounded-full object-cover" />
+              <div className="flex-1 min-w-0">
+                <textarea ref={textareaRef} value={text} onChange={autoGrow} placeholder="What's on your mind?" rows={4}
+                  className="w-full resize-none bg-transparent text-[17px] text-gray-dark placeholder:text-gray-light focus:outline-none leading-relaxed"
+                  style={{ minHeight: "100px" }} />
+              </div>
+            </div>
+
+            {/* Image gallery preview */}
+            <AnimatePresence>
+              {images.length > 0 && (
+                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden px-4 pb-3">
+                  <PostImageGrid
+                    images={images.map(img => ({ src: img.cropped, aspectRatio: img.aspectRatio }))}
+                    renderOverlay={(idx) => (
+                      <>
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors pointer-events-none" />
+                        <button
+                          onClick={() => setImages(prev => prev.filter((_, i) => i !== idx))}
+                          className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/80">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                        </button>
+                        <button
+                          onClick={() => { setCropOriginalUrl(images[idx].original); setCropBox({ x: 0, y: 0, w: 1, h: 1 }); setCropRatio("free"); setCropRotation(0); setImgBounds(null); setCropReCropIndex(idx); setCropMode(true); }}
+                          className="absolute left-2 top-2 flex items-center gap-1 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/80">
+                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M6.13 1L6 16a2 2 0 002 2h15"/><path d="M1 6.13l15-.13a2 2 0 012 2v15"/>
+                          </svg>
+                          Crop
+                        </button>
+                      </>
+                    )}
+                  />
+                  {images.length < 4 && (
+                    <button onClick={() => fileInputRef.current?.click()} className="mt-2 flex items-center gap-1.5 text-[13px] font-medium text-gray-light hover:text-gray-dark transition-colors">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                      Add photo ({images.length}/4)
+                    </button>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Event picker / attached preview */}
+            <AnimatePresence>
+              {(selectingEvent || eventAttached) ? (
+                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden px-4 pb-3">
+                  {selectingEvent ? (
+                    <div>
+                      <p className="mb-2 text-[13px] font-medium text-gray-light">Select an event to attach</p>
+                      <div className="relative">
+                        <div className="overflow-hidden rounded-xl border border-gray-stroke">
+                          <img src={UPCOMING_EVENTS[eventIndex].image} alt={UPCOMING_EVENTS[eventIndex].title} className="aspect-[1200/628] w-full object-cover" />
+                          <div className="px-4 py-3">
+                            <p className="text-[15px] font-semibold text-gray-dark">{UPCOMING_EVENTS[eventIndex].title}</p>
+                            <div className="mt-1 flex items-center gap-2 text-[13px] text-gray-light">
+                              <svg className="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                              <span>{UPCOMING_EVENTS[eventIndex].date}</span><span>·</span><span>{UPCOMING_EVENTS[eventIndex].time}</span>
+                            </div>
+                          </div>
+                        </div>
+                        {eventIndex > 0 && <button onClick={() => setEventIndex(i => i - 1)} className="absolute left-2 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md border border-gray-stroke text-gray-dark hover:bg-gray-hover transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg></button>}
+                        {eventIndex < UPCOMING_EVENTS.length - 1 && <button onClick={() => setEventIndex(i => i + 1)} className="absolute right-2 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md border border-gray-stroke text-gray-dark hover:bg-gray-hover transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="9 18 15 12 9 6"/></svg></button>}
+                      </div>
+                      <div className="mt-2 flex justify-center gap-1.5">
+                        {UPCOMING_EVENTS.map((_, i) => <button key={i} onClick={() => setEventIndex(i)} className={`h-1.5 w-1.5 rounded-full transition-colors ${i === eventIndex ? "bg-gray-dark" : "bg-gray-stroke"}`} />)}
+                      </div>
+                      <div className="mt-3 flex justify-end gap-2">
+                        <button onClick={() => setSelectingEvent(false)} className="rounded-lg px-4 py-2 text-[14px] font-medium text-gray-light hover:text-gray-dark transition-colors">Cancel</button>
+                        <button onClick={() => { setEventAttached(true); setSelectingEvent(false); }} className="rounded-lg bg-gray-dark px-4 py-2 text-[14px] font-semibold text-white hover:opacity-90 transition-opacity">Attach</button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="relative overflow-hidden rounded-xl border border-gray-stroke">
+                      <button onClick={() => setEventAttached(false)} className="absolute top-2 right-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                      </button>
                       <img src={UPCOMING_EVENTS[eventIndex].image} alt={UPCOMING_EVENTS[eventIndex].title} className="aspect-[1200/628] w-full object-cover" />
                       <div className="px-4 py-3">
                         <p className="text-[15px] font-semibold text-gray-dark">{UPCOMING_EVENTS[eventIndex].title}</p>
                         <div className="mt-1 flex items-center gap-2 text-[13px] text-gray-light">
                           <svg className="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                          <span>{UPCOMING_EVENTS[eventIndex].date}</span>
-                          <span>·</span>
-                          <span>{UPCOMING_EVENTS[eventIndex].time}</span>
+                          <span>{UPCOMING_EVENTS[eventIndex].date}</span><span>·</span><span>{UPCOMING_EVENTS[eventIndex].time}</span>
                         </div>
                       </div>
                     </div>
-                    {/* Prev arrow */}
-                    {eventIndex > 0 ? (
-                      <button onClick={() => setEventIndex(i => i - 1)} className="absolute left-2 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md border border-gray-stroke text-gray-dark hover:bg-gray-hover transition-colors">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-                      </button>
-                    ) : null}
-                    {/* Next arrow */}
-                    {eventIndex < UPCOMING_EVENTS.length - 1 ? (
-                      <button onClick={() => setEventIndex(i => i + 1)} className="absolute right-2 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md border border-gray-stroke text-gray-dark hover:bg-gray-hover transition-colors">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="9 18 15 12 9 6"/></svg>
-                      </button>
-                    ) : null}
-                  </div>
-                  {/* Dot indicators */}
-                  <div className="mt-2 flex justify-center gap-1.5">
-                    {UPCOMING_EVENTS.map((_, i) => (
-                      <button key={i} onClick={() => setEventIndex(i)} className={`h-1.5 w-1.5 rounded-full transition-colors ${i === eventIndex ? "bg-gray-dark" : "bg-gray-stroke"}`} />
-                    ))}
-                  </div>
-                  <div className="mt-3 flex justify-end gap-2">
-                    <button onClick={() => { setSelectingEvent(false); }} className="rounded-lg px-4 py-2 text-[14px] font-medium text-gray-light hover:text-gray-dark transition-colors">Cancel</button>
-                    <button onClick={() => { setEventAttached(true); setSelectingEvent(false); }} className="rounded-lg bg-gray-dark px-4 py-2 text-[14px] font-semibold text-white hover:opacity-90 transition-opacity">Attach</button>
-                  </div>
-                </div>
-              ) : (
-                /* Attached preview */
-                <div className="relative overflow-hidden rounded-xl border border-gray-stroke">
-                  <button onClick={() => setEventAttached(false)} className="absolute top-2 right-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60">
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                  )}
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
+
+            {/* Suggestion chips — Experimental only */}
+            {!isMVP && (
+              <div className="flex flex-wrap gap-2 px-4 pb-4">
+                {([
+                  { label: "Attach your upcoming event", icon: <path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z" />, onClick: () => { setSelectingEvent(true); setEventAttached(false); setEventIndex(0); } },
+                  { label: "Attach Bootcamp", icon: <><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></>, onClick: undefined as (() => void) | undefined },
+                  { label: "Go Live", icon: <><circle cx="12" cy="12" r="3"/><path d="M8.5 8.5a5 5 0 000 7M15.5 8.5a5 5 0 010 7"/><path d="M5.5 5.5a9 9 0 000 13M18.5 5.5a9 9 0 010 13"/></>, onClick: onGoLive ? () => { onClose(); onGoLive(); } : undefined },
+                  { label: "Celebrate someone", icon: <><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></>, onClick: undefined as (() => void) | undefined },
+                  { label: "Available now", icon: <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>, onClick: undefined as (() => void) | undefined },
+                ] as { label: string; icon: React.ReactNode; onClick: (() => void) | undefined }[]).map(({ label, icon, onClick }) => (
+                  <button key={label} onClick={onClick} className="flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-[13px] font-medium text-gray-dark transition-colors hover:bg-gray-200">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icon}</svg>
+                    {label}
                   </button>
-                  <img src={UPCOMING_EVENTS[eventIndex].image} alt={UPCOMING_EVENTS[eventIndex].title} className="aspect-[1200/628] w-full object-cover" />
-                  <div className="px-4 py-3">
-                    <p className="text-[15px] font-semibold text-gray-dark">{UPCOMING_EVENTS[eventIndex].title}</p>
-                    <div className="mt-1 flex items-center gap-2 text-[13px] text-gray-light">
-                      <svg className="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                      <span>{UPCOMING_EVENTS[eventIndex].date}</span>
-                      <span>·</span>
-                      <span>{UPCOMING_EVENTS[eventIndex].time}</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
-
-        {/* Suggestion chips — Experimental only */}
-        {!isMVP && (
-          <div className="flex flex-wrap gap-2 px-4 pb-4">
-            {[
-              { label: "Attach your upcoming event", icon: <path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z" />, onClick: () => { setSelectingEvent(true); setEventAttached(false); setEventIndex(0); } },
-              { label: "Attach Bootcamp", icon: <><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></>, onClick: undefined as (() => void) | undefined },
-              { label: "Go Live", icon: <><circle cx="12" cy="12" r="3"/><path d="M8.5 8.5a5 5 0 000 7M15.5 8.5a5 5 0 010 7"/><path d="M5.5 5.5a9 9 0 000 13M18.5 5.5a9 9 0 010 13"/></>, onClick: onGoLive ? () => { onClose(); onGoLive(); } : undefined },
-              { label: "Celebrate someone", icon: <><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></>, onClick: undefined as (() => void) | undefined },
-              { label: "Available now", icon: <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>, onClick: undefined as (() => void) | undefined },
-            ].map(({ label, icon, onClick }) => (
-              <button
-                key={label}
-                onClick={onClick}
-                className="flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-[13px] font-medium text-gray-dark transition-colors hover:bg-gray-200"
-              >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  {icon}
-                </svg>
-                {label}
-              </button>
-            ))}
-          </div>
-        )}
-
-        <div className="border-t border-gray-stroke" />
-
-        {/* Bottom toolbar */}
-        <div className="flex items-center justify-between px-4 py-3">
-          {/* Action icons: Image — Experimental only */}
-          <div className="flex items-center gap-1">
-            {!isMVP ? (
-              <>
-                <button onClick={() => fileInputRef.current?.click()} className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors ${uploadedImage ? "text-primary bg-primary/10" : "text-gray-light hover:bg-gray-hover"}`} title="Add image">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                    <circle cx="8.5" cy="8.5" r="1.5"/>
-                    <polyline points="21 15 16 10 5 21"/>
-                  </svg>
-                </button>
-                <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageSelect} />
-              </>
-            ) : <div />}
-          </div>
-
-          {/* Char counter + Post button */}
-          <div className="flex items-center gap-3">
-            {charCount > 0 && (
-              <div className="relative flex items-center justify-center">
-                <svg width="26" height="26" viewBox="0 0 26 26">
-                  <circle cx="13" cy="13" r={circleR} fill="none" stroke="#E5E5E5" strokeWidth="2.5" />
-                  <circle
-                    cx="13" cy="13" r={circleR}
-                    fill="none"
-                    stroke={overLimit ? "#EF4444" : nearLimit ? "#F59E0B" : "#222222"}
-                    strokeWidth="2.5"
-                    strokeDasharray={circumference}
-                    strokeDashoffset={dashOffset}
-                    strokeLinecap="round"
-                    transform="rotate(-90 13 13)"
-                    style={{ transition: "stroke-dashoffset 0.1s, stroke 0.2s" }}
-                  />
-                </svg>
-                {nearLimit && (
-                  <span className={`absolute text-[10px] font-semibold ${overLimit ? "text-red-500" : "text-amber-500"}`}>
-                    {remaining}
-                  </span>
-                )}
+                ))}
               </div>
             )}
-            <button
-              onClick={() => { onPost(text.trim()); onClose(); }}
-              disabled={!text.trim() || overLimit}
-              className="rounded-[8px] bg-gray-dark px-6 py-2 text-[15px] font-semibold text-white transition-opacity disabled:opacity-40 enabled:hover:opacity-90"
-            >
-              Post
-            </button>
-          </div>
-        </div>
+
+            <div className="border-t border-gray-stroke" />
+
+            {/* Bottom toolbar */}
+            <div className="flex items-center justify-between px-4 py-3">
+              <div className="flex items-center gap-1">
+                <button onClick={() => fileInputRef.current?.click()} disabled={images.length >= 4}
+                  className="flex h-9 w-9 items-center justify-center rounded-full transition-colors text-gray-light hover:bg-gray-hover disabled:opacity-30"
+                  title={images.length >= 4 ? "Maximum 4 images" : "Add photo"}>
+                  <ImageIcon size={24} strokeWidth={1.5} />
+                </button>
+                <input ref={fileInputRef} type="file" accept="image/*" multiple className="hidden" onChange={handleImageSelect} />
+              </div>
+              <div className="flex items-center gap-3">
+                {charCount > 0 && (
+                  <div className="relative flex items-center justify-center">
+                    <svg width="26" height="26" viewBox="0 0 26 26">
+                      <circle cx="13" cy="13" r={circleR} fill="none" stroke="#E5E5E5" strokeWidth="2.5" />
+                      <circle cx="13" cy="13" r={circleR} fill="none" stroke={overLimit ? "#EF4444" : nearLimit ? "#F59E0B" : "#222222"}
+                        strokeWidth="2.5" strokeDasharray={circumference} strokeDashoffset={dashOffset} strokeLinecap="round"
+                        transform="rotate(-90 13 13)" style={{ transition: "stroke-dashoffset 0.1s, stroke 0.2s" }} />
+                    </svg>
+                    {nearLimit && <span className={`absolute text-[10px] font-semibold ${overLimit ? "text-red-500" : "text-amber-500"}`}>{remaining}</span>}
+                  </div>
+                )}
+                <button onClick={() => { onPost(text.trim(), images); onClose(); }}
+                  disabled={(!text.trim() && images.length === 0) || overLimit}
+                  className="rounded-[8px] bg-gray-dark px-6 py-2 text-[15px] font-semibold text-white transition-opacity disabled:opacity-40 enabled:hover:opacity-90">
+                  Post
+                </button>
+              </div>
+            </div>
+          </>
+        )}
       </motion.div>
     </div>,
     document.body
@@ -2207,10 +2522,10 @@ const TRENDING_TOPICS = [
 
 function HomeRightSidebar() {
   return (
-    <div className="flex flex-col gap-6 px-1">
+    <div className="flex flex-col gap-4 px-1">
       {/* Happening Now */}
       <div>
-        <div className="mb-4 flex items-center gap-1.5">
+        <div className="mb-2 flex items-center gap-1.5">
           <span className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070]">
             Happening Now
           </span>
@@ -2218,31 +2533,18 @@ function HomeRightSidebar() {
             <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col">
           {HAPPENING_NOW.map(event => (
             <button
               key={event.id}
-              className="flex items-start gap-3 rounded-xl p-1.5 -mx-1.5 text-left transition-colors hover:bg-gray-hover"
+              className="flex items-start rounded-lg px-1.5 py-2 -mx-1.5 text-left transition-colors hover:bg-gray-hover"
             >
-              <div className="relative h-[52px] w-[72px] shrink-0 overflow-hidden rounded-[8px]">
-                <img
-                  src={event.thumbnail}
-                  alt={event.title}
-                  className="h-full w-full object-cover"
-                  style={{ objectPosition: "50% 15%" }}
-                />
-                {event.status === "live" && (
-                  <div className="absolute bottom-1 left-1 rounded bg-red-500 px-1 py-0.5 text-[9px] font-bold uppercase leading-none text-white">
-                    Live
-                  </div>
-                )}
-              </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-[16px] font-medium leading-snug text-gray-dark">{event.title}</p>
+                <p className="text-[15px] font-medium leading-snug text-gray-dark">{event.title}</p>
                 {event.status === "live" ? (
-                  <p className="mt-0.5 text-[14px] text-red-500">Live now · {event.detail}</p>
+                  <p className="mt-0.5 text-[13px] text-red-500">Live now · {event.detail}</p>
                 ) : (
-                  <p className="mt-0.5 text-[14px] text-gray-light">{event.detail}</p>
+                  <p className="mt-0.5 text-[13px] text-gray-light">{event.detail}</p>
                 )}
               </div>
             </button>
@@ -2255,7 +2557,7 @@ function HomeRightSidebar() {
 
       {/* Categories */}
       <div>
-        <div className="mb-4 flex items-center gap-1.5">
+        <div className="mb-2 flex items-center gap-1.5">
           <span className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070]">
             Coach Categories
           </span>
@@ -2263,11 +2565,11 @@ function HomeRightSidebar() {
             <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col">
           {TRENDING_TOPICS.map(topic => (
             <button
               key={topic.id}
-              className="-mx-1.5 rounded-xl p-1.5 text-left transition-colors hover:bg-gray-hover"
+              className="-mx-1.5 rounded-lg px-1.5 py-2 text-left transition-colors hover:bg-gray-hover"
             >
               <p className="text-[16px] font-medium leading-snug text-gray-dark">{topic.tag}</p>
               <p className="mt-0.5 text-[14px] text-gray-light">{topic.coaches} coaches</p>
@@ -2301,17 +2603,6 @@ function HomeSidebar({ onCreatePost }: { onCreatePost: () => void }) {
           {/* Name / headline */}
           <p className="text-[19px] font-medium leading-tight text-gray-dark">Jamie Allen</p>
           <p className="mt-0.5 text-[15px] leading-snug text-gray-light">Interactive Lead at Airbnb</p>
-          {/* Work & Education */}
-          <div className="mt-3 flex flex-col gap-2">
-            <div className="flex items-center gap-2">
-              <img src={orgGoogle} alt="Google" className="h-[20px] w-[20px] shrink-0 rounded-[4px] object-contain" />
-              <span className="text-[14px] text-gray-light">Product Manager at Google</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <img src={orgHBS} alt="HBS" className="h-[20px] w-[20px] shrink-0 rounded-[4px] object-contain" />
-              <span className="text-[14px] text-gray-light">Studied at Harvard Business School</span>
-            </div>
-          </div>
         </div>
       </Link>
 
@@ -2367,22 +2658,35 @@ export default function Home() {
   const [goLiveOpen, setGoLiveOpen] = useState(false);
   useSetLeftSidebar(<HomeSidebar onCreatePost={() => setComposeOpen(true)} />);
   useSetRightSidebar(<HomeRightSidebar />);
-  useSetContentMaxWidth(672);
+  useSetContentMaxWidth(675);
   const [feedPosts, setFeedPosts] = useState<Post[]>(posts);
 
-  const handlePost = (text: string) => {
-    const newPost: Post = {
+  const handlePost = (text: string, postImages: ImageEntry[]) => {
+    const base = {
       id: Date.now(),
-      type: "text",
-      author: "You",
+      author: "Jamie Allen",
       avatar: profilePhoto,
       time: "just now",
-      body: text,
+      verified: true,
+      headline: "Interactive Lead at Airbnb",
       likes: 0,
       comments: 0,
       reposts: 0,
       shares: 0,
     };
+    const newPost: Post = postImages.length > 0
+      ? {
+          ...base,
+          type: "image",
+          body: text,
+          images: postImages.map(img => img.cropped),
+          imageAspectRatios: postImages.map(img => img.aspectRatio),
+        }
+      : {
+          ...base,
+          type: "text",
+          body: text,
+        };
     setFeedPosts(prev => [newPost, ...prev]);
   };
 
