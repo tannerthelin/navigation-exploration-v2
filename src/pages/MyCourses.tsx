@@ -208,12 +208,6 @@ function formatSlotDateTime(date: Date): string {
     date.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
 }
 
-function getCalendarInfo(date: Date) {
-  return {
-    day: date.toLocaleDateString("en-US", { weekday: "short" }).toUpperCase(),
-    date: date.getDate(),
-  };
-}
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 
@@ -249,66 +243,9 @@ function ActionButton({ icon, label }: { icon: React.ReactNode; label: string })
   );
 }
 
-// ─── Session CTA ──────────────────────────────────────────────────────────────
-
-function SessionCTA({ slot, isNext }: { slot: TimeSlot; isNext: boolean }) {
-  const state = getSessionState(slot);
-
-  if (state === "live") {
-    return (
-      <a href={slot.joinUrl ?? "#"} className="flex shrink-0 items-center gap-1.5 text-[16px] font-medium text-white">
-        Join
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="-rotate-90 shrink-0">
-          <path d="M3 5l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </a>
-    );
-  }
-  if (state === "past-recording") {
-    return (
-      <a href={slot.recordingUrl} className="flex shrink-0 items-center gap-1.5 text-[16px] font-medium text-gray-dark">
-        <img src={playVideoIcon} alt="" className="h-[18px] w-[18px] shrink-0" />
-        Replay
-      </a>
-    );
-  }
-  if (state === "past-pending") {
-    return <span className="shrink-0 text-[16px] text-[#9b9b9b]">Processing</span>;
-  }
-  if (state === "soon" || state === "future") {
-    if (isNext) {
-      return (
-        <span className="shrink-0 text-[16px] font-medium text-[#3b7dfd]">
-          {formatStartsIn(slot.startTime.getTime() - Date.now())}
-        </span>
-      );
-    }
-    return (
-      <span className="shrink-0 text-[16px] text-[#9b9b9b]">
-        {formatShortDate(slot.startTime)}
-      </span>
-    );
-  }
-  return null;
-}
 
 // ─── Slot option ──────────────────────────────────────────────────────────────
 
-function SlotOption({ slot, isNext }: { slot: TimeSlot; isNext: boolean }) {
-  const state = getSessionState(slot);
-  const isLive = state === "live";
-  const isRecording = state === "past-recording";
-  return (
-    <div className={`flex w-full items-center justify-between rounded-lg px-4 py-4 transition-colors ${
-      isLive ? "cursor-pointer bg-[#296cef] hover:bg-[#3b7dfd]" : isRecording ? "cursor-pointer bg-gray-hover hover:bg-[#ebebeb]" : "bg-gray-hover"
-    }`}>
-      <span className={`text-[16px] leading-[1.2] ${isLive ? "text-[#f5f5f5]" : "text-gray-light"}`}>
-        {formatTime(slot.startTime)}
-      </span>
-      <SessionCTA slot={slot} isNext={isNext} />
-    </div>
-  );
-}
 
 // ─── Session row (chip variant) ──────────────────────────────────────────────
 
@@ -456,45 +393,33 @@ function SessionRowSimple({ session, isNext }: { session: Session; index: number
   );
 }
 
-// ─── Session row ──────────────────────────────────────────────────────────────
+// ─── Session row (simple variant) ────────────────────────────────────────────
 
-function SessionRow({ session, isNext, isFirst }: { session: Session; isNext: boolean; isFirst?: boolean }) {
-  const isPast = session.slots.every((slot) => {
-    const st = getSessionState(slot);
-    return st === "past-recording" || st === "past-pending";
-  });
-  const cal = getCalendarInfo(session.slots[0].startTime);
-
+function SessionRow({ session, isNext }: { session: Session; isNext: boolean; isFirst?: boolean }) {
   return (
-    <div className={isFirst ? "" : "border-t border-[#e6e6e6]"}>
-      {/* Title row */}
-      <div className="flex gap-4 px-4 pb-3 pt-4 sm:px-5 sm:pt-5">
-        <div className="w-8 shrink-0 text-center">
-          <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[1.4px] text-gray-light">{cal.day}</p>
-          <p className={`text-[20px] font-medium leading-[1.2] ${isPast ? "text-gray-light" : "text-gray-dark"}`}>{cal.date}</p>
-        </div>
-        <div className="flex min-w-0 flex-1 flex-col gap-1 justify-center">
-          <p className={`text-[18px] font-medium leading-[1.2] ${isPast ? "text-gray-light" : "text-gray-dark"}`}>
-            {session.title}
-          </p>
-          <p className="text-[14px] text-gray-light">{formatShortDate(session.slots[0].startTime)} · {session.duration}</p>
-        </div>
-      </div>
-
-      {/* Slots row */}
-      <div className="flex items-stretch px-4 pb-4 sm:px-5 sm:pb-5">
-        {/* OR column — aligns with date column above */}
-        <div className="flex w-12 shrink-0 flex-col items-end pr-2">
-          <div className="flex-1 border-r border-dashed border-gray-stroke" />
-          <span className="py-1 text-[14px] font-medium uppercase leading-[1.2] tracking-[1.4px] text-[#9b9b9b]">or</span>
-          <div className="flex-1 border-r border-dashed border-gray-stroke" />
-        </div>
-        {/* Two slot rows stacked */}
-        <div className="flex min-w-0 flex-1 flex-col gap-2">
-          <SlotOption slot={session.slots[0]} isNext={isNext} />
-          <SlotOption slot={session.slots[1]} isNext={isNext} />
-        </div>
-      </div>
+    <div className="px-1 sm:px-2">
+      {session.slots.map((slot, slotIndex) => {
+        const state = getSessionState(slot);
+        const status: "live" | "upcoming" | "past" =
+          state === "live" ? "live" : (state === "past-recording" || state === "past-pending") ? "past" : "upcoming";
+        const startsInText = isNext && (state === "soon" || state === "future")
+          ? formatStartsIn(slot.startTime.getTime() - Date.now()).replace("Starts in ", "")
+          : undefined;
+        return (
+          <SessionCard
+            key={slot.id}
+            title={`${session.title} – ${SLOT_TIME_LABELS[slotIndex] ?? formatTime(slot.startTime)}`}
+            dateTime={formatSlotDateTime(slot.startTime)}
+            duration={session.duration}
+            image=""
+            type="event"
+            status={status}
+            startsIn={startsInText}
+            hasRecording={state === "past-recording"}
+            hideImage
+          />
+        );
+      })}
     </div>
   );
 }
@@ -820,11 +745,11 @@ function SuggestedCourseCard({ course }: { course: (typeof suggestedCourses)[0] 
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-type Variant = "stacked" | "grouped" | "chip";
+type Variant = "simple" | "grouped" | "chip";
 
 export default function MyCourses() {
   const { setSimpleSessionLayout, setChipSessionLayout } = useSessionLayout();
-  const [variant, setVariant] = useState<Variant>("stacked");
+  const [variant, setVariant] = useState<Variant>("simple");
 
   function applyVariant(v: Variant) {
     setVariant(v);
@@ -854,7 +779,7 @@ export default function MyCourses() {
       <div className="flex items-center justify-between">
         <h1 className="text-[32px] font-medium leading-[1.1] text-gray-dark md:text-[40px]">My Courses</h1>
         <div className="flex rounded-lg border border-gray-stroke/50 bg-gray-hover p-0.5 text-[14px] font-medium">
-          {(["stacked", "grouped", "chip"] as Variant[]).map((v) => (
+          {(["simple", "grouped", "chip"] as Variant[]).map((v) => (
             <button
               key={v}
               onClick={() => applyVariant(v)}
