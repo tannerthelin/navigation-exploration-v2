@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import PageShell from "../components/PageShell";
 import SessionCard from "../components/SessionCard";
@@ -415,40 +415,43 @@ function SessionRowChip({ session, index, isNext, preferredSlot, isFirst }: { se
 // ─── Session row (simple variant) ────────────────────────────────────────────
 
 function SessionRowSimple({ session, isNext }: { session: Session; index: number; isNext: boolean; isFirst?: boolean }) {
+  const slots = session.slots.map((slot) => {
+    const state = getSessionState(slot);
+    return {
+      slot,
+      state,
+      status: (state === "live" ? "live" : (state === "past-recording" || state === "past-pending") ? "past" : "upcoming") as "live" | "upcoming" | "past",
+      startsInText: isNext && (state === "soon" || state === "future")
+        ? formatStartsIn(slot.startTime.getTime() - Date.now()).replace("Starts in ", "")
+        : undefined,
+    };
+  });
+
   return (
-    <div className="px-2 sm:px-3">
-
-      {session.slots.map((slot, slotIndex) => {
-        const state = getSessionState(slot);
-        const status: "live" | "upcoming" | "past" =
-          state === "live" ? "live" : (state === "past-recording" || state === "past-pending") ? "past" : "upcoming";
-        const startsInText = isNext && (state === "soon" || state === "future")
-          ? formatStartsIn(slot.startTime.getTime() - Date.now()).replace("Starts in ", "")
-          : undefined;
-
-        return (
-          <Fragment key={slot.id}>
-            {slotIndex === 1 && (
-              <div className="flex items-center gap-3 px-2">
-                <div className="flex-1 border-t border-dashed border-gray-stroke" />
-                <span className="text-[14px] font-medium uppercase tracking-[0.08em] text-[#9b9b9b]">or</span>
-                <div className="flex-1 border-t border-dashed border-gray-stroke" />
-              </div>
-            )}
-            <SessionCard
-              title={`${session.title} – ${SLOT_TIME_LABELS[slotIndex] ?? formatTime(slot.startTime)}`}
-              dateTime={formatSlotDateTime(slot.startTime)}
-              duration={session.duration}
-              image=""
-              type="event"
-              status={status}
-              startsIn={startsInText}
-              hasRecording={state === "past-recording"}
-              hideImage
-            />
-          </Fragment>
-        );
-      })}
+    <div className="flex items-stretch px-1 sm:px-2">
+      {/* Left OR bracket connector */}
+      <div className="flex shrink-0 flex-col items-end justify-center py-5">
+        <div className="h-[30px] w-2 border-l border-t border-dashed border-[#9b9b9b]" />
+        <span className="py-2 text-[14px] font-medium uppercase tracking-[0.1em] text-[#9b9b9b]">or</span>
+        <div className="h-[30px] w-2 border-l border-b border-dashed border-[#9b9b9b]" />
+      </div>
+      {/* Session cards */}
+      <div className="min-w-0 flex-1">
+        {slots.map(({ slot, state, status, startsInText }, slotIndex) => (
+          <SessionCard
+            key={slot.id}
+            title={`${session.title} – ${SLOT_TIME_LABELS[slotIndex] ?? formatTime(slot.startTime)}`}
+            dateTime={formatSlotDateTime(slot.startTime)}
+            duration={session.duration}
+            image=""
+            type="event"
+            status={status}
+            startsIn={startsInText}
+            hasRecording={state === "past-recording"}
+            hideImage
+          />
+        ))}
+      </div>
     </div>
   );
 }
