@@ -414,9 +414,10 @@ function SessionRowChip({ session, index, isNext, preferredSlot, isFirst }: { se
 
 // ─── Session row (simple variant) ────────────────────────────────────────────
 
-function SessionRowSimple({ session, isNext, isFirst }: { session: Session; index: number; isNext: boolean; isFirst?: boolean }) {
+function SessionRowSimple({ session, isNext }: { session: Session; index: number; isNext: boolean; isFirst?: boolean }) {
   return (
-    <div className={`px-2 sm:px-3 ${isFirst ? "pt-1" : ""}`}>
+    <div className="px-2 sm:px-3">
+
       {session.slots.map((slot, slotIndex) => {
         const state = getSessionState(slot);
         const status: "live" | "upcoming" | "past" =
