@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";
 import PageShell from "../components/PageShell";
@@ -44,6 +44,63 @@ import goldmanSachsLogo from "../assets/logos/goldman-sachs.png";
 import eventImg1 from "../assets/placeholder images/placeholder-event-01.png";
 import eventImg2 from "../assets/placeholder images/placeholder-event-02.png";
 import eventImg3 from "../assets/placeholder images/placeholder-event-03.png";
+
+// Figma icon assets for course cards
+const figmaSyllabusIcon = "https://www.figma.com/api/mcp/asset/6eb7cc2d-90b9-49e5-9d0b-541c668a79f0";
+const figmaPlayIcon = "https://www.figma.com/api/mcp/asset/dab3b9c4-442a-4fe1-b04e-5026b09d9843";
+const figmaSlack1 = "https://www.figma.com/api/mcp/asset/c66c77e8-363b-4742-87f2-1fb9b18416c0";
+const figmaSlack2 = "https://www.figma.com/api/mcp/asset/9453f0d5-c53a-4128-b604-1ff16db95a9f";
+const figmaSlack3 = "https://www.figma.com/api/mcp/asset/a51db8bb-c981-4b77-a5dc-761d347a7019";
+const figmaSlack4 = "https://www.figma.com/api/mcp/asset/d6fb8824-812f-4b5c-8d90-5b56cb53286a";
+
+function ProfileSlackIcon() {
+  return (
+    <div className="relative h-5 w-5 shrink-0 overflow-hidden">
+      <div className="absolute inset-[10%]">
+        <div className="absolute inset-[52.14%_52.15%_10.01%_10%]">
+          <img alt="" className="absolute block max-w-none size-full" src={figmaSlack1} />
+        </div>
+        <div className="absolute inset-[10%_52.15%_52.14%_10%]">
+          <img alt="" className="absolute block max-w-none size-full" src={figmaSlack2} />
+        </div>
+        <div className="absolute inset-[10%_10%_52.14%_52.15%]">
+          <img alt="" className="absolute block max-w-none size-full" src={figmaSlack3} />
+        </div>
+        <div className="absolute inset-[52.14%_10%_10%_52.15%]">
+          <img alt="" className="absolute block max-w-none size-full" src={figmaSlack4} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CourseActionButton({ icon, label }: { icon: React.ReactNode; label: string }) {
+  return (
+    <button className="flex shrink-0 items-center gap-2 rounded-lg bg-gray-hover px-3 py-2 text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#ebebeb]">
+      {icon}
+      {label}
+    </button>
+  );
+}
+
+const profileCourses = [
+  {
+    id: 1,
+    title: "MBA Admissions Strategy Bootcamp",
+    image: eventImg1,
+    cohortSelected: true,
+    sessionCount: 6,
+    cohortDates: "Mar 12 – Apr 23, 2026",
+  },
+  {
+    id: 2,
+    title: "Law School Admissions Bootcamp",
+    image: eventImg3,
+    cohortSelected: false,
+    sessionCount: 0,
+    cohortDates: "",
+  },
+];
 
 const PROFILE_SECTIONS = [
   { id: "offerings", label: "Offerings" },
@@ -93,7 +150,7 @@ export default function ProfileV2() {
   const [pastOpen, setPastOpen] = useState(false);
   const [sectionFilter, setSectionFilter] = useState("All");
   const [offeringsType, setOfferingsType] = useState("All");
-  const [viewingOwnProfile, setViewingOwnProfile] = useState(false);
+  const [viewingOwnProfile, setViewingOwnProfile] = useState(isCustomerProfile);
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [eventsCategoryOpen, setEventsCategoryOpen] = useState(false);
 
@@ -973,37 +1030,42 @@ export default function ProfileV2() {
           {/* Customer profile tabs */}
           {isCustomerProfile && (
             <>
-              <div className="sticky top-0 z-10 mt-8 flex border-b border-gray-stroke bg-white">
-                {(["activity", "about", "likes"] as const).map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setCustomerTab(tab)}
-                    className={`relative flex-1 cursor-pointer py-3 transition-colors ${
-                      customerTab === tab
-                        ? "text-gray-dark"
-                        : "text-gray-light hover:text-gray-dark"
-                    }`}
-                  >
-                    <span className="text-[17px] font-medium">{tab === "activity" ? "Overview" : tab === "about" ? "Activity" : "Likes"}</span>
-                    {customerTab === tab && (
-                      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#038561]" />
-                    )}
-                  </button>
-                ))}
-              </div>
+              {viewingOwnProfile ? (
+                <div className="sticky top-0 z-10 mt-5 flex border-b border-gray-stroke bg-white">
+                  {(["activity", "about", "likes"] as const).map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => setCustomerTab(tab)}
+                      className={`relative flex-1 cursor-pointer py-3 transition-colors ${
+                        customerTab === tab
+                          ? "text-gray-dark"
+                          : "text-gray-light hover:text-gray-dark"
+                      }`}
+                    >
+                      <span className="text-[18px] font-medium">{tab === "activity" ? "Overview" : tab === "about" ? "Activity" : "Likes"}</span>
+                      {customerTab === tab && (
+                        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#038561]" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="mt-7 border-b border-gray-stroke" />
+              )}
 
               <div className="mt-6">
-                {customerTab === "activity" && (
+                {customerTab === "activity" && viewingOwnProfile && (
                   <>
-                    <div className="mb-6 flex items-center gap-2 rounded-lg bg-[#f5f5f5] px-4 py-3 text-[14px] font-medium text-[#707070]">
-                      <img src={lockIcon} alt="" className="h-[16px] w-[16px] opacity-50" />
+                    <div className="mb-6 inline-flex items-center gap-2 rounded-lg border border-[#E5E5E5] bg-[#f5f5f5] px-3 py-1.5 text-[16px] font-medium text-[#707070]">
+                      <img src={lockIcon} alt="" className="h-[16px] w-[16px]" />
                       Only visible to you
                     </div>
                     {/* Upcoming Sessions */}
                     <section>
-                      <h2 className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070]">
+                      <h2 className="text-[24px] font-medium text-gray-dark" style={{ fontWeight: 500 }}>
                         Upcoming Sessions
                       </h2>
+                      <p className="mt-1 text-[18px] text-[#707070]">Your scheduled coaching sessions and events.</p>
                       <div className="mt-3">
                         <div className="flex flex-col gap-1">
                           {upcomingEvents.map((event, i) => (
@@ -1043,21 +1105,124 @@ export default function ProfileV2() {
 
                     {/* My Courses */}
                     <section className="mt-12">
-                      <h2 className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070]">
+                      <h2 className="text-[24px] font-medium text-gray-dark" style={{ fontWeight: 500 }}>
                         My Courses
                       </h2>
+                      <p className="mt-1 text-[18px] text-[#707070]">Courses you're enrolled in or have completed.</p>
                       <div className="mt-3 flex flex-col gap-4">
-                        {[0, 1, 2].map((i) => (
-                          <div key={i} className="h-[160px] rounded-xl bg-[#F5F5F5]" style={dashedBorderStyle} />
+                        {profileCourses.map((course) => (
+                          <div key={course.id} className="overflow-hidden rounded-xl border border-gray-stroke">
+                            {/* Header */}
+                            <div className="flex flex-col gap-5 bg-white p-4 sm:p-5 md:flex-row md:items-center md:gap-5">
+                              <div className="flex flex-col gap-3 min-[428px]:flex-row min-[428px]:items-start md:contents">
+                                <img
+                                  src={course.image}
+                                  alt=""
+                                  className="h-auto w-[122px] shrink-0 rounded-lg object-cover min-[428px]:h-16 md:h-[100px] md:w-[190px]"
+                                />
+                                <div className="flex min-w-0 flex-1 flex-col gap-1 md:flex-[1_0_0] md:gap-4">
+                                  <div>
+                                    <p className="text-[14px] font-medium uppercase tracking-[1.4px] text-gray-light">Live cohort</p>
+                                    <p className="mt-1 text-[20px] font-medium leading-[1.2] text-gray-dark min-[428px]:text-[24px]">{course.title}</p>
+                                  </div>
+                                  {course.cohortSelected ? (
+                                    <div className="hidden flex-wrap gap-2 md:flex">
+                                      <CourseActionButton
+                                        icon={
+                                          <div className="relative h-5 w-5 shrink-0 overflow-hidden">
+                                            <div className="absolute inset-[18.75%_16.67%]">
+                                              <div className="absolute inset-[-6%_-5.63%]">
+                                                <img alt="" className="block max-w-none size-full" src={figmaSyllabusIcon} />
+                                              </div>
+                                            </div>
+                                          </div>
+                                        }
+                                        label="Syllabus"
+                                      />
+                                      <CourseActionButton
+                                        icon={
+                                          <div className="relative h-5 w-5 shrink-0">
+                                            <img alt="" className="absolute block max-w-none size-full" src={figmaPlayIcon} />
+                                          </div>
+                                        }
+                                        label="Recordings"
+                                      />
+                                      <CourseActionButton icon={<ProfileSlackIcon />} label="Group Slack" />
+                                    </div>
+                                  ) : (
+                                    <div className="hidden md:block">
+                                      <button className="flex shrink-0 items-center gap-2 rounded-lg bg-gray-dark px-3 py-2 text-[16px] font-medium text-white transition-colors hover:bg-[#444444]">
+                                        Select cohort
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                              {/* Mobile action buttons */}
+                              <div className="-mx-4 flex gap-2 overflow-x-auto px-4 sm:-mx-5 sm:px-5 md:hidden">
+                                {course.cohortSelected ? (
+                                  <>
+                                    <CourseActionButton
+                                      icon={
+                                        <div className="relative h-5 w-5 shrink-0 overflow-hidden">
+                                          <div className="absolute inset-[18.75%_16.67%]">
+                                            <div className="absolute inset-[-6%_-5.63%]">
+                                              <img alt="" className="block max-w-none size-full" src={figmaSyllabusIcon} />
+                                            </div>
+                                          </div>
+                                        </div>
+                                      }
+                                      label="Syllabus"
+                                    />
+                                    <CourseActionButton
+                                      icon={
+                                        <div className="relative h-5 w-5 shrink-0">
+                                          <img alt="" className="absolute block max-w-none size-full" src={figmaPlayIcon} />
+                                        </div>
+                                      }
+                                      label="Recordings"
+                                    />
+                                    <CourseActionButton icon={<ProfileSlackIcon />} label="Group Slack" />
+                                  </>
+                                ) : (
+                                  <button className="flex shrink-0 items-center gap-2 rounded-lg bg-gray-dark px-3 py-2 text-[16px] font-medium text-white transition-colors hover:bg-[#444444]">
+                                    Select cohort
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                            {/* Sessions bar */}
+                            {course.cohortSelected && (
+                              <div className="flex w-full items-center border-t border-gray-stroke bg-white px-4 py-3 sm:px-5">
+                                <span className="flex-1 text-left leading-[1.2]">
+                                  <span className="text-[16px] font-medium text-gray-dark">{course.sessionCount} Sessions</span>
+                                  <span className="ml-2 text-[16px] font-normal text-gray-light">{course.cohortDates}</span>
+                                </span>
+                                <svg
+                                  width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                  className="shrink-0 text-[#9b9b9b]"
+                                >
+                                  <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                              </div>
+                            )}
+                          </div>
                         ))}
                       </div>
+                      <Link
+                        to="/my-courses"
+                        className="mt-4 inline-flex cursor-pointer items-center rounded-lg bg-[#222222]/5 px-4 py-2.5 text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#222222]/[0.08]"
+                      >
+                        View all
+                      </Link>
                     </section>
 
                     {/* My Goals */}
                     <section className="mt-12">
-                      <h2 className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070]">
+                      <h2 className="text-[24px] font-medium text-gray-dark" style={{ fontWeight: 500 }}>
                         My Goals
                       </h2>
+                      <p className="mt-1 text-[18px] text-[#707070]">Track your progress toward what matters most.</p>
                       <div className="scrollbar-hide -mx-4 mt-3 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2">
                         {[0, 1].map((i) => (
                           <div key={i} className="h-[100px] w-[200px] shrink-0 snap-start rounded-xl bg-[#F5F5F5]" style={dashedBorderStyle} />
@@ -1072,7 +1237,7 @@ export default function ProfileV2() {
                   </>
                 )}
 
-                {customerTab === "about" && (
+                {(viewingOwnProfile ? customerTab === "about" : true) && (
                   <div className="flex flex-col gap-4">
                     {[...Array(10)].map((_, i) => (
                       <div key={i} className="flex gap-3">
@@ -1083,7 +1248,12 @@ export default function ProfileV2() {
                   </div>
                 )}
 
-                {customerTab === "likes" && (
+                {viewingOwnProfile && customerTab === "likes" && (
+                  <>
+                    <div className="mb-6 inline-flex items-center gap-2 rounded-lg border border-[#E5E5E5] bg-[#f5f5f5] px-3 py-1.5 text-[16px] font-medium text-[#707070]">
+                      <img src={lockIcon} alt="" className="h-[16px] w-[16px]" />
+                      Only visible to you
+                    </div>
                   <div className="flex flex-col gap-4">
                     {[...Array(8)].map((_, i) => (
                       <div key={i} className="flex gap-3">
@@ -1092,6 +1262,7 @@ export default function ProfileV2() {
                       </div>
                     ))}
                   </div>
+                  </>
                 )}
               </div>
             </>
