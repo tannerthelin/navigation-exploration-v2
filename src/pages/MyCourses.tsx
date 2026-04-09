@@ -365,7 +365,7 @@ function SessionRowSimple({ session, isNext }: { session: Session; index: number
   });
 
   return (
-    <div className="flex items-stretch px-1 sm:px-2">
+    <div className="flex items-stretch px-2 sm:px-3">
       {/* Left OR bracket connector */}
       <div className="flex shrink-0 flex-col items-end justify-center py-5 pl-2">
         <div className="h-[30px] w-2 border-l border-t border-dashed border-[#9b9b9b]" />
@@ -397,7 +397,7 @@ function SessionRowSimple({ session, isNext }: { session: Session; index: number
 
 function SessionRow({ session, isNext }: { session: Session; isNext: boolean; isFirst?: boolean }) {
   return (
-    <div className="px-1 sm:px-2">
+    <div className="px-2 sm:px-3">
       {session.slots.map((slot, slotIndex) => {
         const state = getSessionState(slot);
         const status: "live" | "upcoming" | "past" =
