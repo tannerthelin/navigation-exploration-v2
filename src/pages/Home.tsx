@@ -8,9 +8,16 @@ import { useSetLeftSidebar } from "../components/LeftSidebarContext";
 import { useSetRightSidebar } from "../components/RightSidebarContext";
 import { useSetContentMaxWidth } from "../components/ContentMaxWidthContext";
 import SessionCard from "../components/SessionCard";
+import SidebarCard, { SidebarGroup } from "../components/SidebarCard";
 import profilePhoto from "../assets/profile photos/profile photo.png";
 import eventImageSrc from "../assets/img/EventImage.avif";
 import lelandCompass from "../assets/leland-compass.svg";
+import eventImg1 from "../assets/placeholder images/placeholder-event-01.png";
+import eventImg2 from "../assets/placeholder images/placeholder-event-02.png";
+import eventImg3 from "../assets/placeholder images/placeholder-event-03.png";
+import categoryInvestmentBanking from "../assets/placeholder images/category images/investment-banking.png";
+import categoryAI from "../assets/placeholder images/category images/AI-automation-and-agents.png";
+import categoryGMAT from "../assets/placeholder images/category images/gmat-tutoring.png";
 
 // Organisation logos
 import orgWharton   from "../assets/org-logos/wharton.png";
@@ -2539,57 +2546,103 @@ function GoLiveModal({ onClose }: { onClose: () => void }) {
 // ─── Right Sidebar ─────────────────────────────────────
 
 
-const TRENDING_TOPICS = [
-  { id: 1, tag: "MBA", coaches: 234 },
-  { id: 2, tag: "GMAT", coaches: 189 },
-  { id: 3, tag: "Consulting", coaches: 156 },
-];
+function CategorySubtitle({ photos, experts }: { photos: string[]; experts: string }) {
+  return (
+    <span className="inline-flex items-center gap-[6px] align-middle">
+      <span className="inline-flex">
+        {photos.map((src, i) => (
+          <img
+            key={i}
+            src={src}
+            alt=""
+            className="inline-block h-[14px] w-[14px] shrink-0 rounded-full border border-white object-cover"
+            style={{ marginLeft: i === 0 ? 0 : "-3px" }}
+          />
+        ))}
+      </span>
+      {experts}
+    </span>
+  );
+}
 
 function HomeRightSidebar() {
   return (
-    <div className="flex flex-col gap-4 px-1">
-      {/* Happening Now */}
-      <div>
-        <div className="mb-2 flex items-center gap-1.5">
-          <span className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070]">
-            Happening Now
-          </span>
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" className="shrink-0 text-[#707070]">
-            <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </div>
-        <div className="flex flex-col -mx-2">
-          <SessionCard title="MBA Strategy Live" dateTime="Today at 3:00 PM" duration="60 min" image={pic6} type="event" status="live" />
-          <SessionCard title="Tech Consulting Workshop" dateTime="Today, 4:30 PM" duration="90 min" image={pic9} type="event" status="upcoming" startsIn="30 min" />
-          <SessionCard title="Interview Prep Session" dateTime="Tomorrow, 2:00 PM" duration="60 min" image={pic11} type="event" status="upcoming" />
-        </div>
-      </div>
-
-      {/* Divider */}
-      <div className="border-t border-gray-100" />
-
-      {/* Categories */}
-      <div>
-        <div className="mb-2 flex items-center gap-1.5">
-          <span className="text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070]">
-            Coach Categories
-          </span>
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" className="shrink-0 text-[#707070]">
-            <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </div>
-        <div className="flex flex-col">
-          {TRENDING_TOPICS.map(topic => (
-            <button
-              key={topic.id}
-              className="-mx-1.5 rounded-lg px-1.5 py-2 text-left transition-colors hover:bg-gray-hover"
+    <div className="flex flex-col gap-6 px-1">
+      {/* Free events */}
+      <SidebarGroup label="Free events">
+        <SidebarCard
+          variant="event"
+          live
+          image={eventImg1}
+          title="MBA Strategy Live"
+          subtitle={<><span className="font-medium text-[#FB5A42]">Live now</span> · 125 registered</>}
+          right={
+            <div
+              className="rounded-[8px] bg-[#038561] px-[14px] py-2 text-[14px] font-medium text-white"
+              style={{ lineHeight: 1.2 }}
             >
-              <p className="text-[16px] font-medium leading-snug text-gray-dark">{topic.tag}</p>
-              <p className="mt-0.5 text-[14px] text-gray-light">{topic.coaches} coaches</p>
-            </button>
-          ))}
-        </div>
-      </div>
+              Join
+            </div>
+          }
+        />
+        <SidebarCard
+          variant="event"
+          image={eventImg2}
+          title="Tech Consulting Workshop"
+          subtitle="Starts 4:30 PM · 89 registered"
+        />
+        <SidebarCard
+          variant="event"
+          image={eventImg3}
+          title="Interview Prep Session"
+          subtitle="Tomorrow, 2:00 PM · 54 registered"
+        />
+      </SidebarGroup>
+
+      {/* Popular categories */}
+      <SidebarGroup label="Popular categories">
+        <SidebarCard
+          variant="category"
+          image={categoryInvestmentBanking}
+          title="Investment Banking"
+          subtitle={<CategorySubtitle photos={[pic1, pic4, pic5]} experts="234 experts" />}
+        />
+        <SidebarCard
+          variant="category"
+          image={categoryAI}
+          title="AI Automation & Agents"
+          subtitle={<CategorySubtitle photos={[pic6, pic7, pic8]} experts="300 experts" />}
+        />
+        <SidebarCard
+          variant="category"
+          image={categoryGMAT}
+          title="GMAT Tutoring"
+          subtitle={<CategorySubtitle photos={[pic2, pic3, pic10]} experts="156 experts" />}
+        />
+      </SidebarGroup>
+
+      {/* Popular coaches */}
+      <SidebarGroup label="Popular coaches">
+        <SidebarCard
+          variant="coach"
+          image={pic1}
+          title="Jasmine Singer"
+          subtitle="Experienced Product Leader at LinkedIn | Ex-..."
+        />
+        <SidebarCard
+          variant="coach"
+          image={pic3}
+          title="Jackson Ringger"
+          subtitle="Experienced Product Leader at LinkedIn | Ex-..."
+        />
+        <SidebarCard
+          variant="coach"
+          image={pic5}
+          title="Erika Mah"
+          subtitle="Experienced Product Leader at LinkedIn | Ex-..."
+        />
+      </SidebarGroup>
+
     </div>
   );
 }

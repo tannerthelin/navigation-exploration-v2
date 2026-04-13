@@ -46,11 +46,14 @@ function CategorySubtitle({ photos, experts }: { photos: string[]; experts: stri
   );
 }
 
-function ResourceSubtitle({ photo, name }: { photo: string; name: string }) {
+function ResourceSubtitle({ photo, name, views }: { photo: string; name: string; views: number }) {
   return (
     <span className="inline-flex items-center gap-[6px] align-middle">
       <img src={photo} alt="" className="inline-block h-[12px] w-[12px] shrink-0 rounded-full object-cover" />
-      <span className="hover:underline hover:decoration-[1px] hover:underline-offset-[2px]">{name}</span>
+      <span>
+        <span className="hover:underline hover:decoration-[1px] hover:underline-offset-[2px]">{name}</span>
+        <span className="text-[#9B9B9B]"> · {views} views</span>
+      </span>
     </span>
   );
 }
@@ -242,19 +245,19 @@ export default function SidebarCardsTest() {
               variant="resource"
               image={resource1}
               title="Stanford GSB: Recommendation for Inclusive Leadership"
-              subtitle={<ResourceSubtitle photo={pic2} name="Marcus T." />}
+              subtitle={<ResourceSubtitle photo={pic2} name="Marcus Thomas" views={12} />}
             />
             <SidebarCard
               variant="resource"
               image={resource2}
               title="The 3-Pillar Strategy to Land a Consulting Offer"
-              subtitle={<ResourceSubtitle photo={pic7} name="Sarah L." />}
+              subtitle={<ResourceSubtitle photo={pic7} name="Sarah Liu" views={48} />}
             />
             <SidebarCard
               variant="resource"
               image={resource3}
               title="Stanford GSB: Recommendation for Inclusive Leadership"
-              subtitle={<ResourceSubtitle photo={pic10} name="David K." />}
+              subtitle={<ResourceSubtitle photo={pic10} name="David Kim" views={27} />}
             />
           </SidebarGroup>
 
