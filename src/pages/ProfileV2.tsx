@@ -48,6 +48,11 @@ import goldmanSachsLogo from "../assets/logos/goldman-sachs.png";
 import eventImg1 from "../assets/placeholder images/placeholder-event-01.png";
 import eventImg2 from "../assets/placeholder images/placeholder-event-02.png";
 import eventImg3 from "../assets/placeholder images/placeholder-event-03.png";
+import stanford1 from "../assets/placeholder post assets/stanford-post/00c1e12547190979b4db2978dbe211e2.jpg";
+import stanford2 from "../assets/placeholder post assets/stanford-post/39a9980b59e79fa3b58e8d7d5145b9a9.jpg";
+import stanford3 from "../assets/placeholder post assets/stanford-post/989ac1d56cf981c783808b83154d8a25.jpg";
+import stanford4 from "../assets/placeholder post assets/stanford-post/eb80edada3b3db7955379d433ca2861a.jpg";
+import { FeedPost, type Post } from "./Home";
 
 const PROFILE_SECTIONS = [
   { id: "offerings", label: "Offerings" },
@@ -87,6 +92,106 @@ const pastEvents = [
   { title: "GSB Essay Workshop", dateTime: "Friday, Mar 14 at 1:00 PM", duration: "90m", image: eventImg2, type: "event" as const, hasRecording: true },
   { title: "1:1 Session with Samantha", dateTime: "Thursday, Mar 13 at 10:00 AM", duration: "45m", image: pic8, type: "coach" as const, hasRecording: true },
   { title: "Behavioral Interview Prep", dateTime: "Wednesday, Mar 12 at 3:00 PM", duration: "60m", image: eventImg3, type: "event" as const, hasRecording: true },
+];
+
+const customerPosts: Post[] = [
+  {
+    id: 201,
+    type: "image",
+    author: "James Allen",
+    avatar: pic2,
+    time: "3d",
+    body: "Stanford GSB admit weekend in the books. The campus, the people, the energy — surreal. Two years ago I almost convinced myself not to apply. Glad I didn't listen to that voice.",
+    images: [stanford1, stanford2, stanford3, stanford4],
+    likes: 612,
+    comments: 78,
+    reposts: 24,
+    shares: 11,
+  },
+  {
+    id: 202,
+    type: "text",
+    author: "James Allen",
+    avatar: pic2,
+    time: "1w",
+    body: "I got in. STANFORD GSB. I literally screamed in my apartment when I saw the email. To everyone who supported me through this brutal process — this is for you. More to come, but for now I'm just letting it sink in.",
+    likes: 1487,
+    comments: 213,
+    reposts: 56,
+    shares: 34,
+  },
+  {
+    id: 203,
+    type: "text",
+    author: "James Allen",
+    avatar: pic2,
+    time: "3w",
+    body: "Interview invite from Stanford. I'm pacing around my living room trying to act normal. Time to lock in for the next two weeks.",
+    likes: 423,
+    comments: 64,
+    reposts: 8,
+    shares: 4,
+  },
+  {
+    id: 204,
+    type: "text",
+    author: "James Allen",
+    avatar: pic2,
+    time: "1mo",
+    body: "Hardest part of the application wasn't the essays — it was being honest with myself about why I actually wanted an MBA. My coach pushed me on this for weeks. Every time I gave a polished answer, she'd ask 'but why really?' Eventually I cracked. Turns out the real reason wasn't the version I'd been telling people.",
+    likes: 891,
+    comments: 124,
+    reposts: 47,
+    shares: 22,
+  },
+  {
+    id: 205,
+    type: "text",
+    author: "James Allen",
+    avatar: pic2,
+    time: "2mo",
+    body: "Submitted Round 1 to Stanford, HBS, and Wharton tonight. 11 months of work compressed into a few clicks. I don't know what's going to happen but I know the application I sent in is the most honest version of myself I could put on paper. That has to count for something.",
+    likes: 567,
+    comments: 89,
+    reposts: 12,
+    shares: 6,
+  },
+  {
+    id: 206,
+    type: "text",
+    author: "James Allen",
+    avatar: pic2,
+    time: "4mo",
+    body: "Took the GMAT today. Walked out feeling like I bombed it. Score came back 30 minutes later — 740. I genuinely don't know how. Lesson: your gut after the test means almost nothing.",
+    likes: 342,
+    comments: 51,
+    reposts: 7,
+    shares: 3,
+  },
+  {
+    id: 207,
+    type: "text",
+    author: "James Allen",
+    avatar: pic2,
+    time: "6mo",
+    body: "Started working with an MBA admissions coach this week. Honestly didn't think I needed one — I'm a strong writer, I have a clear story, how hard could this be? First session: she tore my draft personal narrative apart in the kindest possible way and I realized I had no idea what I was doing. Money well spent already.",
+    likes: 278,
+    comments: 41,
+    reposts: 9,
+    shares: 5,
+  },
+  {
+    id: 208,
+    type: "text",
+    author: "James Allen",
+    avatar: pic2,
+    time: "9mo",
+    body: "Decided I'm going to apply to business school this year. Have been thinking about it for three years and finally pulled the trigger. Target schools: Stanford, HBS, Wharton, Booth, Kellogg. If you've been through this and have advice, I'm all ears.",
+    likes: 195,
+    comments: 73,
+    reposts: 4,
+    shares: 2,
+  },
 ];
 
 export default function ProfileV2() {
@@ -455,9 +560,13 @@ export default function ProfileV2() {
                   </button>
                   <button
                     onClick={() => setIsFollowing(!isFollowing)}
-                    className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-[#222222]/10 bg-white px-4 py-2.5 text-[16px] font-medium text-gray-dark transition-colors hover:border-[#222222]/20"
+                    className={`flex cursor-pointer items-center gap-1.5 rounded-lg px-4 py-2.5 text-[16px] font-medium transition-colors ${
+                      isCustomerProfile
+                        ? "bg-[#038561] text-white hover:bg-[#038561]/90"
+                        : "border border-[#222222]/10 bg-white text-gray-dark hover:border-[#222222]/20"
+                    }`}
                   >
-                    {isFollowing && <img src={checkIcon} alt="" className="h-[18px] w-[18px]" />}
+                    {isFollowing && <img src={checkIcon} alt="" className={`h-[18px] w-[18px] ${isCustomerProfile ? "brightness-0 invert" : ""}`} />}
                     {isFollowing ? "Following" : "Follow"}
                   </button>
                   {!isCustomerProfile && (
@@ -671,9 +780,9 @@ export default function ProfileV2() {
                     <>
                       <button
                         onClick={() => setIsFollowing(!isFollowing)}
-                        className="flex cursor-pointer items-center justify-center gap-2 rounded-full bg-[#222222]/5 px-6 py-3 text-[18px] font-medium text-gray-dark transition-colors hover:bg-[#222222]/[0.08]"
+                        className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-full bg-[#038561] px-6 py-3 text-[18px] font-medium text-white transition-colors hover:bg-[#038561]/90"
                       >
-                        {isFollowing && <img src={checkIcon} alt="" className="h-[18px] w-[18px]" />}
+                        {isFollowing && <img src={checkIcon} alt="" className="h-[18px] w-[18px] brightness-0 invert" />}
                         {isFollowing ? "Following" : "Follow"}
                       </button>
                       <button className="flex cursor-pointer items-center justify-center rounded-full bg-[#222222]/5 px-4 py-3 transition-colors hover:bg-[#222222]/[0.08]">
@@ -1133,7 +1242,6 @@ export default function ProfileV2() {
                       <h2 className="text-[24px] font-medium text-gray-dark" style={{ fontWeight: 500 }}>
                         Upcoming Sessions
                       </h2>
-                      <p className="text-[18px] text-[#707070]">Your scheduled coaching sessions and events.</p>
                       <div className="mt-3">
                         <div className="flex flex-col gap-1">
                           {upcomingEvents.slice(0, 3).map((event, i) => (
@@ -1202,18 +1310,18 @@ export default function ProfileV2() {
                 )}
 
                 {(viewingOwnProfile ? customerTab === "about" : true) && (
-                  <div className="flex flex-col gap-4">
-                    {[...Array(10)].map((_, i) => (
-                      <div key={i} className="flex gap-3">
-                        <div className="h-10 w-10 shrink-0 rounded-full border border-dashed border-[#C5C5C5] bg-[#f5f5f5]" />
-                        <div className="h-[120px] min-w-0 flex-1 rounded-xl bg-[#f5f5f5]" style={dashedBorderStyle} />
-                      </div>
+                  <div className="divide-y divide-gray-stroke/50">
+                    {customerPosts.map((post) => (
+                      <FeedPost key={post.id} post={post} />
                     ))}
                   </div>
                 )}
 
                 {viewingOwnProfile && customerTab === "calendar" && (
                   <section>
+                    <h2 className="mb-3 text-[24px] font-medium text-gray-dark" style={{ fontWeight: 500 }}>
+                      Calendar
+                    </h2>
                     <div>
                       <div className="flex flex-col gap-1">
                         {upcomingEvents.map((event, i) => (
