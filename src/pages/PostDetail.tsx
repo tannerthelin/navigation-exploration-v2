@@ -528,18 +528,19 @@ function CommentItem({ comment, depth = 0 }: { comment: CommentData; depth?: num
     setShowReply(false);
   };
 
-  const hasThread = replies.length > 0 || showReply;
-
   return (
-    // relative wrapper so we can absolutely-position the thread line
     <div className="relative">
       {/*
-        Thread line: a single 1px line centered on the avatar (x=21→22),
-        starting just below the avatar bottom (top=56: pt-3=12 + h-11=44)
-        and extending to the wrapper bottom (through all replies).
+        Vertical thread line: sits at the parent avatar's horizontal center (x=21),
+        starts just below the avatar bottom (top=56: pt-3=12 + h-11=44),
+        and extends to the bottom of the wrapper (through all replies).
+        A white trim on the last reply covers it below that reply's avatar center.
       */}
-      {hasThread && (
-        <div className="pointer-events-none absolute bottom-0 w-px bg-gray-200" style={{ left: 21, top: 56 }} />
+      {replies.length > 0 && (
+        <div
+          className="pointer-events-none absolute w-px bg-gray-200"
+          style={{ left: 21, top: 56, bottom: 0 }}
+        />
       )}
 
       {/* Comment row */}
@@ -579,19 +580,26 @@ function CommentItem({ comment, depth = 0 }: { comment: CommentData; depth?: num
       </motion.div>
 
       {/*
-        Replies are siblings at x=0 — their avatars (w-11, center x=22) align with
-        the thread line above, creating one smooth vertical connection.
-        For the last reply a white overlay trims the line at that avatar's center
-        (top=34: pt-3=12 + half avatar=22).
+        Replies: each indented 54px (= w-11 avatar + gap-3 = 44+12 - 2px slight inset).
+        Each reply gets an L-connector absolutely positioned within the reply wrapper:
+          - left: 21 → aligns with the outer thread line (parent avatar center)
+          - width: 33 → extends right to x=54, where the reply avatar starts
+          - height: 34 → reply avatar center (pt-3=12 + h-11/2=22)
+          - border-l + border-b + rounded-bl → rounded 90° bend from vertical to horizontal
+        The last reply also gets a white trim to stop the vertical thread line at avatar center.
       */}
       {replies.map((r, i) => {
         const isLast = i === replies.length - 1;
         return (
-          <div key={r.id} className="relative">
+          <div key={r.id} className="relative" style={{ paddingLeft: 54 }}>
+            <div
+              className="pointer-events-none absolute border-l border-b border-gray-200 rounded-bl-[6px]"
+              style={{ left: 21, top: 0, width: 33, height: 34 }}
+            />
             {isLast && (
               <div
-                className="pointer-events-none absolute bottom-0 w-px bg-white"
-                style={{ left: 21, top: 34 }}
+                className="pointer-events-none absolute w-px bg-white"
+                style={{ left: 21, top: 34, bottom: 0 }}
               />
             )}
             <CommentItem comment={r} depth={depth + 1} />
