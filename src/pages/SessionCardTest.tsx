@@ -16,6 +16,7 @@ export default function SessionCardTest() {
   const [pastOpen, setPastOpen] = useState(false);
   const [sandboxType, setSandboxType] = useState<"coach" | "event">("coach");
   const [sandboxStatus, setSandboxStatus] = useState<"upcoming" | "live" | "past">("upcoming");
+  const [sandboxSize, setSandboxSize] = useState<"large" | "small">("large");
   const [sandboxRecording, setSandboxRecording] = useState(true);
   const [sandboxHideImage, setSandboxHideImage] = useState(false);
 
@@ -126,7 +127,7 @@ export default function SessionCardTest() {
         <h2 className="text-[24px] font-medium text-gray-dark">Demo</h2>
         <p className="mt-1 mb-4 text-[18px] text-[#707070]">Toggle the options below to preview all possible states of the component.</p>
 
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           {/* Type toggle */}
           <div className="flex rounded-lg bg-[#f5f5f5] p-[3px]">
             {(["coach", "event"] as const).map((t) => (
@@ -140,6 +141,23 @@ export default function SessionCardTest() {
                 }`}
               >
                 <span className="whitespace-nowrap">{t === "coach" ? "1:1 Session" : "Event"}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Size toggle */}
+          <div className="flex rounded-lg bg-[#f5f5f5] p-[3px]">
+            {(["large", "small"] as const).map((s) => (
+              <button
+                key={s}
+                onClick={() => setSandboxSize(s)}
+                className={`flex-1 cursor-pointer rounded-md px-3 py-1.5 text-[14px] font-medium transition-colors ${
+                  sandboxSize === s
+                    ? "bg-white text-gray-dark shadow-sm"
+                    : "text-[#707070]"
+                }`}
+              >
+                <span className="whitespace-nowrap">{s === "large" ? "Large" : "Small"}</span>
               </button>
             ))}
           </div>
@@ -221,6 +239,7 @@ export default function SessionCardTest() {
               image={sandboxType === "coach" ? pic6 : eventImg1}
               type={sandboxType}
               status={sandboxStatus}
+              size={sandboxSize}
               startsIn={sandboxStatus === "upcoming" ? "5d" : undefined}
               hasRecording={sandboxStatus === "past" ? sandboxRecording : undefined}
               hideImage={sandboxHideImage}

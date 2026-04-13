@@ -2680,9 +2680,9 @@ function HomeSidebar({ onCreatePost }: { onCreatePost: () => void }) {
           </svg>
         </NavLink>
         <div className="mt-2 flex flex-col -mx-2">
-          <SessionCard title="Mock Interview" dateTime="Today, 3:00 PM" duration="45 min" image={pic3} type="coach" status="upcoming" startsIn="2h" />
-          <SessionCard title="Resume Review" dateTime="Oct 29, 5:00 PM" duration="45 min" image={pic5} type="coach" status="upcoming" />
-          <SessionCard title="Jasmine <> James Sync" dateTime="Nov 3, 5:00 PM" duration="60 min" image={pic3} type="coach" status="upcoming" />
+          <SessionCard size="small" title="Mock Interview" dateTime="Today, 3:00 PM" duration="45 min" image={pic3} type="coach" status="upcoming" startsIn="2h" />
+          <SessionCard size="small" title="Resume Review" dateTime="Oct 29, 5:00 PM" duration="45 min" image={pic5} type="coach" status="upcoming" />
+          <SessionCard size="small" title="Jasmine <> James Sync" dateTime="Nov 3, 5:00 PM" duration="60 min" image={pic3} type="coach" status="upcoming" />
         </div>
         <button onClick={onCreatePost} className="mt-5 w-full cursor-pointer rounded-lg bg-gray-100 py-2.5 text-center text-[15px] font-medium text-gray-dark transition-colors hover:bg-gray-200">
           Create post

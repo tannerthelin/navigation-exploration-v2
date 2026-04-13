@@ -18,6 +18,7 @@ interface SessionCardProps {
   startsIn?: string;
   hasRecording?: boolean;
   hideImage?: boolean;
+  size?: "large" | "small";
 }
 
 function getMenuItems(status: string, type: string) {
@@ -69,10 +70,19 @@ export default function SessionCard({
   startsIn,
   hasRecording,
   hideImage,
+  size = "large",
 }: SessionCardProps) {
   const isPast = status === "past";
+  const isSmall = size === "small";
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  const titleSizeClass = isSmall ? "text-[16px]" : "text-[18px]";
+  const subtitleSizeClass = isSmall ? "text-[14px]" : "text-[16px]";
+  const actionBtnClass = isSmall
+    ? "rounded-[8px] px-[14px] py-2 text-[14px] font-medium"
+    : "rounded-lg px-4 py-2.5 text-[16px] font-medium";
+  const actionBtnStyle = isSmall ? { lineHeight: 1.2 } : undefined;
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -90,7 +100,7 @@ export default function SessionCard({
 
   return (
     <div className="@container">
-      <div className="flex cursor-pointer items-center gap-3 rounded-[12px] bg-white pl-2 pr-1 py-3 transition-colors hover:bg-[#F5F5F5]">
+      <div className={`flex cursor-pointer items-center gap-3 rounded-[12px] bg-white pl-2 pr-1 transition-colors hover:bg-[#F5F5F5] ${isSmall ? "py-[10px]" : "py-3"}`}>
         {/* Image — hidden when hideImage, otherwise hidden below 380px */}
         {!hideImage && (type === "coach" ? (
           <img
@@ -108,10 +118,10 @@ export default function SessionCard({
 
         {/* Title + date/time */}
         <div className="flex min-w-0 flex-1 flex-col gap-[2px]">
-          <p className={`truncate text-[18px] leading-tight font-medium ${isPast ? "text-[#707070]" : "text-gray-dark"}`}>
+          <p className={`truncate ${titleSizeClass} leading-tight font-medium ${isPast ? "text-[#707070]" : "text-gray-dark"}`}>
             {title}
           </p>
-          <p className="truncate text-[16px] leading-tight text-[#707070]">
+          <p className={`truncate ${subtitleSizeClass} leading-tight text-[#707070]`}>
             {status === "live" ? (
               <><span className="text-[#E2574C]">Happening now</span> · Started at {dateTime.split(" at ")[1]} · <span className="text-[#9B9B9B]">{duration}</span></>
             ) : (
@@ -123,16 +133,25 @@ export default function SessionCard({
         {/* Right action area */}
         <div className="flex shrink-0 items-center gap-0 self-stretch">
           {status === "live" ? (
-            <button className="cursor-pointer rounded-lg bg-[#038561] px-4 py-2.5 text-[16px] font-medium text-white transition-colors hover:bg-[#038561]/90">
+            <button
+              className={`cursor-pointer bg-[#038561] text-white transition-colors hover:bg-[#038561]/90 ${actionBtnClass}`}
+              style={actionBtnStyle}
+            >
               Join
             </button>
           ) : status === "upcoming" && startsIn ? (
-            <div className="hidden @[448px]:block rounded-lg bg-[#F5F5F5] px-4 py-2.5 text-[15px] font-medium text-[#9B9B9B]">
+            <div
+              className={`hidden @[448px]:block bg-[#F5F5F5] text-[#9B9B9B] ${actionBtnClass}`}
+              style={actionBtnStyle}
+            >
               Starts in {startsIn}
             </div>
           ) : isPast && hasRecording && type === "event" ? (
-            <button className="hidden @[448px]:flex cursor-pointer items-center gap-2 rounded-lg bg-[#222222]/5 px-4 py-2.5 text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#222222]/[0.08]">
-              <img src={arrowRoundIcon} alt="" className="h-5 w-5" />
+            <button
+              className={`hidden @[448px]:flex cursor-pointer items-center gap-2 bg-[#222222]/5 text-gray-dark transition-colors hover:bg-[#222222]/[0.08] ${actionBtnClass}`}
+              style={actionBtnStyle}
+            >
+              <img src={arrowRoundIcon} alt="" className={isSmall ? "h-4 w-4" : "h-5 w-5"} />
               Watch
             </button>
           ) : null}
