@@ -19,11 +19,11 @@ const activity = [
 ];
 
 const users = [
-  { initials: "SK", name: "Sarah Kim", email: "sarah.kim@kellogg.edu", sessions: 3, sessionsTotal: 5, cohorts: 1, cohortsTotal: 1, plus: "Active", lastActive: "2h ago", lastActiveDays: 0.08, dateAdded: "Jan 10, 2026", daysAdded: 94 },
-  { initials: "RP", name: "Raj Patel", email: "raj.patel@kellogg.edu", sessions: 1, sessionsTotal: 3, cohorts: null, cohortsTotal: null, plus: "Active", lastActive: "Yesterday", lastActiveDays: 1, dateAdded: "Jan 10, 2026", daysAdded: 94 },
+  { initials: "SK", name: "Sarah Kim", email: "sarah.kim@kellogg.edu", sessions: 3, sessionsTotal: 5, cohorts: 1, cohortsTotal: 2, plus: "Active", lastActive: "2h ago", lastActiveDays: 0.08, dateAdded: "Jan 10, 2026", daysAdded: 94 },
+  { initials: "RP", name: "Raj Patel", email: "raj.patel@kellogg.edu", sessions: 1, sessionsTotal: 3, cohorts: 0, cohortsTotal: 1, plus: "Active", lastActive: "Yesterday", lastActiveDays: 1, dateAdded: "Jan 10, 2026", daysAdded: 94 },
   { initials: "MC", name: "Mia Chen", email: "mia.chen@kellogg.edu", sessions: null, sessionsTotal: null, cohorts: 1, cohortsTotal: 2, plus: "—", lastActive: "2d ago", lastActiveDays: 2, dateAdded: "Jan 15, 2026", daysAdded: 89 },
   { initials: "ET", name: "Evan Torres", email: "evan.torres@kellogg.edu", sessions: 2, sessionsTotal: 4, cohorts: null, cohortsTotal: null, plus: "Active", lastActive: "3d ago", lastActiveDays: 3, dateAdded: "Jan 15, 2026", daysAdded: 89 },
-  { initials: "AL", name: "Aisha Lee", email: "aisha.lee@kellogg.edu", sessions: null, sessionsTotal: null, cohorts: null, cohortsTotal: null, plus: "Invited", lastActive: "—", lastActiveDays: 999, dateAdded: "Feb 1, 2026", daysAdded: 72 },
+  { initials: "AL", name: "Aisha Lee", email: "aisha.lee@kellogg.edu", sessions: 0, sessionsTotal: 3, cohorts: null, cohortsTotal: null, plus: "Invited", lastActive: "—", lastActiveDays: 999, dateAdded: "Feb 1, 2026", daysAdded: 72 },
   { initials: "JL", name: "Jordan Lee", email: "jordan.lee@kellogg.edu", sessions: 2, sessionsTotal: 3, cohorts: 1, cohortsTotal: 1, plus: "Active", lastActive: "4d ago", lastActiveDays: 4, dateAdded: "Jan 20, 2026", daysAdded: 84 },
   { initials: "PM", name: "Priya Mehta", email: "priya.mehta@kellogg.edu", sessions: 1, sessionsTotal: 2, cohorts: null, cohortsTotal: null, plus: "Active", lastActive: "5d ago", lastActiveDays: 5, dateAdded: "Jan 20, 2026", daysAdded: 84 },
   { initials: "DW", name: "Daniel Wu", email: "daniel.wu@kellogg.edu", sessions: null, sessionsTotal: null, cohorts: 1, cohortsTotal: 1, plus: "—", lastActive: "1w ago", lastActiveDays: 7, dateAdded: "Feb 3, 2026", daysAdded: 70 },
@@ -33,7 +33,7 @@ const users = [
   { initials: "TO", name: "Tunde Okafor", email: "tunde.okafor@kellogg.edu", sessions: 2, sessionsTotal: 3, cohorts: null, cohortsTotal: null, plus: "—", lastActive: "2w ago", lastActiveDays: 14, dateAdded: "Mar 1, 2026", daysAdded: 44 },
 ];
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 25;
 
 const userDetails: Record<string, UserDetail> = {
   "sarah.kim@kellogg.edu": {
@@ -41,23 +41,25 @@ const userDetails: Record<string, UserDetail> = {
     coaching: {
       granted: 5, used: 3,
       sessions: [
-        { coach: "Jordan Lee", coachImg: coachImg1, date: "Mar 28, 2026", summary: "Focused on IB technical prep — LBO modeling and valuation frameworks. Sarah showed strong progress on DCF concepts. Jordan walked through a full paper LBO from scratch, identified gaps in returns analysis, and assigned two modeling tests to complete before the next session.", review: { rating: 5, text: "Jordan was incredibly well-prepared and gave me concrete feedback I could act on immediately. He clearly knows the recruiting process inside and out — every suggestion was specific, actionable, and calibrated to exactly where I am in the process. I left the session with a clear plan and a lot more confidence." } },
-        { coach: "Jordan Lee", coachImg: coachImg1, date: "Feb 14, 2026", summary: "Behavioral interview prep and fit story development. Worked through the 'why banking' narrative in depth, refined Sarah's answer to 'walk me through your resume,' and practiced responding to curveball questions under time pressure." },
-        { coach: "Jordan Lee", coachImg: coachImg1, date: "Jan 10, 2026", summary: "Initial session covering goals, timeline, and target firms. Built a study plan for the recruiting cycle." },
+        { coach: "Jordan Lee", coachImg: coachImg1, coachHeadline: "Ex-Goldman Sachs IB · Wharton MBA", date: "Apr 18, 2026", status: "scheduled", summary: "" },
+        { coach: "Jordan Lee", coachImg: coachImg1, coachHeadline: "Ex-Goldman Sachs IB · Wharton MBA", date: "Mar 28, 2026", summary: "Focused on IB technical prep — LBO modeling and valuation frameworks. Sarah showed strong progress on DCF concepts. Jordan walked through a full paper LBO from scratch, identified gaps in returns analysis, and assigned two modeling tests to complete before the next session.", review: { rating: 5, text: "Jordan was incredibly well-prepared and gave me concrete feedback I could act on immediately. He clearly knows the recruiting process inside and out — every suggestion was specific, actionable, and calibrated to exactly where I am in the process. I left the session with a clear plan and a lot more confidence." } },
+        { coach: "Jordan Lee", coachImg: coachImg1, coachHeadline: "Ex-Goldman Sachs IB · Wharton MBA", date: "Feb 14, 2026", summary: "Behavioral interview prep and fit story development. Worked through the 'why banking' narrative in depth, refined Sarah's answer to 'walk me through your resume,' and practiced responding to curveball questions under time pressure." },
+        { coach: "Jordan Lee", coachImg: coachImg1, coachHeadline: "Ex-Goldman Sachs IB · Wharton MBA", date: "Jan 10, 2026", summary: "Initial session covering goals, timeline, and target firms. Built a study plan for the recruiting cycle." },
       ],
     },
     plus: {
       topCategories: ["Investment Banking", "Valuation", "Interview Guides"],
       recentItems: [
-        { title: "LBO Modeling: Step-by-Step", category: "Investment Banking" },
+        { title: "LBO Modeling: Step-by-Step", category: "Investment Banking", type: "video" },
         { title: "IB Interview Question Bank", category: "Interview Guides" },
-        { title: "DCF Valuation Deep Dive", category: "Valuation" },
+        { title: "DCF Valuation Deep Dive", category: "Valuation", type: "video" },
         { title: "Restructuring 101", category: "Investment Banking" },
-        { title: "Walk Me Through a DCF", category: "Valuation" },
+        { title: "Walk Me Through a DCF", category: "Valuation", type: "video" },
       ],
     },
     liveCourses: [
       { cohort: "Spring '26 IB Recruiting", startDate: "Jan 15, 2026", endDate: "Mar 20, 2026", status: "enrolled", review: { rating: 5, text: "Exactly what I needed — structured, fast-paced, and the instructors had real deal experience." } },
+      { cohort: "PE Recruiting Bootcamp", startDate: "Apr 7, 2026", endDate: "May 9, 2026", status: "invited", inviteSent: "Mar 25, 2026" },
     ],
   },
   "raj.patel@kellogg.edu": {
@@ -65,18 +67,30 @@ const userDetails: Record<string, UserDetail> = {
     coaching: {
       granted: 3, used: 1,
       sessions: [
-        { coach: "Priya N.", coachImg: coachImg2, date: "Mar 15, 2026", summary: "Career strategy session focused on transitioning from consulting to PE. Covered the timeline and how to position prior deal experience.", review: { rating: 5, text: "Priya gave me a completely different perspective on how to frame my background. Game-changer." } },
+        { coach: "Priya N.", coachImg: coachImg2, coachHeadline: "Ex-McKinsey · KKR Portfolio Ops", date: "Mar 15, 2026", summary: "Career strategy session focused on transitioning from consulting to PE. Covered the timeline and how to position prior deal experience.", review: { rating: 5, text: "Priya gave me a completely different perspective on how to frame my background. Game-changer." } },
       ],
     },
     plus: {
       topCategories: ["Private Equity", "Career Strategy", "Consulting"],
       recentItems: [
         { title: "PE Associate Interview Guide", category: "Private Equity" },
-        { title: "Consulting to PE Transition", category: "Career Strategy" },
-        { title: "Operating Partner vs. Deal Team", category: "Private Equity" },
+        { title: "Consulting to PE Transition", category: "Career Strategy", type: "video" },
+        { title: "Operating Partner vs. Deal Team", category: "Private Equity", type: "video" },
         { title: "Case Interview Frameworks", category: "Consulting" },
-        { title: "Leveraged Buyout Overview", category: "Private Equity" },
+        { title: "Leveraged Buyout Overview", category: "Private Equity", type: "video" },
       ],
+    },
+    liveCourses: [
+      { cohort: "Spring '26 IB Recruiting", startDate: "Jan 15, 2026", endDate: "Mar 20, 2026", status: "invited", inviteSent: "Mar 20, 2026" },
+    ],
+  },
+  "aisha.lee@kellogg.edu": {
+    name: "Aisha Lee", email: "aisha.lee@kellogg.edu", initials: "AL",
+    coaching: {
+      granted: 3, used: 0, sessions: [], inviteSent: "Mar 30, 2026",
+    },
+    plus: {
+      topCategories: [], recentItems: [], inviteSent: "Mar 30, 2026",
     },
   },
   "mia.chen@kellogg.edu": {
@@ -91,18 +105,18 @@ const userDetails: Record<string, UserDetail> = {
     coaching: {
       granted: 4, used: 2,
       sessions: [
-        { coach: "Alex Morgan", coachImg: coachImg3, date: "Mar 22, 2026", summary: "PE modeling practice — worked through a full LBO with a healthcare target. Identified gaps in returns analysis, specifically around entry multiple assumptions and the sensitivity table. Alex also introduced a framework for stress-testing deal structures under downside scenarios, which Evan found especially useful for on-cycle prep.", review: { rating: 4, text: "Very thorough session. Alex clearly knows the PE recruiting process inside out." } },
-        { coach: "Alex Morgan", coachImg: coachImg3, date: "Feb 5, 2026", summary: "Introduction session. Mapped out Evan's background and identified target fund types and deal sizes." },
+        { coach: "Alex Morgan", coachImg: coachImg3, coachHeadline: "Ex-Blackstone PE · Harvard MBA", date: "Mar 22, 2026", summary: "PE modeling practice — worked through a full LBO with a healthcare target. Identified gaps in returns analysis, specifically around entry multiple assumptions and the sensitivity table. Alex also introduced a framework for stress-testing deal structures under downside scenarios, which Evan found especially useful for on-cycle prep.", review: { rating: 4, text: "Very thorough session. Alex clearly knows the PE recruiting process inside out." } },
+        { coach: "Alex Morgan", coachImg: coachImg3, coachHeadline: "Ex-Blackstone PE · Harvard MBA", date: "Feb 5, 2026", summary: "Introduction session. Mapped out Evan's background and identified target fund types and deal sizes." },
       ],
     },
     plus: {
       topCategories: ["Private Equity", "Valuation", "Investment Banking"],
       recentItems: [
-        { title: "Healthcare LBO Case Study", category: "Private Equity" },
+        { title: "Healthcare LBO Case Study", category: "Private Equity", type: "video" },
         { title: "Returns Analysis Deep Dive", category: "Valuation" },
         { title: "PE Fund Structures", category: "Private Equity" },
-        { title: "IRR vs. MOIC", category: "Valuation" },
-        { title: "Growth Equity vs. Buyout", category: "Private Equity" },
+        { title: "IRR vs. MOIC", category: "Valuation", type: "video" },
+        { title: "Growth Equity vs. Buyout", category: "Private Equity", type: "video" },
       ],
     },
   },
@@ -128,8 +142,15 @@ export default function B2BOverviewV2({ onNavigate, onOpenModal }: Props) {
   const totalPages = Math.ceil(sortedUsers.length / PAGE_SIZE);
   const visibleUsers = sortedUsers.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
+  const [openMenuEmail, setOpenMenuEmail] = useState<string | null>(null);
+
   const handleFilter = (f: "all" | "active" | "invited") => { setFilter(f); setPage(0); };
   const handleSort = (s: typeof sort) => { setSort(s); setPage(0); };
+
+  const needsResend = (u: typeof users[0]) =>
+    (u.sessions === 0 && u.sessionsTotal != null) ||
+    (u.cohorts === 0 && u.cohortsTotal != null) ||
+    u.plus === "Invited";
 
   return (
     <div className="leading-[1.2]">
@@ -321,7 +342,7 @@ export default function B2BOverviewV2({ onNavigate, onOpenModal }: Props) {
           {/* Toolbar */}
           <div className="flex flex-wrap items-center gap-3 rounded-t-lg border-b border-gray-stroke bg-white px-4 py-3">
             <div className="flex max-w-[280px] flex-1 items-center gap-2 rounded-lg border border-gray-stroke px-3 py-2">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9b9b9b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-dark">
                 <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
               <input
@@ -335,10 +356,10 @@ export default function B2BOverviewV2({ onNavigate, onOpenModal }: Props) {
                 <button
                   key={f}
                   onClick={() => handleFilter(f)}
-                  className={`rounded-full border px-3 py-1 text-[14px] font-medium transition-colors ${
+                  className={`rounded-full px-3 py-1 text-[14px] font-medium transition-colors ${
                     filter === f
                       ? "border-2 border-gray-dark bg-white text-gray-dark"
-                      : "border-gray-stroke bg-white text-gray-light hover:border-gray-dark hover:text-gray-dark"
+                      : "bg-gray-hover text-gray-light hover:text-gray-dark"
                   }`}
                 >
                   {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -367,7 +388,7 @@ export default function B2BOverviewV2({ onNavigate, onOpenModal }: Props) {
                   <th className="bg-[#fafafa] px-4 py-3 text-center text-[14px] font-semibold uppercase tracking-[0.06em] text-gray-light">1:1 Sessions</th>
                   <th className="bg-[#fafafa] px-4 py-3 text-center text-[14px] font-semibold uppercase tracking-[0.06em] text-gray-light">Live Cohorts</th>
                   <th className="bg-[#fafafa] px-4 py-3 text-left text-[14px] font-semibold uppercase tracking-[0.06em] text-gray-light">Leland+</th>
-                  <th className="bg-[#fafafa] px-4 py-3 text-left text-[14px] font-semibold uppercase tracking-[0.06em] text-gray-light">Last Active</th>
+                  <th className="bg-[#fafafa] px-4 py-3" />
                 </tr>
               </thead>
               <tbody>
@@ -410,7 +431,54 @@ export default function B2BOverviewV2({ onNavigate, onOpenModal }: Props) {
                       {user.plus === "Expired" && <span className="text-gray-xlight">Expired</span>}
                       {user.plus === "—" && <span className="text-gray-dark">—</span>}
                     </td>
-                    <td className="px-4 py-[14px] text-[15px] text-gray-light">{user.lastActive}</td>
+                    <td className="px-2 py-2">
+                      <div className="relative flex justify-end">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setOpenMenuEmail(openMenuEmail === user.email ? null : user.email); }}
+                          className="flex h-12 w-12 items-center justify-center rounded-full text-gray-xlight hover:bg-gray-hover hover:text-gray-dark"
+                        >
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="12" cy="5" r="1.5" /><circle cx="12" cy="12" r="1.5" /><circle cx="12" cy="19" r="1.5" />
+                          </svg>
+                        </button>
+                        {openMenuEmail === user.email && (
+                          <>
+                            <div className="fixed inset-0 z-10" onClick={() => setOpenMenuEmail(null)} />
+                            <div className="absolute right-0 top-8 z-20 min-w-[152px] overflow-hidden rounded-lg border border-gray-stroke bg-white shadow-card">
+                              <button
+                                onClick={(e) => { e.stopPropagation(); setOpenMenuEmail(null); }}
+                                className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-[14px] text-gray-dark hover:bg-gray-hover"
+                              >
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
+                                </svg>
+                                Grant access
+                              </button>
+                              {needsResend(user) && (
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); setOpenMenuEmail(null); }}
+                                  className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-[14px] text-gray-dark hover:bg-gray-hover"
+                                >
+                                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M22 2L11 13" /><path d="M22 2L15 22 11 13 2 9l20-7z" />
+                                  </svg>
+                                  Resend invite
+                                </button>
+                              )}
+                              <button
+                                onClick={(e) => { e.stopPropagation(); setOpenMenuEmail(null); }}
+                                className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-[14px] text-red hover:bg-gray-hover"
+                              >
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" />
+                                </svg>
+                                Revoke access
+                              </button>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -439,24 +507,6 @@ export default function B2BOverviewV2({ onNavigate, onOpenModal }: Props) {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Pending invites banner */}
-      <div
-        className="mt-6 flex items-center justify-between rounded-lg border px-[18px] py-3"
-        style={{ background: "#fdfbf0", borderColor: "#ede9c8" }}
-      >
-        <div className="flex items-center gap-[10px]">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b45309" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
-          </svg>
-          <span className="text-[15px] text-gray-dark">
-            <strong>5 users</strong> haven't activated yet &middot; Last reminder sent 2d ago
-          </span>
-        </div>
-        <button className="inline-flex items-center rounded-lg border border-gray-stroke bg-white px-3 py-[6px] text-[14px] font-medium text-gray-dark hover:bg-gray-hover">
-          Resend invites
-        </button>
       </div>
 
       <div className="h-[120px] shrink-0" />

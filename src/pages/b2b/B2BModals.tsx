@@ -143,7 +143,7 @@ export function InviteModal({ open, onClose }: { open: boolean; onClose: () => v
     <B2BModal
       open={open}
       onClose={onClose}
-      title="Submit a User"
+      title="Grant Access"
       footer={
         <>
           <Btn variant="secondary" onClick={onClose}>Cancel</Btn>
