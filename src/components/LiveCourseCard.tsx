@@ -2,6 +2,9 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import SessionCard from "./SessionCard";
 import { useSessionLayout } from "./SessionLayoutContext";
+import menuBurgerIcon from "../assets/icons/icon/menu-burger.svg";
+import playVideoIcon from "../assets/icons/icon/play-video.svg";
+import slackIcon from "../assets/icons/icon/slack-black.svg";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -64,36 +67,6 @@ function formatSlotDateTime(date: Date): string {
 }
 
 // ─── Figma icon assets ────────────────────────────────────────────────────────
-
-const figmaSyllabusIcon = "https://www.figma.com/api/mcp/asset/6eb7cc2d-90b9-49e5-9d0b-541c668a79f0";
-const figmaPlayIcon = "https://www.figma.com/api/mcp/asset/dab3b9c4-442a-4fe1-b04e-5026b09d9843";
-const figmaSlack1 = "https://www.figma.com/api/mcp/asset/c66c77e8-363b-4742-87f2-1fb9b18416c0";
-const figmaSlack2 = "https://www.figma.com/api/mcp/asset/9453f0d5-c53a-4128-b604-1ff16db95a9f";
-const figmaSlack3 = "https://www.figma.com/api/mcp/asset/a51db8bb-c981-4b77-a5dc-761d347a7019";
-const figmaSlack4 = "https://www.figma.com/api/mcp/asset/d6fb8824-812f-4b5c-8d90-5b56cb53286a";
-
-// ─── Icons ────────────────────────────────────────────────────────────────────
-
-function SlackIcon() {
-  return (
-    <div className="relative h-5 w-5 shrink-0 overflow-hidden">
-      <div className="absolute inset-[10%]">
-        <div className="absolute inset-[52.14%_52.15%_10.01%_10%]">
-          <img alt="" className="absolute block max-w-none size-full" src={figmaSlack1} />
-        </div>
-        <div className="absolute inset-[10%_52.15%_52.14%_10%]">
-          <img alt="" className="absolute block max-w-none size-full" src={figmaSlack2} />
-        </div>
-        <div className="absolute inset-[10%_10%_52.14%_52.15%]">
-          <img alt="" className="absolute block max-w-none size-full" src={figmaSlack3} />
-        </div>
-        <div className="absolute inset-[52.14%_10%_10%_52.15%]">
-          <img alt="" className="absolute block max-w-none size-full" src={figmaSlack4} />
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // ─── Action button ────────────────────────────────────────────────────────────
 
@@ -284,26 +257,17 @@ export default function LiveCourseCard({ course }: { course: LiveCourse }) {
   const actionButtons = cohortSelected ? (
     <>
       <ActionButton
-        icon={
-          <div className="relative h-5 w-5 shrink-0 overflow-hidden">
-            <div className="absolute inset-[18.75%_16.67%]">
-              <div className="absolute inset-[-6%_-5.63%]">
-                <img alt="" className="block max-w-none size-full" src={figmaSyllabusIcon} />
-              </div>
-            </div>
-          </div>
-        }
+        icon={<img src={menuBurgerIcon} alt="" className="h-5 w-5 shrink-0" />}
         label="Syllabus"
       />
       <ActionButton
-        icon={
-          <div className="relative h-5 w-5 shrink-0">
-            <img alt="" className="absolute block max-w-none size-full" src={figmaPlayIcon} />
-          </div>
-        }
+        icon={<img src={playVideoIcon} alt="" className="h-5 w-5 shrink-0" />}
         label="Recordings"
       />
-      <ActionButton icon={<SlackIcon />} label="Group Slack" />
+      <ActionButton
+        icon={<img src={slackIcon} alt="" className="h-5 w-5 shrink-0" />}
+        label="Group Slack"
+      />
     </>
   ) : (
     <button
