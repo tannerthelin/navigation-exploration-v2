@@ -164,7 +164,7 @@ function SelfPacedCourseCard({ course, boxed }: { course: SelfPacedCourse; boxed
   );
 
   return (
-    <div className={boxed ? `overflow-hidden rounded-xl border border-gray-stroke p-4 shadow-sm md:p-5${isCompleted ? " opacity-75" : ""}` : ""}>
+    <div className={boxed ? `overflow-hidden rounded-xl border border-gray-stroke p-4 shadow-[0_1px_4px_rgba(0,0,0,0.04)] transition-transform hover:translate-x-0.5 md:p-5${isCompleted ? " opacity-75" : ""}` : ""}>
       {/* Image + text */}
       <div className="flex items-center gap-4 md:items-start md:gap-5">
         <div className="w-1/3 shrink-0 md:w-[220px]">

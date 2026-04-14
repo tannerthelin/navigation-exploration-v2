@@ -349,7 +349,7 @@ export default function LiveCourseCard({ course, boxed }: { course: LiveCourse; 
   return (
     <div className={isCompleted ? "opacity-75" : ""}>
       {boxed ? (
-        <div className="overflow-hidden rounded-xl border border-gray-stroke shadow-sm">
+        <div className="overflow-hidden rounded-xl border border-gray-stroke shadow-[0_1px_4px_rgba(0,0,0,0.04)] transition-transform hover:translate-x-0.5">
           {header}
           {cohortSelected && sessionsList}
         </div>
