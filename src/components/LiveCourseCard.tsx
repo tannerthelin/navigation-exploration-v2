@@ -72,7 +72,7 @@ function formatSlotDateTime(date: Date): string {
 
 function ActionButton({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
-    <button className="flex shrink-0 items-center gap-2 rounded-lg bg-gray-hover px-3 py-2 text-[16px] font-medium text-gray-dark transition-colors hover:bg-[#ebebeb]">
+    <button className="flex shrink-0 items-center gap-2 rounded-lg bg-gray-hover px-4 py-2.5 text-[16px] font-medium leading-[1.2] text-gray-dark transition-colors hover:bg-[#ebebeb]">
       {icon}
       {label}
     </button>
@@ -97,7 +97,7 @@ function SessionRowSimple({ session, isNext }: { session: Session; index: number
   });
 
   return (
-    <div className="flex items-stretch px-2 sm:px-3">
+    <div className="flex items-stretch px-2">
       {/* Left OR bracket connector */}
       <div className="flex shrink-0 flex-col items-end justify-center py-5 pl-2">
         <div className="h-[30px] w-2 border-l border-t border-dashed border-[#9b9b9b]" />
@@ -127,7 +127,7 @@ function SessionRowSimple({ session, isNext }: { session: Session; index: number
 
 function SessionRow({ session, isNext }: { session: Session; isNext: boolean; isFirst?: boolean }) {
   return (
-    <div className="px-2 sm:px-3">
+    <div className="px-2">
       {session.slots.map((slot, slotIndex) => {
         const state = getSessionState(slot);
         const status: "live" | "upcoming" | "past" =
@@ -212,7 +212,7 @@ function SelectCohortModal({ open, onClose, onSelect }: { open: boolean; onClose
                   </div>
                   <button
                     onClick={() => { onSelect(); onClose(); }}
-                    className="shrink-0 rounded-lg bg-gray-dark px-4 py-2 text-[15px] font-medium text-white transition-colors hover:bg-[#444444]"
+                    className="shrink-0 rounded-lg bg-gray-dark px-4 py-2 text-[15px] font-medium leading-[1.2] text-white transition-colors hover:bg-[#444444]"
                   >
                     Enroll
                   </button>
@@ -236,7 +236,7 @@ function SelectCohortModal({ open, onClose, onSelect }: { open: boolean; onClose
 
 // ─── Live course card ─────────────────────────────────────────────────────────
 
-export default function LiveCourseCard({ course }: { course: LiveCourse }) {
+export default function LiveCourseCard({ course, boxed }: { course: LiveCourse; boxed?: boolean }) {
   const { simpleSessionLayout } = useSessionLayout();
   const isCompleted = course.sessions.length > 0 && course.sessions.every((s) =>
     s.slots.every((slot) => {
@@ -272,42 +272,18 @@ export default function LiveCourseCard({ course }: { course: LiveCourse }) {
   ) : (
     <button
       onClick={() => setCohortModalOpen(true)}
-      className="flex shrink-0 items-center gap-2 rounded-lg bg-gray-dark px-3 py-2 text-[16px] font-medium text-white transition-colors hover:bg-[#444444]"
+      className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#038561] px-4 py-2.5 text-[16px] font-medium leading-[1.2] text-white transition-colors hover:bg-[#038561]/90 md:w-auto"
     >
       Select cohort
     </button>
   );
 
-  return (
-    <div className={`overflow-hidden rounded-xl border border-gray-stroke ${isCompleted ? "opacity-75" : ""}`}>
-
-      {/* Zone 1: Header */}
-      <div className="flex flex-col gap-5 bg-white p-4 sm:p-5 md:flex-row md:items-center md:gap-5">
-        <div className="flex flex-col gap-3 min-[428px]:flex-row min-[428px]:items-start md:contents">
-          {/* Thumbnail */}
-          <img
-            src={course.image}
-            alt=""
-            className="h-auto w-[122px] shrink-0 rounded-lg object-cover min-[428px]:h-16 md:h-[100px] md:w-[190px]"
-          />
-          {/* Title group */}
-          <div className="flex min-w-0 flex-1 flex-col gap-1 md:flex-[1_0_0] md:gap-4">
-            <div>
-              <p className="text-[14px] font-medium uppercase tracking-[1.4px] text-gray-light">Live cohort</p>
-              <p className="mt-1 text-[20px] font-medium leading-[1.2] text-gray-dark min-[428px]:text-[24px]">{course.title}</p>
-            </div>
-            {/* Buttons: desktop only */}
-            <div className="hidden flex-wrap gap-2 md:flex">{actionButtons}</div>
-          </div>
-        </div>
-        {/* Buttons: mobile/tablet only */}
-        <div className="-mx-4 flex gap-2 overflow-x-auto px-4 sm:-mx-5 sm:px-5 md:hidden">{actionButtons}</div>
-      </div>
-
-      {/* Zone 3: Sessions accordion toggle */}
-      {cohortSelected && <button
+  const sessionsList = (
+    <>
+      {/* Accordion toggle */}
+      <button
         onClick={() => setSessionsOpen(!sessionsOpen)}
-        className="flex w-full cursor-pointer items-center gap-3 border-t border-gray-stroke bg-white px-4 py-3 sm:px-5"
+        className={`flex w-full cursor-pointer items-center gap-3 bg-white px-4 py-3${boxed ? " border-t border-gray-stroke" : ""}`}
       >
         <span className="flex-1 text-left leading-[1.2]">
           <span className="text-[16px] font-medium text-gray-dark">{course.sessions.length} Sessions</span>
@@ -328,11 +304,11 @@ export default function LiveCourseCard({ course }: { course: LiveCourse }) {
         >
           <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-      </button>}
+      </button>
 
       {/* Sessions list */}
-      {cohortSelected && sessionsOpen && (
-        <div className="bg-white pb-2">
+      {sessionsOpen && (
+        <div className="border-t border-gray-stroke bg-white pb-2 pt-2">
           {simpleSessionLayout
             ? course.sessions.map((session, i) => (
                 <SessionRowSimple key={session.id} session={session} index={i + 1} isNext={session.id === nextSession?.id} isFirst={i === 0} />
@@ -342,6 +318,50 @@ export default function LiveCourseCard({ course }: { course: LiveCourse }) {
               ))
           }
         </div>
+      )}
+    </>
+  );
+
+  const header = (
+    <div className={`flex flex-col gap-4 bg-white md:flex-row md:items-start md:gap-5${boxed ? " p-4 md:p-5" : ""}`}>
+      <div className="flex flex-row items-center gap-4 md:contents md:gap-0">
+        {/* Thumbnail */}
+        <img
+          src={course.image}
+          alt=""
+          className="aspect-[120/63] w-1/3 shrink-0 rounded-lg object-cover md:w-[220px]"
+        />
+        {/* Title group */}
+        <div className="flex min-w-0 flex-1 flex-col gap-1 md:flex-[1_0_0] md:gap-4">
+          <div>
+            <p className="text-[14px] font-medium uppercase tracking-[1.4px] text-gray-light">Live cohort</p>
+            <p className="mt-1 line-clamp-2 text-[20px] font-medium leading-[1.2] text-gray-dark md:text-[24px]">{course.title}</p>
+          </div>
+          {/* Buttons: desktop only */}
+          <div className="hidden gap-2 overflow-x-auto md:flex">{actionButtons}</div>
+        </div>
+      </div>
+      {/* Buttons: mobile/tablet only */}
+      <div className="flex gap-2 overflow-x-auto md:hidden">{actionButtons}</div>
+    </div>
+  );
+
+  return (
+    <div className={isCompleted ? "opacity-75" : ""}>
+      {boxed ? (
+        <div className="overflow-hidden rounded-xl border border-gray-stroke shadow-sm">
+          {header}
+          {cohortSelected && sessionsList}
+        </div>
+      ) : (
+        <>
+          {header}
+          {cohortSelected && (
+            <div className="mt-4 overflow-hidden rounded-xl border border-gray-stroke">
+              {sessionsList}
+            </div>
+          )}
+        </>
       )}
 
       <SelectCohortModal

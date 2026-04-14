@@ -1,4 +1,3 @@
-import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import PageShell from "../components/PageShell";
 import LiveCourseCard, { LiveCourse, TimeSlot, getSessionState } from "../components/LiveCourseCard";
@@ -7,10 +6,8 @@ import event1 from "../assets/placeholder images/placeholder-event-01.png";
 import event2 from "../assets/placeholder images/placeholder-event-02.png";
 import event3 from "../assets/placeholder images/placeholder-event-03.png";
 import eventImage from "../assets/img/EventImage.avif";
-import playIcon from "../assets/icons/play.svg";
-import playVideoIcon from "../assets/icons/play-video.svg";
+import SidebarCard, { SidebarGroup } from "../components/SidebarCard";
 import pic1 from "../assets/profile photos/pic-1.png";
-import pic2 from "../assets/profile photos/pic-2.png";
 import pic3 from "../assets/profile photos/pic-3.png";
 import pic4 from "../assets/profile photos/pic-4.png";
 import pic5 from "../assets/profile photos/pic-5.png";
@@ -31,6 +28,7 @@ type EnrolledCourse = LiveCourse | SelfPacedCourse;
 
 function sortKey(course: EnrolledCourse): number {
   if (course.type === "live") {
+    if (course.cohortSelected === false) return Number.NEGATIVE_INFINITY;
     const next = course.sessions.find((s) => {
       const st = getSessionState(s.slots[0]);
       return st === "live" || st === "soon" || st === "future";
@@ -51,7 +49,7 @@ const enrolledCourses: EnrolledCourse[] = ([
   {
     type: "live" as const,
     id: 1,
-    title: "MBA Admissions Strategy Bootcamp",
+    title: "MBA Admissions Strategy Bootcamp: From Application to Acceptance Letter",
     cohortDateLabel: "Spring admissions",
     cohortDates: "Mar 12 – Apr 23, 2026",
     registrants: [pic1, pic3, pic4],
@@ -126,102 +124,72 @@ const enrolledCourses: EnrolledCourse[] = ([
     ],
   },
   { type: "selfPaced" as const, id: 3, title: "Nail the Google PM Interview Cycle", image: event3, percentComplete: 65, totalTime: "7 hours" },
-  { type: "selfPaced" as const, id: 4, title: "Consulting Case Interview Mastery", image: eventImage, percentComplete: 20, totalTime: "6 hours" },
+  { type: "selfPaced" as const, id: 4, title: "Consulting Case Interview Mastery: Frameworks, Practice, and Offer Strategy", image: eventImage, percentComplete: 20, totalTime: "6 hours" },
   { type: "selfPaced" as const, id: 6, title: "MBA Application Essay Masterclass", image: event1, percentComplete: 100, totalTime: "4 hours" },
 ] as EnrolledCourse[]).sort((a, b) => sortKey(a) - sortKey(b));
 
 const suggestedCourses = [
-  { title: "Stanford MBA Application Workshop", type: "Live cohort", duration: "4 weeks", enrolledCount: "24 enrolled", image: event1 },
-  { title: "Product Management Fundamentals", type: "Self-paced", duration: "8h", enrolledCount: null, image: event2 },
-  { title: "Finance for Non-Finance MBAs", type: "Live cohort", duration: "3 weeks", enrolledCount: "18 enrolled", image: event3 },
-  { title: "Leadership & Organizational Behavior", type: "Self-paced", duration: "6h", enrolledCount: null, image: eventImage },
+  { title: "Stanford MBA Application Workshop", type: "Live cohort", duration: "4 weeks", image: event1 },
+  { title: "Product Management Fundamentals", type: "Self-paced", duration: "8h", image: event2 },
+  { title: "Finance for Non-Finance MBAs", type: "Live cohort", duration: "3 weeks", image: event3 },
+  { title: "Leadership & Organizational Behavior", type: "Self-paced", duration: "6h", image: eventImage },
 ];
 
 // ─── Self-paced card ──────────────────────────────────────────────────────────
 
-function SelfPacedCourseCard({ course }: { course: SelfPacedCourse }) {
+function SelfPacedCourseCard({ course, boxed }: { course: SelfPacedCourse; boxed?: boolean }) {
   const isCompleted = course.percentComplete >= 100;
   const isNotStarted = course.percentComplete === 0;
-  return (
-    <div className="flex gap-5 border-b border-gray-stroke/50 py-6">
-      <div className="w-1/2 shrink-0 md:w-[220px]">
-        <img
-          src={course.image}
-          alt=""
-          className={`aspect-[120/63] w-full rounded-lg object-cover${isCompleted ? " opacity-50" : ""}`}
-        />
-      </div>
-      <div className="flex min-w-0 flex-1 flex-col justify-center">
-        <div className="flex items-center gap-2">
-          <img src={playIcon} alt="" className="h-[20px] w-[20px] shrink-0" />
-          <span className="text-[14px] text-[#707070]">Self-paced</span>
+  const progressRow = (
+    <div className="flex items-center gap-4">
+      <div className="min-w-0 flex-1">
+        <div className="mb-1.5 flex items-center justify-between">
+          <p className="text-[16px] text-[#707070]">{course.percentComplete}% complete</p>
+          <p className="text-[16px] text-[#9B9B9B]">{course.totalTime}</p>
         </div>
-        <h3 className="mt-1 text-[18px] font-medium leading-[1.2] text-gray-dark">{course.title}</h3>
-        <div className="mt-3 flex items-center gap-4">
-          <div className="min-w-0 flex-1">
-            <div className="mb-1.5 flex items-center justify-between">
-              <p className="text-[14px] text-[#707070]">{course.percentComplete}% complete</p>
-              <p className="text-[14px] text-[#9B9B9B]">{course.totalTime}</p>
-            </div>
-            <div className="h-[6px] w-full rounded-full bg-[#E5E5E5]">
-              <div className="h-full rounded-full bg-[#038561] transition-all" style={{ width: `${course.percentComplete}%` }} />
-            </div>
-          </div>
-          {isCompleted ? (
-            <button className="hidden shrink-0 cursor-pointer items-center gap-1.5 rounded-lg border border-gray-hover bg-gray-hover px-4 py-2 text-[14px] font-medium text-gray-dark transition-colors hover:border-gray-stroke hover:bg-white md:flex">
-              View
-            </button>
-          ) : (
-            <button className="hidden shrink-0 cursor-pointer rounded-lg bg-[#038561] px-4 py-2 text-[14px] font-medium text-white transition-colors hover:bg-[#038561]/90 md:block">
-              {isNotStarted ? "Start" : "Continue"}
-            </button>
-          )}
+        <div className="h-[6px] w-full rounded-full bg-[#E5E5E5]">
+          <div className="h-full rounded-full bg-[#038561] transition-all" style={{ width: `${course.percentComplete}%` }} />
         </div>
       </div>
+      {isCompleted ? (
+        <button className="flex shrink-0 cursor-pointer items-center gap-1.5 rounded-lg border border-gray-hover bg-gray-hover px-4 py-2.5 text-[16px] font-medium leading-[1.2] text-gray-dark transition-colors hover:border-gray-stroke hover:bg-white">
+          View
+        </button>
+      ) : (
+        <button className="shrink-0 cursor-pointer rounded-lg bg-[#038561] px-4 py-2.5 text-[16px] font-medium leading-[1.2] text-white transition-colors hover:bg-[#038561]/90">
+          {isNotStarted ? "Start" : "Continue"}
+        </button>
+      )}
     </div>
   );
-}
 
-// ─── Suggested course card ────────────────────────────────────────────────────
-
-function SuggestedCourseCard({ course }: { course: (typeof suggestedCourses)[0] }) {
   return (
-    <div className="group flex cursor-pointer items-center gap-4">
-      {/* Thumbnail: 122×64 fixed */}
-      <div className="h-16 w-[122px] shrink-0 overflow-hidden rounded-lg">
-        <img src={course.image} alt="" className="h-full w-full object-cover" />
-      </div>
-      {/* Content */}
-      <div className="flex min-w-0 flex-1 flex-col gap-1">
-        {/* Title */}
-        <p className="overflow-hidden text-ellipsis text-[16px] font-medium leading-[1.2] text-gray-dark transition-opacity group-hover:opacity-70" style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
-          {course.title}
-        </p>
-        {/* Icon + type · duration */}
-        <div className="flex items-center gap-1.5">
-          {course.type === "Self-paced" ? (
-            <img src={playVideoIcon} alt="" className="h-[18px] w-[18px] shrink-0 opacity-50" />
-          ) : (
-            <div className="flex items-center pr-1.5">
-              {[pic1, pic2, pic3].map((avatar, i) => (
-                <div key={i} className="-mr-1.5 h-3.5 w-3.5 shrink-0 overflow-hidden rounded-full border border-white">
-                  <img src={avatar} alt="" className="h-full w-full object-cover" />
-                </div>
-              ))}
-            </div>
-          )}
-          <span className="overflow-hidden text-ellipsis whitespace-nowrap text-[14px] leading-[1.2] text-[#707070]">
-            {course.type} · {course.duration}
-          </span>
+    <div className={boxed ? `overflow-hidden rounded-xl border border-gray-stroke p-4 shadow-sm md:p-5${isCompleted ? " opacity-75" : ""}` : ""}>
+      {/* Image + text */}
+      <div className="flex items-center gap-4 md:items-start md:gap-5">
+        <div className="w-1/3 shrink-0 md:w-[220px]">
+          <img
+            src={course.image}
+            alt=""
+            className={`aspect-[120/63] w-full rounded-lg object-cover${isCompleted ? " opacity-50" : ""}`}
+          />
+        </div>
+        <div className="flex min-w-0 flex-1 flex-col">
+          <p className="text-[14px] font-medium uppercase tracking-[1.4px] text-gray-light">Self-paced</p>
+          <h3 className="mt-1 line-clamp-2 text-[20px] font-medium leading-[1.2] text-gray-dark md:text-[24px]">{course.title}</h3>
+          {/* Progress + button: desktop only */}
+          <div className="mt-4 hidden md:block">{progressRow}</div>
         </div>
       </div>
+      {/* Progress + button: mobile only */}
+      <div className="mt-4 md:hidden">{progressRow}</div>
     </div>
   );
 }
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-type Variant = "simple" | "grouped";
+type Variant = "simple" | "grouped" | "boxed";
 
 export default function MyCourses() {
   const { setSimpleSessionLayout } = useSessionLayout();
@@ -233,28 +201,26 @@ export default function MyCourses() {
   }
 
   const suggestedCoursesSection = (
-    <>
-      <NavLink
-        to="/browse"
-        className="flex items-center gap-1.5 text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070] transition-opacity hover:opacity-80"
-      >
-        Suggested courses
-        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" className="shrink-0">
-          <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </NavLink>
-      <div className="mt-4 flex flex-col gap-5">
-        {suggestedCourses.map((course, i) => <SuggestedCourseCard key={i} course={course} />)}
-      </div>
-    </>
+    <SidebarGroup label="Suggested courses" href="/browse">
+      {suggestedCourses.map((course, i) => (
+        <SidebarCard
+          key={i}
+          variant="course"
+          image={course.image}
+          title={course.title}
+          subtitle={`${course.type} · ${course.duration}`}
+        />
+      ))}
+    </SidebarGroup>
   );
 
   return (
     <PageShell rightSidebar={suggestedCoursesSection}>
+      <div className="pb-20 leading-[1.2] [&_button]:leading-[1.2]">
       <div className="flex items-center justify-between">
-        <h1 className="text-[32px] font-medium leading-[1.1] text-gray-dark md:text-[40px]">My Courses</h1>
+        <h1 className="text-[32px] font-medium leading-[1.2] text-gray-dark md:text-[40px]">My Courses</h1>
         <div className="flex rounded-lg border border-gray-stroke/50 bg-gray-hover p-0.5 text-[14px] font-medium">
-          {(["simple", "grouped"] as Variant[]).map((v) => (
+          {(["simple", "grouped", "boxed"] as Variant[]).map((v) => (
             <button
               key={v}
               onClick={() => applyVariant(v)}
@@ -268,22 +234,15 @@ export default function MyCourses() {
         </div>
       </div>
 
-      {/* Live cohort cards */}
-      <div className="mt-8 flex flex-col gap-8">
-        {enrolledCourses
-          .filter((c) => c.type === "live")
-          .map((course) => <LiveCourseCard key={course.id} course={course as LiveCourse} />)}
+      {/* All enrolled courses */}
+      <div className={`mt-8 flex flex-col ${variant === "boxed" ? "gap-8" : "gap-16"}`}>
+        {enrolledCourses.map((course) =>
+          course.type === "live"
+            ? <LiveCourseCard key={course.id} course={course as LiveCourse} boxed={variant === "boxed"} />
+            : <SelfPacedCourseCard key={course.id} course={course as SelfPacedCourse} boxed={variant === "boxed"} />
+        )}
       </div>
-
-      {/* Self-paced courses */}
-      {enrolledCourses.some((c) => c.type === "selfPaced") && (
-        <div className={`border-t border-gray-stroke/50 ${enrolledCourses.some((c) => c.type === "live") ? "mt-8" : "mt-0"}`}>
-          <p className="pt-8 text-[14px] font-medium uppercase tracking-[0.1em] text-[#707070]">Self-paced</p>
-          {enrolledCourses
-            .filter((c) => c.type === "selfPaced")
-            .map((course) => <SelfPacedCourseCard key={course.id} course={course as SelfPacedCourse} />)}
-        </div>
-      )}
+      </div>
     </PageShell>
   );
 }

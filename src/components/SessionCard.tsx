@@ -80,9 +80,9 @@ export default function SessionCard({
   const titleSizeClass = isSmall ? "text-[16px]" : "text-[18px]";
   const subtitleSizeClass = isSmall ? "text-[14px]" : "text-[16px]";
   const actionBtnClass = isSmall
-    ? "rounded-[8px] px-[14px] py-2 text-[14px] font-medium"
-    : "rounded-lg px-4 py-2.5 text-[16px] font-medium";
-  const actionBtnStyle = isSmall ? { lineHeight: 1.2 } : undefined;
+    ? "rounded-[8px] px-[14px] py-2 text-[14px] font-medium leading-[1.2]"
+    : "rounded-lg px-4 py-2.5 text-[16px] font-medium leading-[1.2]";
+  const actionBtnStyle = undefined;
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
