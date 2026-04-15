@@ -50,6 +50,7 @@ export interface UserDetail {
   name: string;
   email: string;
   initials: string;
+  image?: string;
   coaching?: {
     granted: number;
     used: number;
@@ -145,12 +146,16 @@ export default function B2BUserDrawer({ user, onClose }: Props) {
           >
             {/* Header */}
             <div className="flex shrink-0 items-center gap-3 border-b border-gray-stroke px-4 sm:px-6 py-5">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary-xlight text-[13px] font-semibold text-dark-green">
-                {user.initials}
-              </div>
+              {user.image ? (
+                <img src={user.image} alt={user.name} className="h-9 w-9 shrink-0 rounded-full object-cover" />
+              ) : (
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary-xlight text-[13px] font-semibold text-dark-green">
+                  {user.initials}
+                </div>
+              )}
               <div className="min-w-0 flex-1">
                 <div className="text-[16px] font-medium text-gray-dark">{user.name}</div>
-                <div className="text-[14px] text-gray-xlight">{user.email}</div>
+                <div className="text-[14px] text-gray-light">{user.email}</div>
               </div>
               <button
                 onClick={onClose}
@@ -226,7 +231,7 @@ export default function B2BUserDrawer({ user, onClose }: Props) {
                               {idx < allItems.length - 1 && <div className="mt-1 w-px flex-1 bg-gray-stroke" />}
                             </div>
                             <div className="min-w-0 flex-1 py-3">
-                              <div className="mb-1 flex items-center justify-between text-[14px]">
+                              <div className="mb-1 flex items-center gap-2 text-[14px]">
                                 <span className="text-gray-light">{item.label}</span>
                                 <span className="text-gray-xlight">{item.date}</span>
                               </div>
@@ -265,10 +270,10 @@ export default function B2BUserDrawer({ user, onClose }: Props) {
                           </span>
                         ))}
                       </div>
-                      <div className="mb-3 mt-5 text-[14px] font-medium uppercase tracking-[0.06em] text-gray-light">Recently viewed</div>
+                      <div className="mb-3 mt-6 text-[14px] font-medium uppercase tracking-[0.06em] text-gray-light">Recently viewed</div>
                       <div className="flex flex-col">
                         {user.plus.recentItems.map((item, i) => (
-                          <div key={i} className="flex items-center justify-between gap-3 border-t border-gray-stroke py-2">
+                          <div key={i} className="flex items-center justify-between gap-3 py-[6px]">
                             <div className="flex min-w-0 items-center gap-2">
                               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-gray-xlight">
                                 <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
@@ -338,7 +343,7 @@ export default function B2BUserDrawer({ user, onClose }: Props) {
                               {idx < allItems.length - 1 && <div className="mt-1 w-px flex-1 bg-gray-stroke" />}
                             </div>
                             <div className="min-w-0 flex-1 py-3">
-                              <div className="mb-1 flex items-center justify-between text-[14px]">
+                              <div className="mb-1 flex items-center gap-2 text-[14px]">
                                 <span className="text-gray-light">{item.label}</span>
                                 <span className="text-gray-xlight">{item.date}</span>
                               </div>
